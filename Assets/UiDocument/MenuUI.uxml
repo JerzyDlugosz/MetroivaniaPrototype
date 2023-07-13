@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/USS/Stylesheet.uss?fileID=7433441132597879392&amp;guid=44d0db84913d38a42a96ddefb708fa63&amp;type=3#Stylesheet" />
+    <ui:VisualElement style="height: 500px; width: auto; position: relative; flex-direction: column; justify-content: flex-end; align-items: flex-start; left: 0; top: 0;">
+        <ui:VisualElement style="height: 100%; width: 33%; left: 33%;">
+            <ui:Label text="MenuScreen" display-tooltip-when-elided="true" class="CustomLabel" />
+            <ui:Label text="PressAnyButton" display-tooltip-when-elided="true" class="CustomLabel" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement style="height: 500px; width: auto; position: relative; flex-direction: row; justify-content: space-between; align-items: flex-start; left: 0; top: 0;">
+        <ui:VisualElement style="height: 100%; width: 33%; left: 0;">
+            <ui:Label text="Options" display-tooltip-when-elided="true" class="CustomLabel" />
+        </ui:VisualElement>
+        <ui:VisualElement style="height: 100%; width: 33%; left: 0; -unity-text-align: upper-left; align-items: flex-start; justify-content: center;">
+            <ui:VisualElement style="left: 25%; top: 0; right: 25%; width: 50%;">
+                <ui:Button text="Start" display-tooltip-when-elided="true" class="CustomButton" />
+                <ui:Button text="Continue" display-tooltip-when-elided="true" class="CustomButton" />
+                <ui:Button text="Options" display-tooltip-when-elided="true" class="CustomButton" />
+                <ui:Button text="Exit" display-tooltip-when-elided="true" class="CustomButton" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="height: 100%; width: 33%; left: 0;">
+            <ui:Label text="Leaderboard" display-tooltip-when-elided="true" class="CustomLabel" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement style="height: 500px; width: auto; position: relative; flex-direction: column; justify-content: flex-end; align-items: flex-start; left: 0; top: 0;">
+        <ui:VisualElement style="height: 100%; width: 33%; left: 33%;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <uie:PropertyField binding-path="xSize" label="xSize" name="xSize" />
+    <uie:PropertyField binding-path="ySize" label="ySize" name="ySize" />
+    <ui:Label text="Tilemap border colliders" display-tooltip-when-elided="true" name="Label" />
+    <ui:Button text="Create tilemap borders" display-tooltip-when-elided="true" name="TilemapBorders" />
+    <ui:Foldout text="Default" name="Default" />
+</ui:UXML>

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1d73ee9a5265c48af086d5a7c9191d, type: 3}
+  m_Name: Map 13
+  m_EditorClassIdentifier: 
+  mapID: 9
+  mapName: 
+  xSize: 24
+  ySize: 24
+  mapXOffset: -5
+  mapYOffset: 0
+  mapPrefab: {fileID: 501048952711621548, guid: 67e75173b45a86241927402c70b454a0, type: 3}
+  mapDoors: 01000000
