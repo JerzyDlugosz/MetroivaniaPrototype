@@ -200,6 +200,8 @@ public class MinimapController : MonoBehaviour
                 i++;
             }
 
+
+
             unlockedMinimapBackgrounds[mapXPos, mapYPos] = 0;
             unlockedMinimapWalls[mapXPos, mapYPos] = wallBitDirection;
             unlockedMinimaDoors[mapXPos, mapYPos] = doorBitDirection;

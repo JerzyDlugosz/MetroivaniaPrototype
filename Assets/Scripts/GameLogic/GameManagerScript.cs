@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,11 +11,12 @@ using static UnityEditor.Progress;
 
 public class GameManagerScript : MonoBehaviour
 {
+    public GameObject generatedMapsFolder;
     public MapList mapList;
     public List<GameObject> previousMaps;
     public List<GameObject> currentMaps;
     public Map[,] mapArray;
-    public int[,] directionArray = { {0,1},{1,0},{0,-1 },{-1,0 } };
+    public int[,] directionArray = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
     private int xSizeMul;
     private int ySizeMul;
     private MinimapController minimap;
@@ -35,17 +37,30 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     private TilemapGenerator tilemapGenerator;
 
-    [SerializeField]
     private int spawnMapNumber;
+    [SerializeField]
+    private Vector2Int spawnMapPos;
 
     public PlayableMapData playableMapData;
 
     [SerializeField]
     private int mapSize;
 
+    [SerializeField]
+    private Transform preloadedMapsParent;
+    [SerializeField]
+    private bool preloadMaps;
+
+    private GameObject[,] preloadedMaps;
+
+    public InGameTextManager UITextCanvas;
+
+    public float fadeTime = 0.5f;
+
+    public bool delayMapUpdate = false;
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -57,18 +72,35 @@ public class GameManagerScript : MonoBehaviour
     }
     private void Start()
     {
+        tilemapGenerator.SetupCompositeMaps();
+        generatedMapsFolder.SetActive(false);
+        spawnMapNumber = spawnMapPos.x * 13 + spawnMapPos.y + 1;
+
         savingAndLoading = GameStateManager.instance.GetComponent<SavingAndLoading>();
         maxTilesInMap = GlobalData.maxTilesInMap;
-        centerMapOffset = maxTilesInMap/2;
+        centerMapOffset = maxTilesInMap / 2;
+
+        preloadedMaps = new GameObject[(int)GlobalData.mapSize, (int)GlobalData.mapSize];
 
         forceMoveArray = new Vector2[]
-            { new Vector2(0, forceMoveDistance), new Vector2(forceMoveDistance, 0), new Vector2(0, -forceMoveDistance), new Vector2(-forceMoveDistance, 0) };
-        
+            { new Vector2(0, forceMoveDistance * 1.5f), new Vector2(forceMoveDistance, 0), new Vector2(0, -forceMoveDistance * 1.5f), new Vector2(-forceMoveDistance, 0) };
+
         minimap = GetComponent<MinimapController>();
         minimap.SetupMinimap(maxTilesInMap, maxTilesInMap);
-
         LoadMapsToArray();
-        CreateMap(LoadGame(), true);
+
+        Map currentMap = null;
+        if (!preloadMaps)
+        {
+            currentMap = LoadGame();
+            CreateMap(currentMap, true);
+        }
+        else
+        {
+            PreloadAllMaps();
+        }
+
+        OnMapChange(currentMap);
     }
 
     private void Update()
@@ -79,33 +111,30 @@ public class GameManagerScript : MonoBehaviour
         int mapXPos = (int)((x + GlobalData.mapSize / 2) / GlobalData.mapSize);
         int mapYPos = (int)((y + GlobalData.mapSize / 2) / GlobalData.mapSize);
 
-        if (currentPos.x != mapXPos || currentPos.y != mapYPos)
-        {
-            //int a = (int)Mathf.Abs(currentPos.x) - Mathf.Abs(mapXPos);
-            //int b = (int)Mathf.Abs(currentPos.y) - Mathf.Abs(mapYPos);
-
-            if (currentMaps.Count > 1)
+        //if(!delayMapUpdate)
+        //{
+            if (currentPos.x != mapXPos || currentPos.y != mapYPos)
             {
-                if (currentMaps[0].TryGetComponent(out CompositeTilemap component))
+                if (currentMaps.Count > 1)
                 {
-                    minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos], currentMaps);
+                    if (currentMaps[0].TryGetComponent(out CompositeTilemap component))
+                    {
+                        minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos], currentMaps);
+                    }
+                    else
+                    {
+                        Debug.LogError("Broked");
+                    }
                 }
                 else
                 {
-                    Debug.LogError("Broked");
+                    minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
                 }
+                currentPos.x = mapXPos;
+                currentPos.y = mapYPos;
             }
-            else
-            {
-                minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
-            }
-            currentPos.x = mapXPos;
-            currentPos.y = mapYPos;
-        }
-
-        //Debug.Log($"x: {mapXPos}/ y:{mapYPos}");
+        //}
     }
-
 
     private void LoadMapsToArray()
     {
@@ -132,6 +161,8 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    #region SavingAndLoading Methods
+
     public void LoadGameButton()
     {
         LoadGame();
@@ -145,7 +176,6 @@ public class GameManagerScript : MonoBehaviour
     private Map LoadGame()
     {
         Save save = savingAndLoading.GetSaveFile(savingAndLoading.currentSaveFile);
-
 
         player.customCollider.enabled = false;
 
@@ -180,7 +210,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-    private void SaveGame()
+    public void SaveGame()
     {
         Save save = savingAndLoading.GetSaveFile(savingAndLoading.currentSaveFile);
 
@@ -197,11 +227,14 @@ public class GameManagerScript : MonoBehaviour
         savingAndLoading.SaveGameFile(save);
     }
 
+    #endregion
+
     private void CreateMap(Map currentMap, bool enableTriggers)
     {
         currentMaps.Add(Instantiate(currentMap.mapPrefab));
 
-
+        //AstarPath.active.data.gridGraph.center = new Vector3(currentMap.mapXOffset * GlobalData.maxTilesInMap, currentMap.mapYOffset * GlobalData.maxTilesInMap, 1f);
+        //AstarPath.active.Scan();
 
         currentMaps[0].GetComponent<CustomTilemap>().map = currentMap;
         currentMaps[0].GetComponent<CustomTilemap>().SetupMap();
@@ -249,9 +282,9 @@ public class GameManagerScript : MonoBehaviour
                 {
                     MapBorderCollision mapBorderCollision = childCollider.GetComponent<MapBorderCollision>();
 
-                    foreach (var item in tilemap.map.mapDoors)
+                    foreach (var map in tilemap.map.mapDoors)
                     {
-                        if (mapBorderCollision.direction == item)
+                        if (mapBorderCollision.direction == map)
                         {
                             mapBorderCollision.isADoor = true;
                             break;
@@ -268,9 +301,94 @@ public class GameManagerScript : MonoBehaviour
                         int connectedMapYOffset = centerMapOffset + tilemap.map.mapYOffset + directionArray[(int)mapBorderCollision.direction, 1];
                         //Debug.Log($"ChangeMapArray ({mapBorderCollision.direction}): [{connectedMapXOffset}, {connectedMapYOffset}]");
 
+                        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+
                         mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
                         {
-                            ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                            //tilemap.DisableAllTriggers(0f);
+                            player.characterController.StopMovement(true);
+                            camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
+                            {
+                                ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                                AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                                camera.blackout.DOFade(0, fadeTime);
+                                player.characterController.ForceTransportPlayer(forceMoveArray[(int)mapBorderCollision.direction]);
+                                player.characterController.StopMovement(false);
+                                tilemap.EnableAllTriggers();
+                            });
+                        });
+
+                    }
+                    else
+                    {
+                        mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+                        {
+                            Debug.Log("Not a door");
+                        });
+                    }
+
+                }
+                catch (IndexOutOfRangeException exception)
+                {
+                    Debug.LogError(exception.Message);
+                    //MakeAnErrorMap
+                }
+            }
+        }
+        
+    }
+
+    private void PreloadAllMaps()
+    {
+        int i = 0;
+        foreach (var map in mapArray)
+        {
+            if(map == null)
+                continue;
+            
+            currentMaps.Add(Instantiate(map.mapPrefab));
+
+            CustomTilemap tilemap = currentMaps[i].GetComponent<CustomTilemap>();
+            tilemap.map = map;
+            tilemap.SetupMap();
+            tilemap.EnableAllTriggers();
+
+            xSizeMul = 1;
+            ySizeMul = 1;
+
+            if (currentMaps[i].TryGetComponent(out CompositeTilemap component))
+            {
+                xSizeMul = component.compMapXSize;
+                ySizeMul = component.compMapYSize;
+            }
+
+            foreach (Transform childCollider in tilemap.outsideColliders.transform)
+            {
+                try
+                {
+                    MapBorderCollision mapBorderCollision = childCollider.GetComponent<MapBorderCollision>();
+
+                    foreach (var item in tilemap.map.mapDoors)
+                    {
+                        if (mapBorderCollision.direction == item)
+                        {
+                            mapBorderCollision.isADoor = true;
+                            break;
+                        }
+                        else
+                        {
+                            mapBorderCollision.isADoor = false;
+                        }
+                    }
+
+                    if (mapBorderCollision.isADoor)
+                    {
+                        int connectedMapXOffset = centerMapOffset + tilemap.map.mapXOffset + directionArray[(int)mapBorderCollision.direction, 0];
+                        int connectedMapYOffset = centerMapOffset + tilemap.map.mapYOffset + directionArray[(int)mapBorderCollision.direction, 1];
+
+                        mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+                        {
+                            ChangePreloadedMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
                             player.characterController.ForceMovePlayer(forceMoveArray[(int)mapBorderCollision.direction]);
                             Camera.main.GetComponent<CameraMovement>().MoveCameraBetweenZones(forceMoveArray[(int)mapBorderCollision.direction]);
                             GameStateManager.instance.audioManager.OnMapChange(mapArray[connectedMapXOffset, connectedMapYOffset]);
@@ -293,10 +411,13 @@ public class GameManagerScript : MonoBehaviour
                     //MakeAnErrorMap
                 }
             }
-        }
-        
-    }
 
+            currentMaps[i].transform.SetParent(preloadedMapsParent);
+            preloadedMaps[map.mapXOffset, map.mapYOffset] = currentMaps[i];
+            i++;
+        }
+
+    }
     private void SetCameraBoundaries()
     {
         float xCoord = 0;
@@ -315,7 +436,6 @@ public class GameManagerScript : MonoBehaviour
         Camera.main.GetComponent<CameraMovement>().MoveCamera(new Vector2(xCoord, yCoord));
         Camera.main.GetComponent<CameraMovement>().SetCameraBoundary(xSizeMul, ySizeMul);
     }
-
     public void ChangeCurrentMap(Map nextMap)
     {
         foreach (GameObject map in previousMaps)
@@ -325,6 +445,25 @@ public class GameManagerScript : MonoBehaviour
         previousMaps.Clear();
         currentMaps.Clear();
         CreateMap(nextMap, false);
+    }
+    public void ChangePreloadedMap(Map nextMap)
+    {
+        foreach (GameObject map in preloadedMaps)
+        {
+            if(map == null)
+                continue;
+            map.SetActive(false);
+        }
+        preloadedMaps[nextMap.mapXOffset, nextMap.mapYOffset].GetComponent<CustomTilemap>().DisableAllTriggers(1);
+        preloadedMaps[nextMap.mapXOffset, nextMap.mapYOffset].SetActive(true);
+    }
+    private void AudioOnMapChange(int mapXOffset, int mapYOffset)
+    {
+        GameStateManager.instance.audioManager.OnMapChange(mapArray[mapXOffset, mapYOffset]);
+    }
+    private void OnMapChange(Map map)
+    {
+        GameStateManager.instance.audioManager.OnMapChange(map);
     }
 }
 

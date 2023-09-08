@@ -18,6 +18,8 @@ public class Map : ScriptableObject
     public int mapXOffset;
     [HideInInspector]
     public int mapYOffset;
+    [HideInInspector]
+    public byte[,] mapTileArray;
 
     public AudioClip backgroundMusic;
     public GameObject mapPrefab;

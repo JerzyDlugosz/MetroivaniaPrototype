@@ -5,19 +5,29 @@ using UnityEngine.InputSystem;
 
 public class CustomPlatform : MonoBehaviour
 {
-    [SerializeField]
     private Transform colliders;
     private List<PlatformEffector2D> platformEffectors = new List<PlatformEffector2D>();
 
     private void Start()
     {
+        if(colliders == null) 
+        {
+            colliders = transform.GetChild(0);
+        }
+
+
+        if(colliders.childCount == 0)
+        {
+            return;
+        }
+
         foreach (Transform child in colliders)
         {
             platformEffectors.Add(child.GetComponent<PlatformEffector2D>());
         }
 
-        GameManagerScript.instance.player.playerInputActions.Player.GetDownFromPlatform.performed += DisablePlatformEffector;
-        GameManagerScript.instance.player.playerInputActions.Player.GetDownFromPlatform.canceled += EnablePlatformEffector;
+        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.performed += DisablePlatformEffector;
+        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.canceled += EnablePlatformEffector;
     }
 
     public void DisablePlatformEffector(InputAction.CallbackContext obj)
@@ -38,7 +48,7 @@ public class CustomPlatform : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManagerScript.instance.player.playerInputActions.Player.GetDownFromPlatform.performed -= DisablePlatformEffector;
-        GameManagerScript.instance.player.playerInputActions.Player.GetDownFromPlatform.canceled -= EnablePlatformEffector;
+        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.performed -= DisablePlatformEffector;
+        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.canceled -= EnablePlatformEffector;
     }
 }

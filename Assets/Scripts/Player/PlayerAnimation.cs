@@ -9,8 +9,8 @@ public class PlayerAnimation : MonoBehaviour
     private Player player;
     [SerializeField]
     private List<Sprite> playerSprites;
-    [SerializeField]
-    private SpriteRenderer playerSprite;
+
+    public SpriteRenderer playerSpriteRenderer;
     [SerializeField]
     private float moveAnimationSpeed;
     [SerializeField]
@@ -42,15 +42,20 @@ public class PlayerAnimation : MonoBehaviour
 
     void UpdatePlayerSprite()
     {
-        //Debug.Log(playerXVelocity);
-        playerSprite.sprite = playerSprites[(int)playerXVelocity];
+        int spriteVelocity = (int)playerXVelocity;
+        if (spriteVelocity > playerSprites.Count - 1)
+        {
+            spriteVelocity = playerSprites.Count - 1;
+        }
+
+        playerSpriteRenderer.sprite = playerSprites[spriteVelocity];
     }
 
     public void OnPlayerJump()
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(playerSprite.transform.DOScaleY(0.9f, jumpAnimationSpeed));
-        sequence.Append(playerSprite.transform.DOScaleY(1f, jumpAnimationSpeed));
+        sequence.Append(playerSpriteRenderer.transform.DOScaleY(0.9f, jumpAnimationSpeed));
+        sequence.Append(playerSpriteRenderer.transform.DOScaleY(1f, jumpAnimationSpeed));
     }
 }

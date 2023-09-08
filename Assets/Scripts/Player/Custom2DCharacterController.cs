@@ -9,7 +9,6 @@ public class Custom2DCharacterController : MonoBehaviour
     private Player player;
     private PlayerData playerData;
 
-    private bool groundedPlayer;
     private Vector3 velocity;
 
     private Vector2 motion;
@@ -19,13 +18,34 @@ public class Custom2DCharacterController : MonoBehaviour
 
     public float movementSpeed;
     public float jumpSpeed;
+    public float ladderSpeed;
 
     private Collider2D playerCollider;
     [SerializeField]
     private LayerMask WallLayer;
 
     private float jumpTimer;
+
+    private bool stopMovement;
     
+    public void StopMovement(bool state)
+    {
+        stopMovement = state;
+
+        if(state)
+        {
+            player.customRigidbody.bodyType = RigidbodyType2D.Static;
+            player.customRigidbody.isKinematic = true;
+            player.customRigidbody.velocity = Vector3.zero;
+            //player.customRigidbody.gravityScale = 0;
+        }
+        else
+        {
+            player.customRigidbody.bodyType = RigidbodyType2D.Static;
+            player.customRigidbody.isKinematic = false;
+            //player.customRigidbody.gravityScale = playerData.baseGravityScale;
+        }
+    }
 
     void Start()
     {
@@ -33,7 +53,6 @@ public class Custom2DCharacterController : MonoBehaviour
         playerData = player.playerData;
 
         playerData.playerState = PlayerStates.Idle;
-
     }
 
     // Update is called once per frame
@@ -41,11 +60,20 @@ public class Custom2DCharacterController : MonoBehaviour
     {
        // CheckPosition();
 
+        if(stopMovement)
+        {
+            return;
+        }
+
         Movement();
         Jump();
         ApplyForce();
+        Climbing();
+        Swimming();
 
-        if(jumpTimer > 0)
+        ResetGravity();
+
+        if (jumpTimer > 0)
         {
             jumpTimer -= Time.deltaTime;
         }
@@ -56,6 +84,49 @@ public class Custom2DCharacterController : MonoBehaviour
         if(motion.y == 0)
         {
             playerData.playerState = PlayerStates.Idle;
+        }
+    }
+
+    void Climbing()
+    {
+        if(player.onLadder)
+        {
+            player.customRigidbody.gravityScale = 0f;
+            if (playerData.isUpButtonHeld)
+            {
+                player.customRigidbody.velocity = new Vector2(player.customRigidbody.velocity.x, ladderSpeed);
+            }
+            if(playerData.isDownButtonHeld)
+            {
+                player.customRigidbody.velocity = new Vector2(player.customRigidbody.velocity.x, -ladderSpeed);
+            }
+        }
+    }
+
+    void Swimming()
+    {
+        if (player.inWater)
+        {
+            Debug.Log("In Water");
+            playerData.playerState = PlayerStates.InWater;
+            player.customRigidbody.gravityScale = playerData.baseGravityScale / 10f;
+            jumpSpeed = playerData.baseJumpSpeed / 2;
+            movementSpeed = playerData.baseMovementSpeed / 2;
+
+            if (playerData.isDownButtonHeld)
+            {
+                player.customRigidbody.gravityScale = playerData.baseGravityScale;
+            }
+        }
+    }
+
+    void ResetGravity()
+    {
+        if (!player.onLadder && !player.inWater)
+        {
+            player.customRigidbody.gravityScale = player.playerData.baseGravityScale;
+            jumpSpeed = playerData.baseJumpSpeed;
+            movementSpeed = playerData.baseMovementSpeed;
         }
     }
 
@@ -81,22 +152,25 @@ public class Custom2DCharacterController : MonoBehaviour
 
         if(hit.collider)
         {
-            Debug.Log("On ground");
-            groundedPlayer = true;
+            player.isGrounded = true;
         }
         else
         {
-            Debug.Log("In Air");
             playerData.playerState = PlayerStates.InAir;
-            groundedPlayer = false;
-        }   
+            player.isGrounded = false;
+        }
+
+        if (player.inWater && playerData.WaterSpirit)
+        {
+            player.isGrounded = true;
+        }
     }
 
     void ApplyForce()
     {
-        if (jumpTimer <= 0 && playerData.isJumping && groundedPlayer)
+        if (jumpTimer <= 0 && playerData.isJumping && player.isGrounded)
         {
-            jumpTimer = 1;
+            jumpTimer = 0.2f;
             player.playerAnimation.OnPlayerJump();
             player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
         }
@@ -119,9 +193,9 @@ public class Custom2DCharacterController : MonoBehaviour
 
     public void ForceTransportPlayer(Vector2 position)
     {
-        player.customRigidbody.bodyType = RigidbodyType2D.Static;
-        transform.position = position;
-        player.customRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        //player.customRigidbody.bodyType = RigidbodyType2D.Static;
+        transform.position = player.customRigidbody.position + position;
+        //player.customRigidbody.bodyType = RigidbodyType2D.Dynamic;
     }
 }
 

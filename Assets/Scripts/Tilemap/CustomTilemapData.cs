@@ -8,4 +8,6 @@ public class CustomTilemapData : MonoBehaviour
     public Tilemap BackgroundTilemap;
     public Tilemap WallsTilemap;
     public Tilemap ForegroundTilemap;
+
+    public bool wasEdited;
 }

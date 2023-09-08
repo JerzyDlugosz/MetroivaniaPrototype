@@ -100,9 +100,27 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""GetDownFromPlatform"",
+                    ""name"": ""DownMotion"",
                     ""type"": ""Button"",
                     ""id"": ""77009459-8686-44e7-8c72-3c198c60b9ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpMotion"",
+                    ""type"": ""Button"",
+                    ""id"": ""cea53d60-0600-4b54-bf22-5cb894ff50a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Recall"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf037e2a-938f-4290-88e1-983faa509c28"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -392,7 +410,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""GetDownFromPlatform"",
+                    ""action"": ""DownMotion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -403,7 +421,51 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""GetDownFromPlatform"",
+                    ""action"": ""DownMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1e3b230-7475-402a-8258-4e971eb74046"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""UpMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b198bd75-c11a-4827-b5f2-c09586c465b7"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""UpMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df587f6a-2871-4602-9340-beffb1a75160"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Recall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfc3d591-6b04-4e35-9bf7-88c7aa56c227"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Recall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -433,7 +495,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_WeaponSwapRight = m_Player.FindAction("WeaponSwapRight", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_AimPosition = m_Player.FindAction("AimPosition", throwIfNotFound: true);
-        m_Player_GetDownFromPlatform = m_Player.FindAction("GetDownFromPlatform", throwIfNotFound: true);
+        m_Player_DownMotion = m_Player.FindAction("DownMotion", throwIfNotFound: true);
+        m_Player_UpMotion = m_Player.FindAction("UpMotion", throwIfNotFound: true);
+        m_Player_Recall = m_Player.FindAction("Recall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -501,7 +565,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_WeaponSwapRight;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_AimPosition;
-    private readonly InputAction m_Player_GetDownFromPlatform;
+    private readonly InputAction m_Player_DownMotion;
+    private readonly InputAction m_Player_UpMotion;
+    private readonly InputAction m_Player_Recall;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -514,7 +580,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @WeaponSwapRight => m_Wrapper.m_Player_WeaponSwapRight;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @AimPosition => m_Wrapper.m_Player_AimPosition;
-        public InputAction @GetDownFromPlatform => m_Wrapper.m_Player_GetDownFromPlatform;
+        public InputAction @DownMotion => m_Wrapper.m_Player_DownMotion;
+        public InputAction @UpMotion => m_Wrapper.m_Player_UpMotion;
+        public InputAction @Recall => m_Wrapper.m_Player_Recall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -548,9 +616,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @AimPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPosition;
                 @AimPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPosition;
                 @AimPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPosition;
-                @GetDownFromPlatform.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetDownFromPlatform;
-                @GetDownFromPlatform.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetDownFromPlatform;
-                @GetDownFromPlatform.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetDownFromPlatform;
+                @DownMotion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownMotion;
+                @DownMotion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownMotion;
+                @DownMotion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDownMotion;
+                @UpMotion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
+                @UpMotion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
+                @UpMotion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
+                @Recall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
+                @Recall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
+                @Recall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -579,9 +653,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @AimPosition.started += instance.OnAimPosition;
                 @AimPosition.performed += instance.OnAimPosition;
                 @AimPosition.canceled += instance.OnAimPosition;
-                @GetDownFromPlatform.started += instance.OnGetDownFromPlatform;
-                @GetDownFromPlatform.performed += instance.OnGetDownFromPlatform;
-                @GetDownFromPlatform.canceled += instance.OnGetDownFromPlatform;
+                @DownMotion.started += instance.OnDownMotion;
+                @DownMotion.performed += instance.OnDownMotion;
+                @DownMotion.canceled += instance.OnDownMotion;
+                @UpMotion.started += instance.OnUpMotion;
+                @UpMotion.performed += instance.OnUpMotion;
+                @UpMotion.canceled += instance.OnUpMotion;
+                @Recall.started += instance.OnRecall;
+                @Recall.performed += instance.OnRecall;
+                @Recall.canceled += instance.OnRecall;
             }
         }
     }
@@ -614,6 +694,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnWeaponSwapRight(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAimPosition(InputAction.CallbackContext context);
-        void OnGetDownFromPlatform(InputAction.CallbackContext context);
+        void OnDownMotion(InputAction.CallbackContext context);
+        void OnUpMotion(InputAction.CallbackContext context);
+        void OnRecall(InputAction.CallbackContext context);
     }
 }

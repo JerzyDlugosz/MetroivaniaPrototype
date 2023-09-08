@@ -7,15 +7,32 @@ public class CustomAiTargeter : MonoBehaviour
 {
     [SerializeField]
     AIDestinationSetter destinationSetter;
-    [HideInInspector]
+    [SerializeField]
+    private destinationTarget destinationTarget;
+
     public Transform target;
     void Start()
     {
-        if(destinationSetter == null)
+        if(destinationTarget == destinationTarget.Player)
         {
-            target = GameManagerScript.instance.player.transform;
-            return;
+            destinationSetter.target = GameManagerScript.instance.player.transform;
         }
-        destinationSetter.target = GameManagerScript.instance.player.transform;
+        else
+        {
+            if (target == null)
+            {
+                return;
+            }
+            if (destinationSetter == null)
+            {
+                return;
+            }
+        }
     }
+}
+
+public enum destinationTarget
+{
+    None,
+    Player,
 }

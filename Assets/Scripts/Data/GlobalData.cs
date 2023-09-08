@@ -5,6 +5,6 @@ using UnityEngine;
 public static class GlobalData
 {
     public static float mapSize = 40f;
-    public static float collisionSize = 1f;
+    public static float MapDoorCollisionSize = 0.5f;
     public static int maxTilesInMap = 40;
 }

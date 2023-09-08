@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class CameraData : MonoBehaviour
 {
+    [HideInInspector]
     /// <summary>
     /// Min - Max
     /// </summary>
     public Vector2 CameraXBoundaryAdditionalOffset;
+    [HideInInspector]
     public Vector2 CameraYBoundaryAdditionalOffset;
+
+    public Vector2 baseCameraXBoundaryAdditionalOffset = new Vector2(0, 0);
+    public Vector2 baseCameraYBoundaryAdditionalOffset = new Vector2(0, 0);
+
+    public int baseAssetsPPU = 30;
 }

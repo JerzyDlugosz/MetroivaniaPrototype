@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class CustomTilemap : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class CustomTilemap : MonoBehaviour
     public void SetupMap()
     {
         standartMapSize = GlobalData.mapSize;
-        colliderSize = GlobalData.collisionSize;
+        colliderSize = GlobalData.MapDoorCollisionSize;
 
         float[,] colliderPosition = {
             { transform.position.x + 0, transform.position.y + standartMapSize / 2 - (colliderSize - 1) },
@@ -47,25 +48,51 @@ public class CustomTilemap : MonoBehaviour
 
         foreach (Transform child in outsideColliders.transform)
         {
-            //StartCoroutine(disabledTime(child));
-
+            //child.GetComponent<MapBorderCollision>().disableTriggerEnter();
             child.GetComponent<BoxCollider2D>().enabled = true;
-            child.GetComponent<MapBorderCollision>().disableTriggerEnter();
         }
+
+        OnRoomEnter();
     }
 
     public void EnableAllTriggers()
     {
         foreach (Transform child in outsideColliders.transform)
         {
-            Debug.Log(child.name);
-            child.GetComponent<MapBorderCollision>().isDisabled = false;
+            //Debug.Log(child.name);
+            child.GetComponent<MapBorderCollision>().enableTriggerEnter();
         }
     }
 
-    IEnumerator disabledTime(Transform child)
+    public void DisableAllTriggers(float time)
     {
-        yield return new WaitForSeconds(0.5f);
+        foreach (Transform child in outsideColliders.transform)
+        {
+            child.GetComponent<MapBorderCollision>().disableTriggerEnter();
+            //disabledTime(child, time);
+        }
+    }
+
+    IEnumerator disabledTime(Transform child, float time)
+    {
+        yield return new WaitForSeconds(time);
         child.GetComponent<BoxCollider2D>().enabled = true;
+    }
+
+    public void OnRoomEnter()
+    {
+        if (TryGetComponent(out BossRoom comp))
+        {
+            comp.OnBossRoomEnter();
+        }
+        else
+        {
+            CameraData cameraData = GameManagerScript.instance.player.mainCamera.GetComponent<CameraData>();
+            cameraData.CameraXBoundaryAdditionalOffset = cameraData.baseCameraXBoundaryAdditionalOffset;
+            cameraData.CameraYBoundaryAdditionalOffset = cameraData.baseCameraYBoundaryAdditionalOffset;
+
+            GameManagerScript.instance.player.mainCamera.GetComponent<UnityEngine.Experimental.Rendering.Universal.PixelPerfectCamera>().assetsPPU = cameraData.baseAssetsPPU;
+
+        }
     }
 }

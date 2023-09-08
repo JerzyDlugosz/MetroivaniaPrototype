@@ -8,6 +8,7 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager instance;
     public AudioManager audioManager;
+    public SavingAndLoading savingAndLoading;
 
     private void Awake()
     {

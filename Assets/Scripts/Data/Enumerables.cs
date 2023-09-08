@@ -13,5 +13,6 @@ public enum PlayerStates
     Walking,
     Running,
     InAir,
-    Jumping
+    Jumping,
+    InWater
 }

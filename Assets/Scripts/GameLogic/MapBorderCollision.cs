@@ -23,6 +23,11 @@ public class MapBorderCollision : MonoBehaviour
         isDisabled = true;
     }
 
+    public void enableTriggerEnter()
+    {
+        isDisabled = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(isDisabled)

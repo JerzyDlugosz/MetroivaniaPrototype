@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Ladder
+  - Friendly
+  - Projectile
+  - Enemy
+  - HostileProjectile
   layers:
   - Default
   - TransparentFX
@@ -15,7 +20,7 @@ TagManager:
   - Wall
   - Projectile
   - Platform
-  - 
+  - HostileProjectile
   - 
   - 
   - 

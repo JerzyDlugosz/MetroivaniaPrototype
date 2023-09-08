@@ -7,6 +7,13 @@ public class Menu : MonoBehaviour
 {
     [SerializeField]
     private Transform menu;
+    [SerializeField]
+    private AudioClip menuMusic;
+
+    private void Start()
+    {
+        GameStateManager.instance.audioManager.ChangeAudio(menuMusic);
+    }
 
     public void MoveMenuPosition(Transform targetPosition)
     {

@@ -40,6 +40,11 @@ public class AudioManager : MonoBehaviour
         musicAudioSource.Play();
     }
 
+    public void ChangeAudio(AudioClip audioClip)
+    {
+        PlayAudio(audioClip);
+    }
+
     private void Update()
     {
         musicAudioSource.volume = volume;

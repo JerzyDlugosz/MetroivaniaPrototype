@@ -9,28 +9,56 @@ public class CustomSpriteAnimation : MonoBehaviour
     [SerializeField]
     private float animationSpeed;
     private float animationFrame = 0f;
-    [SerializeField]
     private SpriteRenderer spriteRenderer;
+
+    public bool stopAnimation = false;
+    public bool automaticAnimationLoop = false;
+
+    private void Start()
+    {
+        if(TryGetComponent(out BaseNPC baseNPC))
+        {
+            spriteRenderer = baseNPC.spriteRenderer;
+        }
+        else
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+    }
+
+    private void Update()
+    {
+        if (automaticAnimationLoop)
+        {
+            UpdateAnimationFrame();
+        }
+    }
 
     public void UpdateAnimationFrame()
     {
-        animationFrame += Time.deltaTime * animationSpeed;
-        if ((int)animationFrame > sprites.Count - 1)
+        if (!stopAnimation)
         {
-            animationFrame = 0f;
-        }
+            animationFrame += Time.deltaTime * animationSpeed;
+            if ((int)animationFrame > sprites.Count - 1)
+            {
+                animationFrame = 0f;
+            }
 
-        spriteRenderer.sprite = sprites[(int)animationFrame];
+            spriteRenderer.sprite = sprites[(int)animationFrame];
+        }
     }
 
     public void UpdateAnimationFrame(float xVelocity)
     {
-        animationFrame += Mathf.Abs(xVelocity) * animationSpeed;
-        if ((int)animationFrame > sprites.Count - 1)
+        if (!stopAnimation)
         {
-            animationFrame = 0f;
-        }
+            animationFrame += Mathf.Abs(xVelocity) * animationSpeed;
+            if ((int)animationFrame > sprites.Count - 1)
+            {
+                animationFrame = 0f;
+            }
 
-        spriteRenderer.sprite = sprites[(int)animationFrame];
+            spriteRenderer.sprite = sprites[(int)animationFrame];
+        }
     }
 }

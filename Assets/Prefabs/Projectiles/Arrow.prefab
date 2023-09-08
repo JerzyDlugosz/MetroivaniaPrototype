@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9153284828726013494}
-  - component: {fileID: 6418533135474596992}
+  - component: {fileID: 8076853993229123319}
   m_Layer: 8
   m_Name: PlatformCollider
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 8196401958703634405}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &6418533135474596992
+--- !u!61 &8076853993229123319
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06416321, y: -0.06102562}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6281738, y: 0.1227684}
+  m_Size: {x: 0.8, y: 0.4}
   m_EdgeRadius: 0
 --- !u!1 &8196401958703634393
 GameObject:
@@ -71,9 +71,10 @@ GameObject:
   - component: {fileID: 8196401958703634407}
   - component: {fileID: 8196401958703634392}
   - component: {fileID: -3715193723582048765}
+  - component: {fileID: 431906612091119145}
   m_Layer: 7
   m_Name: Arrow
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8196401958703634393}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -93.23767, y: 44.4159, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -135,7 +136,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -907624243, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
+  m_Sprite: {fileID: 597693369, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,20 +159,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e7144adc4427147b52e7b1bab09c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 10
-  projectileGravity: 1
+  destroyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  inWater: 0
+  inAir: 0
+  isGrounded: 0
+  onLadder: 0
+  isSlowed: 0
+  projectileType: 0
+  projectileVelocity: {x: 0, y: 0}
   projectileForce: {x: 100, y: 0}
-  projectileName: Arrow
+  projectilePushBack: 100
+  projectileName: BasicArrow
   projectileLifetime: 2
+  bounceAngle: 20
+  projectileDamage: 2
+  inWaterDrag: 2
+  baseGravity: 1
+  projectileStrenght: 0
+  projectileStickiness: 1
+  projectileParticleController: {fileID: 431906612091119145}
   projectileAttackSpeed: 0.5
   rb: {fileID: 8196401958703634392}
-  collisionEvent:
+  wallCollisionEvent:
     m_PersistentCalls:
       m_Calls: []
-  bounceEvent:
+  wallBounceEvent:
     m_PersistentCalls:
       m_Calls: []
-  platformCollider: {fileID: 6418533135474596992}
+  entityCollisionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  endOfLifetimeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  recallEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  platformCollider: {fileID: 8076853993229123319}
 --- !u!50 &8196401958703634392
 Rigidbody2D:
   serializedVersion: 4
@@ -183,8 +209,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 0.13507715
+  m_UseAutoMass: 0
+  m_Mass: 0.13
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -221,3 +247,17 @@ PolygonCollider2D:
     - - {x: 0.38018036, y: -0.05598831}
       - {x: -0.35507202, y: 0.116508484}
       - {x: -0.3626938, y: -0.24913406}
+--- !u!114 &431906612091119145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196401958703634393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ecb1fa11b697840b1680f625473c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recallParticle: {fileID: 4226431677723760843, guid: 417b2baea7d80434caed93672f3938a2, type: 3}
+  collisionParticle: {fileID: 0}

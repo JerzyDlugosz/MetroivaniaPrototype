@@ -78,9 +78,27 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "GetDownFromPlatform",
+                    "name": "DownMotion",
                     "type": "Button",
                     "id": "77009459-8686-44e7-8c72-3c198c60b9ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UpMotion",
+                    "type": "Button",
+                    "id": "cea53d60-0600-4b54-bf22-5cb894ff50a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Recall",
+                    "type": "Button",
+                    "id": "cf037e2a-938f-4290-88e1-983faa509c28",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -370,7 +388,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "GetDownFromPlatform",
+                    "action": "DownMotion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -381,7 +399,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "GetDownFromPlatform",
+                    "action": "DownMotion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1e3b230-7475-402a-8258-4e971eb74046",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "UpMotion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b198bd75-c11a-4827-b5f2-c09586c465b7",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "UpMotion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "df587f6a-2871-4602-9340-beffb1a75160",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Recall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfc3d591-6b04-4e35-9bf7-88c7aa56c227",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Recall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class CameraMovement : MonoBehaviour
     private bool disableCameraBoundaries;
 
     private bool stopCamera = false;
+
+    public SpriteRenderer blackout;
     
 
     private void Start()
@@ -65,7 +68,7 @@ public class CameraMovement : MonoBehaviour
 
     public void MoveCamera(Vector2 targetPosition)
     {
-        transform.position = targetPosition;
+        transform.position = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
     }
 
     public void SetCameraCenter(Vector2 offset)
@@ -81,11 +84,15 @@ public class CameraMovement : MonoBehaviour
 
     public void MoveCameraBetweenZones(Vector2 targetPosition)
     {
-        //Need some adjustment
+        
 
 
         //stopCamera = true;
-        //transform.DOMove(new Vector2(player.transform.position.x, player.transform.position.y) + targetPosition, moveSpeed).onComplete = ResumeCameraMovement;
+
+        //Vector3 temp1 = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        //Vector3 temp2 = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
+
+        //transform.DOMove(temp1 + temp2, moveSpeed).onComplete = ResumeCameraMovement;
     }
 
     public void ResumeCameraMovement()
