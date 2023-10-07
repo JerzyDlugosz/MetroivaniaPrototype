@@ -191,6 +191,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Hearth_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22129df178686114dadd2ccfc85a54f4
+      internalID: -200646360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -204,6 +225,7 @@ TextureImporter:
     nameFileIdTable:
       Hearth_0: 1571591805
       Hearth_1: 2069937889
+      Hearth_3: -200646360
       Hearth_2: 1557013718
   spritePackingTag: 
   pSDRemoveMatte: 0

@@ -23,10 +23,11 @@ public class SnakeBossRoom : BossRoom
     {
         door.transform.DOLocalMoveY(0, 1f);
 
-        bossEnemyParts.gameObject.SetActive(true);
+        //bossEnemyParts.gameObject.SetActive(true);
         foreach (var part in bossEnemyParts.enemyParts)
         {
-            part.bossEnemy.Invisibility(true);
+            Debug.Log(part.bossEnemy);
+            part.bossEnemy.Invincibility(true);
             part.bossEnemy.onNPCDeath.AddListener(OnBossFightEnd);
         }
     }

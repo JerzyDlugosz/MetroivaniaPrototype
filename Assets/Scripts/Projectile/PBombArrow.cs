@@ -6,11 +6,13 @@ public class PBombArrow : PlayerProjectile
 {
     [SerializeField]
     private GameObject explosionField;
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         wallCollisionEvent.AddListener(() => projectileParticleController.OnCollision());
         recallEvent.AddListener(() => projectileParticleController.OnRecall());
         endOfLifetimeEvent.AddListener(() => projectileParticleController.OnCollision());
+        wallBounceEvent.AddListener(() => projectileParticleController.OnCollision());
 
         wallCollisionEvent.AddListener(OnWallCollision);
         wallBounceEvent.AddListener(OnWallCollision);
@@ -19,7 +21,10 @@ public class PBombArrow : PlayerProjectile
     }
     private void Update()
     {
-        MainUpdate();
+        if (MainUpdate())
+        {
+
+        }
     }
     public void OnWallCollision()
     {

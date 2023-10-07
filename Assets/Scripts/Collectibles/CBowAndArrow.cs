@@ -6,7 +6,7 @@ public class CBowAndArrow : CollectibleGameObject
 {
     void Start()
     {
-        foreach (var item in GameManagerScript.instance.player.collectedItems.collectibles)
+        foreach (var item in GameManagerScript.instance.player.progressTracker.collectibles)
         {
             if (item.collectibleId == collectibleId)
             {
@@ -25,7 +25,7 @@ public class CBowAndArrow : CollectibleGameObject
 
         GameManagerScript.instance.player.arrowCapacityIncreaseEvent.Invoke();
 
-        GameManagerScript.instance.player.collectedItems.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY);
+        GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleSprite, collectibleType);
 
         Destroy(gameObject);
     }

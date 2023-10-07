@@ -8,8 +8,18 @@ public class FriendlyNPC : BaseNPC
     [SerializeField]
     private bool isUsingVelocityForAnimation = false;
 
+    public override void Start()
+    {
+        base.Start();
+        stoppedEvent.AddListener(OnStop);
+    }
+
     private void Update()
     {
+        if (isStopped)
+        {
+            return;
+        }
         UpdateSpriteRotation(false);
         if (!isUsingVelocityForAnimation)
         {
@@ -29,6 +39,11 @@ public class FriendlyNPC : BaseNPC
         {
             gameObject.GetComponent<SpriteRenderer>().DOFade(0f, 1f).onComplete += OnDestinationReached;
         }
+    }
+
+    public void OnStop(bool state)
+    {
+        path.canMove = !state;
     }
 
     private void OnDestinationReached()

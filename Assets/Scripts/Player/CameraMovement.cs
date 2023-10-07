@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -14,8 +15,7 @@ public class CameraMovement : MonoBehaviour
     private int xSizeMul = 1;
     private int ySizeMul = 1;
 
-    [SerializeField]
-    private float moveSpeed;
+    public float smoothTime = 0.3F;
 
     [SerializeField]
     private bool disableCameraBoundaries;
@@ -34,10 +34,16 @@ public class CameraMovement : MonoBehaviour
     {
         if(!stopCamera)
         {
-            FollowPlayer();
+            SmoothFollowPlayer();
+            //FollowPlayer();
             if (!disableCameraBoundaries)
                 CheckBoundaries();
         }
+    }
+
+    public void SnapCameraPosition()
+    {
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
     }
 
     void FollowPlayer()
@@ -45,18 +51,25 @@ public class CameraMovement : MonoBehaviour
         transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
     }
 
+    void SmoothFollowPlayer()
+    {
+        Vector3 velocity = Vector3.zero;
+        Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+    }
+
     void CheckBoundaries()
     {
         float cameraXPos = transform.position.x;
         float cameraYPos = transform.position.y;
 
-        Vector2Int CameraXBoundary = new Vector2Int(-(int)(GlobalData.mapSize - 16) / 2, (int)(GlobalData.mapSize - 16) / 2);
-        Vector2Int CameraYBoundary = new Vector2Int((-(int)(GlobalData.mapSize - 16) / 2) - 1, ((int)(GlobalData.mapSize - 16) / 2) + 1);
+        Vector2Int CameraXBoundary = new Vector2Int(-(int)(GlobalData.maxTimemaps - 16) / 2, (int)(GlobalData.maxTimemaps - 16) / 2);
+        Vector2Int CameraYBoundary = new Vector2Int((-(int)(GlobalData.maxTimemaps - 16) / 2) - 1, ((int)(GlobalData.maxTimemaps - 16) / 2) + 1);
 
-        float maxA = CameraXBoundary.x - ((GlobalData.mapSize / 2) * (xSizeMul - 1)) + centerOfCamera.x + cameraData.CameraXBoundaryAdditionalOffset.x;
-        float minA = CameraXBoundary.y + ((GlobalData.mapSize / 2) * (xSizeMul - 1)) + centerOfCamera.x + cameraData.CameraXBoundaryAdditionalOffset.y;
-        float maxB = CameraYBoundary.x - ((GlobalData.mapSize / 2) * (ySizeMul - 1)) + centerOfCamera.y + cameraData.CameraYBoundaryAdditionalOffset.x;
-        float minB = CameraYBoundary.y + ((GlobalData.mapSize / 2) * (ySizeMul - 1)) + centerOfCamera.y + cameraData.CameraYBoundaryAdditionalOffset.y;
+        float maxA = CameraXBoundary.x - ((GlobalData.maxTimemaps / 2) * (xSizeMul - 1)) + centerOfCamera.x + cameraData.CameraXBoundaryAdditionalOffset.x;
+        float minA = CameraXBoundary.y + ((GlobalData.maxTimemaps / 2) * (xSizeMul - 1)) + centerOfCamera.x + cameraData.CameraXBoundaryAdditionalOffset.y;
+        float maxB = CameraYBoundary.x - ((GlobalData.maxTimemaps / 2) * (ySizeMul - 1)) + centerOfCamera.y + cameraData.CameraYBoundaryAdditionalOffset.x;
+        float minB = CameraYBoundary.y + ((GlobalData.maxTimemaps / 2) * (ySizeMul - 1)) + centerOfCamera.y + cameraData.CameraYBoundaryAdditionalOffset.y;
 
         Vector3 pos = new Vector3(
             Mathf.Max(maxA, Mathf.Min(minA, cameraXPos)),
@@ -68,7 +81,8 @@ public class CameraMovement : MonoBehaviour
 
     public void MoveCamera(Vector2 targetPosition)
     {
-        transform.position = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        //transform.position = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
     }
 
     public void SetCameraCenter(Vector2 offset)

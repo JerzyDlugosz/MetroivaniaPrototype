@@ -14,7 +14,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField]
     private Transform weapon;
 
-    float distance;
+    public float distance;
     Vector2 direction;
     Quaternion rotation;
     [HideInInspector]
@@ -24,7 +24,7 @@ public class PlayerAim : MonoBehaviour
     {
         distance = Vector2.Distance(player.transform.position, player.aimInputScreenPosition);
         direction = (player.aimInputScreenPosition - player.transform.position).normalized;
-        angle = getAngle(transform.forward, direction);
+        angle = MathExtensions.GetAngle(transform.forward, direction);
 
 
         rotation = Quaternion.LookRotation(player.aimInputScreenPosition - player.transform.position, transform.TransformDirection(Vector3.up));
@@ -43,13 +43,13 @@ public class PlayerAim : MonoBehaviour
         {
             reticle.position = hit.point;
 
-            Debug.DrawRay(player.transform.position, direction, Color.red, 5f);
+            //Debug.DrawRay(player.transform.position, direction, Color.red, 5f);
         }
         else
         {
             reticle.position = player.aimInputScreenPosition;
 
-            Debug.DrawRay(player.transform.position, direction, Color.white, 5f);
+            //Debug.DrawRay(player.transform.position, direction, Color.white, 5f);
         }
     }
 

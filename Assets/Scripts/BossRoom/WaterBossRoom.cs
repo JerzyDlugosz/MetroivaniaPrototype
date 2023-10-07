@@ -42,7 +42,6 @@ public class WaterBossRoom : BossRoom
             return;
         }
 
-        shootableButton.onButtonHit.AddListener(OnButtonHit);
     }
 
     private void HideObstacle()
@@ -68,7 +67,7 @@ public class WaterBossRoom : BossRoom
         platform.SetActive(false);
     }
 
-    private void OnButtonHit()
+    public void OnButtonHit()
     {
         StartCoroutine(WaterFillTimer(stunTime));
     }
@@ -76,7 +75,7 @@ public class WaterBossRoom : BossRoom
     IEnumerator WaterFillTimer(float time)
     {
         //Hide water and show platforms
-        bossEnemy.Invisibility(false);
+        bossEnemy.Invincibility(false);
 
         //bossEnemy.OnStun(time + 3f);
         bossEnemy.OnStun(true);
@@ -137,7 +136,7 @@ public class WaterBossRoom : BossRoom
         ShowObstacle();
         door.transform.DOLocalMoveY(0, 1f);
         bossEnemy.gameObject.SetActive(true);
-        bossEnemy.Invisibility(true);
+        bossEnemy.Invincibility(true);
         bossEnemy.onNPCDeath.AddListener(OnBossFightEnd);
     }
 
@@ -154,7 +153,7 @@ public class WaterBossRoom : BossRoom
         GameManagerScript.instance.player.transform.DOMove(playerPushbackPosition.position, 2f).OnComplete(() => {
             ShowObstacle();
             GameManagerScript.instance.player.characterController.StopMovement(false);
-            bossEnemy.Invisibility(true);
+            bossEnemy.Invincibility(true);
             bossEnemy.OnStun(false);
         }).SetEase(Ease.Linear);
     }

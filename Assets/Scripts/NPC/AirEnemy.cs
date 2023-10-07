@@ -8,8 +8,6 @@ public class AirEnemy : BaseNPC
     private bool isUsingVelocityForAnimation = false;
     [SerializeField]
     private bool isUsingRigidbody = false;
-    [SerializeField]
-    private bool basicSpriteRotation = true;
 
     [SerializeField]
     private bool isRanged = false;
@@ -23,10 +21,16 @@ public class AirEnemy : BaseNPC
         base.Start();
         onNPCHit.AddListener(OnHit);
         onNPCDeath.AddListener(OnDeath);
+
+        stoppedEvent.AddListener(OnStop);
     }
 
     private void Update()
     {
+        if(isStopped)
+        {
+            return;
+        }
         UpdateSpriteRotation(isUsingRigidbody);
         if (!isUsingVelocityForAnimation)
         {
@@ -49,6 +53,7 @@ public class AirEnemy : BaseNPC
                 if (rangedAttackCooldown < 0)
                 {
                     AttackPattern1();
+                    GameStateManager.instance.audioManager.PlaySoundEffect(onAttackAudioClip);
                     rangedAttackCooldown = 2f;
                 }
             }
@@ -60,6 +65,10 @@ public class AirEnemy : BaseNPC
 
     }
 
+    public void OnStop(bool state)
+    {
+        path.canMove = !state;
+    }
     private void AttackPattern1()
     {
         Vector3 position = new Vector3(transform.position.x, transform.position.y, -4f);
@@ -90,6 +99,5 @@ public class AirEnemy : BaseNPC
     public void OnDeath()
     {
         enemyParticleController.OnDeath();
-        Destroy(gameObject);
     }
 }

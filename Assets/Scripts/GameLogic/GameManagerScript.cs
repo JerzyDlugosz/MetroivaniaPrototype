@@ -2,24 +2,20 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+using System.IO;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.Tilemaps;
-using static UnityEditor.Progress;
 
 public class GameManagerScript : MonoBehaviour
 {
-    public GameObject generatedMapsFolder;
-    public MapList mapList;
+    public List<GameObject> generatedMapsFoldersToHide;
+    public MapList currentMapList;
     public List<GameObject> previousMaps;
     public List<GameObject> currentMaps;
     public Map[,] mapArray;
     public int[,] directionArray = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
     private int xSizeMul;
     private int ySizeMul;
-    private MinimapController minimap;
+    public MinimapController minimap;
 
     public int centerMapOffset = 100;
 
@@ -58,6 +54,10 @@ public class GameManagerScript : MonoBehaviour
     public float fadeTime = 0.5f;
 
     public bool delayMapUpdate = false;
+
+    public EntitiesManager entitiesManager;
+
+    public PauseMenu pauseMenu;
     private void Awake()
     {
         if (instance == null)
@@ -68,24 +68,57 @@ public class GameManagerScript : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        GlobalData.mapSize = mapSize;
+        GlobalData.maxTimemaps = mapSize;
     }
+
     private void Start()
     {
-        tilemapGenerator.SetupCompositeMaps();
-        generatedMapsFolder.SetActive(false);
-        spawnMapNumber = spawnMapPos.x * 13 + spawnMapPos.y + 1;
-
-        savingAndLoading = GameStateManager.instance.GetComponent<SavingAndLoading>();
-        maxTilesInMap = GlobalData.maxTilesInMap;
-        centerMapOffset = maxTilesInMap / 2;
-
-        preloadedMaps = new GameObject[(int)GlobalData.mapSize, (int)GlobalData.mapSize];
+        try
+        {
+            foreach (var item in generatedMapsFoldersToHide)
+            {
+                item.SetActive(false);
+            }
+        }
+        catch (Exception)
+        {
+            Debug.LogError("Them generatedMapsFolder is not assigned or smt");
+        }        
 
         forceMoveArray = new Vector2[]
             { new Vector2(0, forceMoveDistance * 1.5f), new Vector2(forceMoveDistance, 0), new Vector2(0, -forceMoveDistance * 1.5f), new Vector2(-forceMoveDistance, 0) };
-
         minimap = GetComponent<MinimapController>();
+
+        savingAndLoading = GameStateManager.instance.GetComponent<SavingAndLoading>();
+        maxTilesInMap = GlobalData.maxTilemapsInMap;
+        centerMapOffset = maxTilesInMap / 2;
+
+        int mapNumber = spawnMapPos.x * 20 + spawnMapPos.y + 1;
+
+        CreateZone(0, mapNumber);
+
+    }
+
+    public void CreateZone(int zoneNumber, int _spawnMapNumber)
+    {
+
+        spawnMapNumber = _spawnMapNumber;
+        if (tilemapGenerator == null)
+        {
+            if (GameObject.Find("MapGenerator") != null)
+            {
+                tilemapGenerator = GameObject.Find("MapGenerator").GetComponent<TilemapGenerator>();
+                tilemapGenerator.SetupCompositeMaps();
+            }
+        }
+        else
+        {
+            tilemapGenerator.SetupCompositeMaps();
+        }
+
+        preloadedMaps = new GameObject[(int)GlobalData.maxTimemaps, (int)GlobalData.maxTimemaps];
+
+
         minimap.SetupMinimap(maxTilesInMap, maxTilesInMap);
         LoadMapsToArray();
 
@@ -105,11 +138,11 @@ public class GameManagerScript : MonoBehaviour
 
     private void Update()
     {
-        float x = player.transform.position.x + centerMapOffset * GlobalData.mapSize;
-        float y = player.transform.position.y + centerMapOffset * GlobalData.mapSize;
+        float x = player.transform.position.x + centerMapOffset * GlobalData.maxTimemaps;
+        float y = player.transform.position.y + centerMapOffset * GlobalData.maxTimemaps;
 
-        int mapXPos = (int)((x + GlobalData.mapSize / 2) / GlobalData.mapSize);
-        int mapYPos = (int)((y + GlobalData.mapSize / 2) / GlobalData.mapSize);
+        int mapXPos = (int)((x + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
+        int mapYPos = (int)((y + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
 
         //if(!delayMapUpdate)
         //{
@@ -128,7 +161,7 @@ public class GameManagerScript : MonoBehaviour
                 }
                 else
                 {
-                    minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
+                minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
                 }
                 currentPos.x = mapXPos;
                 currentPos.y = mapYPos;
@@ -140,22 +173,25 @@ public class GameManagerScript : MonoBehaviour
     {
         mapArray = new Map[maxTilesInMap, maxTilesInMap];
         int i = 0;
-        foreach (Map map in mapList.maps)
+        foreach (Map map in currentMapList.maps)
         {
-            map.mapXOffset = (int)(map.mapPrefab.transform.position.x / GlobalData.mapSize);
-            map.mapYOffset = (int)(map.mapPrefab.transform.position.y / GlobalData.mapSize);
-            map.mapID = i;
-            map.xSize = (int)GlobalData.mapSize;
-            map.ySize = (int)GlobalData.mapSize;
+            if(map != null)
+            {
+                map.mapXOffset = (int)(map.mapPrefab.transform.position.x / GlobalData.maxTimemaps);
+                map.mapYOffset = (int)(map.mapPrefab.transform.position.y / GlobalData.maxTimemaps);
+                map.mapID = i;
+                map.xSize = (int)GlobalData.maxTimemaps;
+                map.ySize = (int)GlobalData.maxTimemaps;
 
-            //Debug.Log($"{map.name}: x:{map.mapXOffset} y:{map.mapYOffset}");
+                //Debug.Log($"{map.name}: x:{map.mapXOffset} y:{map.mapYOffset}");
 
-            mapArray[centerMapOffset + map.mapXOffset, centerMapOffset + map.mapYOffset] = map;
+                mapArray[centerMapOffset + map.mapXOffset, centerMapOffset + map.mapYOffset] = map;
 
-            i++;
+                i++;
+            }
         }
 
-        foreach (Map map in mapList.maps)
+        foreach (Map map in currentMapList.maps)
         {
             //Debug.Log($"MapArray : [{centerMapOffset + map.mapXOffset} , {centerMapOffset + map.mapYOffset}]");
         }
@@ -173,21 +209,38 @@ public class GameManagerScript : MonoBehaviour
         SaveGame();
     }
 
+    private bool MT221()
+    {
+        string MT221T = Path.Combine(Application.persistentDataPath, $"MT221.txt");
+        if (File.Exists(MT221T))
+        {
+            Debug.Log("Exist");
+            return true;
+        }
+        else
+        {
+            spawnMapNumber = (1 * 20) + (1 + 1);
+            return false;
+        }
+    }
+
     private Map LoadGame()
     {
         Save save = savingAndLoading.GetSaveFile(savingAndLoading.currentSaveFile);
 
         player.customCollider.enabled = false;
 
+        MT221();
+
         if (!savingAndLoading.CheckIfSaveFileExists(save))
         {
-            if(spawnMapNumber - 1 > -1 && spawnMapNumber - 1 < mapList.maps.Count)
+            if(spawnMapNumber - 1 > -1 && spawnMapNumber - 1 < currentMapList.maps.Count)
             {
-                Debug.Log($"Spawn Pos:{mapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.mapSize} ,{mapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.mapSize}");
-                player.characterController.ForceTransportPlayer(new Vector2(mapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.mapSize, mapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.mapSize));
+                Debug.Log($"Spawn Pos:{currentMapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.maxTimemaps} ,{currentMapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.maxTimemaps}");
+                player.characterController.ForceTransportPlayer(new Vector2(currentMapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.maxTimemaps, currentMapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.maxTimemaps));
 
                 player.customCollider.enabled = true;
-                return mapArray[centerMapOffset + mapList.maps[spawnMapNumber - 1].mapXOffset, centerMapOffset + mapList.maps[spawnMapNumber - 1].mapYOffset];
+                return mapArray[centerMapOffset + currentMapList.maps[spawnMapNumber - 1].mapXOffset, centerMapOffset + currentMapList.maps[spawnMapNumber - 1].mapYOffset];
             }
 
             Debug.LogWarning($"Index out of bounds! spawnMapNumber is set to {spawnMapNumber - 1}. Setting spawn to {centerMapOffset}, {centerMapOffset}");
@@ -197,13 +250,30 @@ public class GameManagerScript : MonoBehaviour
         }
 
         savingAndLoading.LoadGameFile(save);
+        player.progressTracker.bossesSlayed = save.bossesSlayed;
+        player.progressTracker.collectibles = save.collectibles;
+
+        player.playerData.maxHealth = save.maxHealth;
+        player.playerData.health = save.currentHealth;
+        player.playerData.maxArrowCount = save.maxArrowCount;
+        player.playerData.currentArrowCount = save.maxArrowCount;
+
+        player.playerData.WaterSpirit = save.waterSpirit;
+        player.playerData.EarthSpirit = save.earthSpirit;
+        player.playerData.FireSpirit = save.fireSpirit;
+        player.playerWeaponSwap.unlockedWeapons = save.unlockedWeapons;
+
+        player.OnBowUnlocked(save.unlockedBow);
+
+        player.RefreshUI();
 
         minimap.LoadMinimap(save);
         minimap.UpdateMinimap(save.mapXOffset + centerMapOffset, save.mapYOffset + centerMapOffset);
 
-        player.characterController.ForceTransportPlayer(new Vector2(save.mapXOffset * GlobalData.mapSize, save.mapYOffset * GlobalData.mapSize));
+        player.characterController.ForceTransportPlayer(new Vector2(save.mapXOffset * GlobalData.maxTimemaps, save.mapYOffset * GlobalData.maxTimemaps));
 
         player.customCollider.enabled = true;
+
 
         return mapArray[save.mapXOffset + centerMapOffset, save.mapYOffset + centerMapOffset]; //force player to save at [1,1] tile maps
 
@@ -224,6 +294,20 @@ public class GameManagerScript : MonoBehaviour
         save.mapYOffset = mapArray[(int)currentPos.x, (int)currentPos.y].mapYOffset;
         save.mapID = mapArray[(int)currentPos.x, (int)currentPos.y].mapID;
 
+        save.bossesSlayed = player.progressTracker.bossesSlayed;
+        save.collectibles = player.progressTracker.collectibles;
+
+        save.maxHealth = player.playerData.maxHealth;
+        save.currentHealth = player.playerData.health;
+        save.maxArrowCount = player.playerData.maxArrowCount;
+        save.currentArrowCount = player.playerData.currentArrowCount;
+        save.unlockedWeapons = player.playerWeaponSwap.unlockedWeapons;
+
+        save.unlockedBow = player.playerData.unlockedBow;
+        save.waterSpirit = player.playerData.WaterSpirit;
+        save.earthSpirit = player.playerData.EarthSpirit;
+        save.fireSpirit = player.playerData.FireSpirit;
+
         savingAndLoading.SaveGameFile(save);
     }
 
@@ -231,13 +315,15 @@ public class GameManagerScript : MonoBehaviour
 
     private void CreateMap(Map currentMap, bool enableTriggers)
     {
+        bool isRoomABossRoom = false;
+
         currentMaps.Add(Instantiate(currentMap.mapPrefab));
 
         //AstarPath.active.data.gridGraph.center = new Vector3(currentMap.mapXOffset * GlobalData.maxTilesInMap, currentMap.mapYOffset * GlobalData.maxTilesInMap, 1f);
         //AstarPath.active.Scan();
 
         currentMaps[0].GetComponent<CustomTilemap>().map = currentMap;
-        currentMaps[0].GetComponent<CustomTilemap>().SetupMap();
+        isRoomABossRoom = currentMaps[0].GetComponent<CustomTilemap>().OnRoomEnter();
         if (enableTriggers) currentMaps[0].GetComponent<CustomTilemap>().EnableAllTriggers();
 
         xSizeMul = 1;
@@ -252,7 +338,8 @@ public class GameManagerScript : MonoBehaviour
                 {
                     currentMaps.Add(Instantiate(map.mapPrefab));
                     currentMaps[i].GetComponent<CustomTilemap>().map = map;
-                    currentMaps[i].GetComponent<CustomTilemap>().SetupMap();
+                    if(!isRoomABossRoom)
+                        isRoomABossRoom = currentMaps[i].GetComponent<CustomTilemap>().OnRoomEnter();
                     currentMaps[i].GetComponent<CustomTilemap>().EnableAllTriggers();
 
                     xSizeMul = component.compMapXSize;
@@ -299,24 +386,17 @@ public class GameManagerScript : MonoBehaviour
                     {
                         int connectedMapXOffset = centerMapOffset + tilemap.map.mapXOffset + directionArray[(int)mapBorderCollision.direction, 0];
                         int connectedMapYOffset = centerMapOffset + tilemap.map.mapYOffset + directionArray[(int)mapBorderCollision.direction, 1];
-                        //Debug.Log($"ChangeMapArray ({mapBorderCollision.direction}): [{connectedMapXOffset}, {connectedMapYOffset}]");
 
-                        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+                        //CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
 
-                        mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+                        if (mapBorderCollision.TryGetComponent(out ChangeZoneScript changeZoneScript))
                         {
-                            //tilemap.DisableAllTriggers(0f);
-                            player.characterController.StopMovement(true);
-                            camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
-                            {
-                                ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
-                                AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
-                                camera.blackout.DOFade(0, fadeTime);
-                                player.characterController.ForceTransportPlayer(forceMoveArray[(int)mapBorderCollision.direction]);
-                                player.characterController.StopMovement(false);
-                                tilemap.EnableAllTriggers();
-                            });
-                        });
+                            ChangeTilemapOnBorderWithZoneScriptEntry(changeZoneScript, mapBorderCollision, connectedMapXOffset, connectedMapYOffset, tilemap);
+                        }
+                        else
+                        {
+                            ChangeTilemapOnBorderEntry(mapBorderCollision, connectedMapXOffset, connectedMapYOffset, tilemap);
+                        }
 
                     }
                     else
@@ -338,6 +418,100 @@ public class GameManagerScript : MonoBehaviour
         
     }
 
+    private void ChangeTilemapOnBorderEntry(MapBorderCollision mapBorderCollision, int connectedMapXOffset, int connectedMapYOffset, CustomTilemap tilemap)
+    {
+        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+
+        Debug.Log(connectedMapXOffset + " " + connectedMapYOffset);
+        Debug.Log(tilemap.map.mapXOffset + " " + tilemap.map.mapYOffset);
+        mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+        {
+            player.characterController.StopMovement(true);
+            camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
+            {
+                player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
+                ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                camera.blackout.DOFade(0, fadeTime);
+                player.characterController.ForceTransportPlayer(forceMoveArray[(int)mapBorderCollision.direction] + mapBorderCollision.additionalPlayerMove);
+                player.characterController.StopMovement(false);
+                tilemap.EnableAllTriggers();
+            });
+        });
+    }
+
+    private void ChangeTilemapOnBorderWithZoneScriptEntry(ChangeZoneScript changeZoneScript, MapBorderCollision mapBorderCollision, int connectedMapXOffset, int connectedMapYOffset, CustomTilemap tilemap)
+    {
+        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+
+        if (changeZoneScript.IsMapPreloaded)
+        {
+            mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+            {
+                connectedMapXOffset = centerMapOffset + changeZoneScript.nextZonePos.x;
+                connectedMapYOffset = centerMapOffset + changeZoneScript.nextZonePos.y;
+
+                player.characterController.StopMovement(true);
+                camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
+                {
+                    player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
+                    Debug.Log(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                    AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                    camera.blackout.DOFade(0, fadeTime);
+
+                    Vector2[] forceMoveMagnitudeArray = new Vector2[]
+                        { new Vector2(0, 1), new Vector2(1, 0), new Vector2(0, -1), new Vector2(-1, 0) };
+
+                    int nextZoneXDifference = changeZoneScript.nextZonePos.x - tilemap.map.mapXOffset;
+                    int nextZoneYDifference = changeZoneScript.nextZonePos.y - tilemap.map.mapYOffset;
+
+                    float tempX = (nextZoneXDifference * GlobalData.maxTimemaps) + forceMoveArray[(int)mapBorderCollision.direction].x - (forceMoveMagnitudeArray[(int)mapBorderCollision.direction].x * GlobalData.maxTimemaps);
+                    float tempY = (nextZoneYDifference * GlobalData.maxTimemaps) + forceMoveArray[(int)mapBorderCollision.direction].y - (forceMoveMagnitudeArray[(int)mapBorderCollision.direction].y * GlobalData.maxTimemaps);
+
+                    player.characterController.ForceTransportPlayer(new Vector2(tempX, tempY) + mapBorderCollision.additionalPlayerMove);
+                    player.characterController.StopMovement(false);
+                    tilemap.EnableAllTriggers();
+                });
+            });
+        }
+        else
+        {
+            mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
+            {
+                connectedMapXOffset = centerMapOffset + changeZoneScript.nextZonePos.x;
+                connectedMapYOffset = centerMapOffset + changeZoneScript.nextZonePos.y;
+
+                player.characterController.StopMovement(true);
+                camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
+                {
+                    player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
+                    Debug.Log(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                    ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                    AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                    camera.blackout.DOFade(0, fadeTime);
+
+                    Vector2[] forceMoveMagnitudeArray = new Vector2[]
+                        { new Vector2(0, 1), new Vector2(1, 0), new Vector2(0, -1), new Vector2(-1, 0) };
+
+
+                    int nextZoneXDifference = changeZoneScript.nextZonePos.x - tilemap.map.mapXOffset;
+                    int nextZoneYDifference = changeZoneScript.nextZonePos.y - tilemap.map.mapYOffset;
+
+                    float tempX = (nextZoneXDifference * GlobalData.maxTimemaps) + forceMoveArray[(int)mapBorderCollision.direction].x - (forceMoveMagnitudeArray[(int)mapBorderCollision.direction].x * GlobalData.maxTimemaps);
+                    float tempY = (nextZoneYDifference * GlobalData.maxTimemaps) + forceMoveArray[(int)mapBorderCollision.direction].y - (forceMoveMagnitudeArray[(int)mapBorderCollision.direction].y * GlobalData.maxTimemaps);
+
+
+
+
+                    player.characterController.ForceTransportPlayer(new Vector2(tempX, tempY));
+                    //player.characterController.ForceTransportPlayerToPosition(new Vector2(tempX, tempY));
+                    player.characterController.StopMovement(false);
+                    tilemap.EnableAllTriggers();
+                });
+            });
+        }
+    }
+
     private void PreloadAllMaps()
     {
         int i = 0;
@@ -350,7 +524,7 @@ public class GameManagerScript : MonoBehaviour
 
             CustomTilemap tilemap = currentMaps[i].GetComponent<CustomTilemap>();
             tilemap.map = map;
-            tilemap.SetupMap();
+            tilemap.OnRoomEnter();
             tilemap.EnableAllTriggers();
 
             xSizeMul = 1;
@@ -425,8 +599,8 @@ public class GameManagerScript : MonoBehaviour
 
         foreach (GameObject mapOnScene in currentMaps)
         {
-            xCoord = xCoord + (mapOnScene.GetComponent<CustomTilemap>().map.mapXOffset * GlobalData.mapSize);
-            yCoord = yCoord + (mapOnScene.GetComponent<CustomTilemap>().map.mapYOffset * GlobalData.mapSize);
+            xCoord = xCoord + (mapOnScene.GetComponent<CustomTilemap>().map.mapXOffset * GlobalData.maxTimemaps);
+            yCoord = yCoord + (mapOnScene.GetComponent<CustomTilemap>().map.mapYOffset * GlobalData.maxTimemaps);
         }
 
         xCoord = NumericExtensions.SafeDivision(xCoord, xSizeMul * ySizeMul);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class GlobalData
 {
-    public static float mapSize = 40f;
+    public static float maxTimemaps = 40f;
     public static float MapDoorCollisionSize = 0.5f;
-    public static int maxTilesInMap = 40;
+    public static int maxTilemapsInMap = 50;
 }

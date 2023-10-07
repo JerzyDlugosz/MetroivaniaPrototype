@@ -39,15 +39,22 @@ public class PlayerData : MonoBehaviour
         }
     }
     #region Stats
-    public int health = 0;
+    public float health = 0;
     public int maxHealth = 0;
 
     public byte currentArrowCount = 0;
     public byte maxArrowCount = 0;
+
+    public byte currentArrowtipsCount = 0;
+    public byte maxArrowtipsCount = 0;
     #endregion
 
     #region Collectibles
     public bool WaterSpirit = false;
     public bool EarthSpirit = false;
+    public bool FireSpirit = false;
     #endregion
+
+    public Vector2 playerGlobalPosition;
+    public Vector2 playerMapPosition;
 }

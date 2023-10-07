@@ -6,7 +6,7 @@ public class CMaxHealth : CollectibleGameObject
 {
     void Start()
     {
-        foreach (var item in GameManagerScript.instance.player.collectedItems.collectibles)
+        foreach (var item in GameManagerScript.instance.player.progressTracker.collectibles)
         {
             if (item.collectibleId == collectibleId)
             {
@@ -21,7 +21,7 @@ public class CMaxHealth : CollectibleGameObject
     {
         GameManagerScript.instance.player.maxHealthUpdateEvent.Invoke();
 
-        GameManagerScript.instance.player.collectedItems.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY);
+        GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleSprite, collectibleType);
 
         Destroy(gameObject);
     }

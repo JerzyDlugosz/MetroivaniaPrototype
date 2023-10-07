@@ -9,8 +9,16 @@ public class SelectedTilemap
 {
     static SelectedTilemap()
     {
+
         Tilemap.tilemapTileChanged += delegate (Tilemap tilemap, Tilemap.SyncTile[] tiles) {
-            tilemap.GetComponentInParent<CustomTilemapData>().wasEdited = true;
+            if(tilemap.transform.parent != null)
+            {
+                if (tilemap.transform.parent.TryGetComponent(out CustomTilemapData customTilemapData))
+                {
+                    customTilemapData.wasEdited = true;
+                    customTilemapData.isPlayable = true;
+                }
+            }
         };
         Debug.Log("Up and running");
     }

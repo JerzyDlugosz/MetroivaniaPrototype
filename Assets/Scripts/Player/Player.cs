@@ -14,7 +14,16 @@ public class OnArrowTypeCollectedEvent : UnityEvent { }
 [Serializable]
 public class OnArrowUsedEvent : UnityEvent { }
 [Serializable]
+public class OnArrowtipUsedEvent : UnityEvent { }
+/// <summary>
+/// Old event, may still be usable
+/// </summary>
+[Serializable]
 public class OnArrowRenewEvent : UnityEvent { }
+[Serializable]
+public class OnArrowsRenewEvent : UnityEvent { }
+[Serializable]
+public class OnArrowtipPickupEvent : UnityEvent { }
 [Serializable]
 public class OnArrowChangeLeftEvent : UnityEvent { }
 [Serializable]
@@ -24,7 +33,7 @@ public class OnDamageTakenEvent : UnityEvent<float> { }
 [Serializable]
 public class OnMaxHealthUpdateEvent : UnityEvent { }
 [Serializable]
-public class OnHealthPickupEvent : UnityEvent { }
+public class OnHealthPickupEvent : UnityEvent<float> { }
 public class Player : BaseEntity
 {
     public PlayerData playerData;
@@ -32,7 +41,6 @@ public class Player : BaseEntity
     public Custom2DCharacterController characterController;
     public PlayerAim playerAim;
     public PlayerShooting playerShooting;
-    public CollectedItems collectedItems;
     public PlayerWeaponSwap playerWeaponSwap;
     public ProgressTracker progressTracker;
 
@@ -41,6 +49,7 @@ public class Player : BaseEntity
     public GameObject cameraHolder;
     public GameObject mainCamera;
     public PlayerInputActions playerInputActions;
+    public PlayerInput playerInput;  
 
 
     public Vector2 rotationInput;
@@ -60,6 +69,7 @@ public class Player : BaseEntity
     private GameObject bow;
 
     private bool damageable = true;
+    public float additionalDamageTakenDelay;
 
     [HideInInspector]
     public OnArrowCapacityIncreaseEvent arrowCapacityIncreaseEvent;
@@ -68,7 +78,11 @@ public class Player : BaseEntity
     [HideInInspector]
     public OnArrowUsedEvent arrowUsedEvent;
     [HideInInspector]
+    public OnArrowtipUsedEvent arrowtipUsedEvent;
+    [HideInInspector]
     public OnArrowRenewEvent arrowRenewEvent;
+    [HideInInspector]
+    public OnArrowRenewEvent arrowsRenewEvent;
     [HideInInspector]
     public OnArrowChangeLeftEvent arrowChangeLeftEvent;
     [HideInInspector]
@@ -79,16 +93,24 @@ public class Player : BaseEntity
     public OnMaxHealthUpdateEvent maxHealthUpdateEvent;
     [HideInInspector]
     public OnHealthPickupEvent healthPickupEvent;
-
+    [HideInInspector]
+    public OnArrowtipPickupEvent arrowtipPickupEvent;
 
     /// <summary>
     /// TemporaryFix, events dont work cause its not in order
     /// </summary>
     public RemainingHearthsScript remainingHearthsScript;
-    void Start()
+
+    /// <summary>
+    /// TemporaryFix, events dont work cause its not in order
+    /// </summary>
+    public RemainingArrowScript remainingArrowScript;
+    public override void Start()
     {
+        base.Start();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
+        playerInputActions.PauseMenu.Disable();
         playerInputActions.Player.Sprint.performed += Sprint_performed;
         playerInputActions.Player.Sprint.canceled += Sprint_canceled;
 
@@ -110,25 +132,54 @@ public class Player : BaseEntity
         playerInputActions.Player.Recall.performed += Recall_performed;
         playerInputActions.Player.Recall.canceled += Recall_canceled;
 
+        playerInputActions.Player.Pause.canceled += Pause_canceled;
+        playerInputActions.PauseMenu.UnPause.canceled += UnPause_canceled;
+
+        playerInputActions.PauseMenu.ChangeMenuLeft.performed += ChangeMenuLeft_performed;
+        playerInputActions.PauseMenu.ChangeMenuRight.performed += ChangeMenuRight_performed;
+
+
         arrowCapacityIncreaseEvent.AddListener(OnArrowCapacityIncrease);
         arrowTypeCollectedEvent.AddListener(OnArrowTypeCollected);
         arrowUsedEvent.AddListener(OnArrowUsed);
+        arrowtipUsedEvent.AddListener(OnArrowtipUsed);
         arrowRenewEvent.AddListener(OnArrowRenew);
-        arrowChangeLeftEvent.AddListener(() => playerWeaponSwap.OnWeaponSwitch(-1));
-        arrowChangeRightEvent.AddListener(() => playerWeaponSwap.OnWeaponSwitch(1));
+        arrowsRenewEvent.AddListener(OnArrowsRenew);
+        arrowChangeLeftEvent.AddListener(() => OnArrowChange(-1));
+        arrowChangeRightEvent.AddListener(() => OnArrowChange(1));
         damageTakenEvent.AddListener(TakeDamage);
         maxHealthUpdateEvent.AddListener(MaxHealthPickup);
         healthPickupEvent.AddListener(HealthPickup);
+        arrowtipPickupEvent.AddListener(OnArrowtipPickup);
+
+        stoppedEvent.AddListener(OnStop);
     }
 
     private void Update()
     {
+        if (isStopped)
+        {
+            return;
+        }
         ReadInput();
+    }
+
+    private void OnStop(bool state)
+    {
+        if (state)
+        {
+            customRigidbody.bodyType = RigidbodyType2D.Static;
+        }
+        else
+        {
+            customRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
 
     public void OnBowUnlocked(bool value)
     {
         bow.SetActive(value);
+        playerData.unlockedBow = value;
     }
 
     private void Sprint_canceled(InputAction.CallbackContext obj)
@@ -201,6 +252,47 @@ public class Player : BaseEntity
         playerData.isRecallButtonHeld = false;
     }
 
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void Pause_canceled(InputAction.CallbackContext obj)
+    {
+        Debug.Log(playerInput.currentActionMap.name);
+        playerInput.SwitchCurrentActionMap("PauseMenu");
+        GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
+        playerInputActions.Player.Disable();
+        playerInputActions.PauseMenu.Enable();
+        GameManagerScript.instance.pauseMenu.gameObject.SetActive(true);
+        GameManagerScript.instance.pauseMenu.OnPauseScreenEnable();
+    }
+
+    private void UnPause_performed(InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void UnPause_canceled(InputAction.CallbackContext obj)
+    {
+        GameManagerScript.instance.pauseMenu.gameObject.SetActive(false);
+        Debug.Log(playerInput.currentActionMap.name);
+        playerInput.SwitchCurrentActionMap("Player");
+        GameManagerScript.instance.entitiesManager.EntitiesPauseState(false);
+        playerInputActions.Player.Enable();
+        playerInputActions.PauseMenu.Disable();
+    }
+
+    private void ChangeMenuLeft_performed(InputAction.CallbackContext obj)
+    {
+        GameManagerScript.instance.pauseMenu.SwitchMenu(-1);
+    }
+
+    private void ChangeMenuRight_performed(InputAction.CallbackContext obj)
+    {
+        GameManagerScript.instance.pauseMenu.SwitchMenu(1);
+    }
+
     void ReadInput()
     {
         rotationInput = playerInputActions.Player.Rotation.ReadValue<Vector2>();
@@ -219,20 +311,54 @@ public class Player : BaseEntity
     {
         playerData.currentArrowCount--;
     }
+
+    void OnArrowtipUsed()
+    {
+        playerData.currentArrowtipsCount--;
+    }
+
     void OnArrowRenew()
     {
         playerData.currentArrowCount++;
+        if (playerData.currentArrowCount > playerData.maxArrowCount)
+        {
+            playerData.currentArrowCount = playerData.maxArrowCount;
+        }
     }
+    public void OnArrowsRenew()
+    {
+        playerData.currentArrowCount = playerData.maxArrowCount;
+    }
+
+    public void OnArrowtipPickup()
+    {
+        playerData.currentArrowtipsCount += 2;
+        if (playerData.currentArrowtipsCount > playerData.maxArrowtipsCount)
+        {
+            playerData.currentArrowtipsCount = playerData.maxArrowtipsCount;
+        }
+    }
+
+    public void OnArrowtipsRenew()
+    {
+        playerData.currentArrowtipsCount = playerData.maxArrowtipsCount;
+    }
+
     void OnArrowCapacityIncrease()
     {
         playerData.currentArrowCount++;
         playerData.maxArrowCount++;
+
+        playerData.currentArrowtipsCount += 2;
+        playerData.maxArrowtipsCount += 2;
     }
     void OnArrowTypeCollected()
     {
         if(playerWeaponSwap.unlockedWeapons < playerWeaponSwap.availableWeapons.Length)
         {
             playerWeaponSwap.unlockedWeapons++;
+            remainingArrowScript.EnableArrowTypesUI(playerWeaponSwap.unlockedWeapons);
+
         }
         else
         {
@@ -240,30 +366,45 @@ public class Player : BaseEntity
         }
     }
 
-    public void TakeDamage(float damage)
+    public void RefreshUI()
+    {
+        remainingArrowScript.OnGameLoad(playerData.maxArrowCount, playerWeaponSwap.unlockedWeapons);
+        remainingHearthsScript.UpdateCurrentHealthOnImages((int)playerData.health);
+    }
+
+    void OnArrowChange(int changeDirection)
+    {
+        playerWeaponSwap.OnWeaponSwitch(changeDirection);
+        remainingArrowScript.ChangeImagePrefab();
+    }
+
+    public override void TakeDamage(float damage)
     {
         if (damageable)
         {
-            playerData.health -= (int)damage;
+            playerData.health -= damage;
 
             if(playerData.health <= 0)
             {
+                GameStateManager.instance.audioManager.PlaySoundEffect(onDeathAudioClip);
                 Debug.Log("You are dead!");
             }
 
-            remainingHearthsScript.UpdateCurrentHealthOnImages(playerData.health);
+            remainingHearthsScript.UpdateCurrentHealthOnImages((int)playerData.health);
             StartCoroutine(DamageTimer());
+            GameStateManager.instance.audioManager.PlaySoundEffect(onHitAudioClip);
         }
     }
 
     public void MaxHealthPickup()
     {
         playerData.maxHealth += 4;
+        HealthPickup(4);
     }
 
-    public void HealthPickup()
+    public void HealthPickup(float healthAmmount)
     {
-        int tempHealth = playerData.health += 4;
+        float tempHealth = playerData.health += healthAmmount;
         if(tempHealth > playerData.maxHealth)
         {
             playerData.health = playerData.maxHealth;
@@ -272,7 +413,7 @@ public class Player : BaseEntity
         {
             playerData.health = tempHealth;
         }
-        remainingHearthsScript.UpdateCurrentHealthOnImages(playerData.health);
+        remainingHearthsScript.UpdateCurrentHealthOnImages((int)playerData.health);
     }
 
     IEnumerator DamageTimer()
@@ -283,6 +424,12 @@ public class Player : BaseEntity
         yield return new WaitForSeconds(0.1f);
         playerAnimation.playerSpriteRenderer.material.SetFloat(flashID, 0);
         remainingHearthsScript.FlashHearths(flashID, false);
+        yield return new WaitForSeconds(additionalDamageTakenDelay);
         damageable = true;
+    }
+
+    public void PlayAttackSoundEffect()
+    {
+        GameStateManager.instance.audioManager.PlaySoundEffect(onAttackAudioClip);
     }
 }

@@ -131,3 +131,4 @@ MonoBehaviour:
   collectibleId: 0
   collectiblePositionX: 0
   collectiblePositionY: 0
+  collectibleSprite: {fileID: -1228972577, guid: aba6f58eb916b0f4597094b127260824, type: 3}

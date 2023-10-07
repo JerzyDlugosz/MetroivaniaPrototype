@@ -16,6 +16,12 @@ public class MinimapAnimation : MonoBehaviour
         StartCoroutine(TileAnimation());
     }
 
+    public void RestartCoroutine()
+    {
+        StopCoroutine(TileAnimation());
+        StartCoroutine(TileAnimation());
+    }
+
     IEnumerator TileAnimation()
     {
         int i = 0;

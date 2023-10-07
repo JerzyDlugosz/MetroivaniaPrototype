@@ -12,9 +12,9 @@ public class PlayerWeaponSwap : MonoBehaviour
     public GameObject currentWeapon;
     public Sprite currentWeaponImageSprite;
 
-    private int weaponIndex = 0;
+    public int weaponIndex = 0;
 
-    public byte unlockedWeapons = 1;
+    public byte unlockedWeapons;
 
     public void OnWeaponSwitch(int increment)
     {
@@ -36,8 +36,5 @@ public class PlayerWeaponSwap : MonoBehaviour
 public enum WeaponType
 {
     Basic,
-    Heavy,
-    Fire,
-    Glue,
-    Bomb
+    Arrowtip
 }

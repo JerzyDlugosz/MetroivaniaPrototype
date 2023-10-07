@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -205585616, guid: 006fa69807c1446449b53c3d3ed4e717, type: 3}
+  m_Sprite: {fileID: -200646360, guid: 006fa69807c1446449b53c3d3ed4e717, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,3 +131,6 @@ MonoBehaviour:
   collectibleId: 0
   collectiblePositionX: 0
   collectiblePositionY: 0
+  collectibleSprite: {fileID: 1571591805, guid: 006fa69807c1446449b53c3d3ed4e717, type: 3}
+  collectibleType: 0
+  healthAdded: 1

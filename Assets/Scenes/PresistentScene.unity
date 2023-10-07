@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 605408716}
   - component: {fileID: 605408715}
   m_Layer: 0
-  m_Name: Etc
+  m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,7 +484,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicAudioSource: {fileID: 1086356103}
   effectsAudioSoruce: {fileID: 605408715}
-  volume: 0.139
+  musicVolume: 0.488
+  effectsVolume: 0.56
 --- !u!4 &1408855549
 Transform:
   m_ObjectHideFlags: 0

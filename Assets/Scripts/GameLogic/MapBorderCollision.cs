@@ -18,6 +18,8 @@ public class MapBorderCollision : MonoBehaviour
 
     public bool isADoor;
 
+    public Vector2 additionalPlayerMove = Vector2.zero;
+
     public void disableTriggerEnter()
     {
         isDisabled = true;

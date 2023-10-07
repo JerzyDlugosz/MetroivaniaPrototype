@@ -170,6 +170,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: PermanentUpgrades_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 88
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68a2207e78303f94d999a5caf7d89d59
+      internalID: -1714473993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -183,6 +204,7 @@ TextureImporter:
     nameFileIdTable:
       PermanentUpgrades_0: 90614532
       PermanentUpgrades_1: 828284133
+      PermanentUpgrades_2: -1714473993
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

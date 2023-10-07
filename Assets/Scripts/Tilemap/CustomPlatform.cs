@@ -26,8 +26,11 @@ public class CustomPlatform : MonoBehaviour
             platformEffectors.Add(child.GetComponent<PlatformEffector2D>());
         }
 
-        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.performed += DisablePlatformEffector;
-        GameManagerScript.instance.player.playerInputActions.Player.DownMotion.canceled += EnablePlatformEffector;
+        if(GameManagerScript.instance.player.playerInputActions != null)
+        {
+            GameManagerScript.instance.player.playerInputActions.Player.DownMotion.performed += DisablePlatformEffector;
+            GameManagerScript.instance.player.playerInputActions.Player.DownMotion.canceled += EnablePlatformEffector;
+        }
     }
 
     public void DisablePlatformEffector(InputAction.CallbackContext obj)

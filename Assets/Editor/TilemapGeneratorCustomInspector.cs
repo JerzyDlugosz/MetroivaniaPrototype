@@ -67,6 +67,12 @@ public class TilemapGeneratorCustomInspector : Editor
         }
 
         EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Temp button for values"))
+        {
+            tilemapGeneratorScript.UpdateXandYPosValues();
+        }
 
         if (GUILayout.Button("Update Map (Tile Changes)"))
         {
@@ -83,10 +89,16 @@ public class TilemapGeneratorCustomInspector : Editor
             tilemapGeneratorScript.SetupCompositeMaps();
         }
 
-        //if (GUILayout.Button("Update Background"))
-        //{
-        //    tilemapGeneratorScript.RegenerateBackgroundMap();
-        //}
+        if (GUILayout.Button("Setup Outside Colliders"))
+        {
+            tilemapGeneratorScript.SetupAllOutsideColliders();
+        }
+
+        if (GUILayout.Button("Reset Tilemap Data (to base size and origin)"))
+        {
+            tilemapGeneratorScript.ResetTilemapData();
+        }
+
 
         EditorGUILayout.LabelField("Dont use is right now, go and see the code");
         if (GUILayout.Button("Update Group Animation Map"))
@@ -121,6 +133,12 @@ public class TilemapGeneratorCustomInspector : Editor
                 {
                     Debug.Log("No Map");
                 }
+            }
+
+            EditorGUILayout.LabelField("This will affect all background tilemaps");
+            if (GUILayout.Button("Update Background"))
+            {
+                tilemapGeneratorScript.RegenerateBackgroundMap();
             }
         }
 

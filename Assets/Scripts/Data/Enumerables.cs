@@ -14,5 +14,13 @@ public enum PlayerStates
     Running,
     InAir,
     Jumping,
-    InWater
+    InWater,
+    InLava
+}
+
+public enum Zone
+{
+    Zone1,
+    Zone2,
+    Zone3
 }

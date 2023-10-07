@@ -77,6 +77,9 @@ public class Custom2DCharacterController : MonoBehaviour
         {
             jumpTimer -= Time.deltaTime;
         }
+
+        playerData.playerGlobalPosition = new Vector2(transform.position.x, transform.position.y);
+        playerData.playerMapPosition = new Vector2(((transform.position.x + 12) % 24) - 12, ((transform.position.y + 12) % 24) - 12);
     }
 
     void CheckPosition()
@@ -118,11 +121,25 @@ public class Custom2DCharacterController : MonoBehaviour
                 player.customRigidbody.gravityScale = playerData.baseGravityScale;
             }
         }
+
+        if(player.inLava)
+        {
+            Debug.Log("In Lava");
+            playerData.playerState = PlayerStates.InLava;
+            player.customRigidbody.gravityScale = playerData.baseGravityScale / 20f;
+            jumpSpeed = playerData.baseJumpSpeed / 3;
+            movementSpeed = playerData.baseMovementSpeed / 3;
+
+            if (playerData.isDownButtonHeld)
+            {
+                player.customRigidbody.gravityScale = playerData.baseGravityScale;
+            }
+        }
     }
 
     void ResetGravity()
     {
-        if (!player.onLadder && !player.inWater)
+        if (!player.onLadder && !player.inWater && !player.inLava && !player.onJumpPad)
         {
             player.customRigidbody.gravityScale = player.playerData.baseGravityScale;
             jumpSpeed = playerData.baseJumpSpeed;
@@ -164,6 +181,16 @@ public class Custom2DCharacterController : MonoBehaviour
         {
             player.isGrounded = true;
         }
+
+        if (player.inLava && playerData.FireSpirit)
+        {
+            player.isGrounded = true;
+        }
+
+        if(player.onJumpPad)
+        {
+            player.characterController.jumpSpeed = playerData.baseJumpSpeed * 2;
+        }
     }
 
     void ApplyForce()
@@ -196,6 +223,18 @@ public class Custom2DCharacterController : MonoBehaviour
         //player.customRigidbody.bodyType = RigidbodyType2D.Static;
         transform.position = player.customRigidbody.position + position;
         //player.customRigidbody.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    public void ForceTransportPlayerToPosition(Vector2 position)
+    {
+        //player.customRigidbody.bodyType = RigidbodyType2D.Static;
+        transform.position = position;
+        //player.customRigidbody.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    public void ForceApplyForce(Vector2 motion)
+    {
+        player.customRigidbody.AddForce(Time.deltaTime * motion);
     }
 }
 

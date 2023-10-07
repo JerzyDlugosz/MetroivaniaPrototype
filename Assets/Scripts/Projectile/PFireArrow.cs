@@ -6,8 +6,9 @@ public class PFireArrow : PlayerProjectile
 {
     [SerializeField]
     private float burningDamage = 1f;
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         wallCollisionEvent.AddListener(() => projectileParticleController.OnCollision());
         recallEvent.AddListener(() => projectileParticleController.OnRecall());
 
@@ -19,7 +20,10 @@ public class PFireArrow : PlayerProjectile
     }
     private void Update()
     {
-        MainUpdate();
+        if (MainUpdate())
+        {
+
+        }
     }
 
     public void OnWallCollision()
@@ -32,6 +36,6 @@ public class PFireArrow : PlayerProjectile
     {
         Debug.Log("HitEnemy");
         //apply burn debuff
-        baseNPC.Burning(burningDamage);
+        baseNPC.Burning(burningDamage, 5);
     }
 }

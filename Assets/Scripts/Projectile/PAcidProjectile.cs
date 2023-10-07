@@ -7,8 +7,9 @@ public class PAcidProjectile : HostileProjectile
     [SerializeField]
     private float bounceForceModifier;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
 
         wallCollisionEvent.AddListener(() => Destroy(gameObject));
         wallBounceEvent.AddListener(() => OnWallBounce());

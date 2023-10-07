@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PWave : HostileProjectile
 {
-    private void Start()
+    public override void Start()
     {
+        base.Start();
 
         wallCollisionEvent.AddListener(() => OnPlayerCollision());
         wallBounceEvent.AddListener(() => OnPlayerCollision());

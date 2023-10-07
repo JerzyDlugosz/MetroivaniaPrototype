@@ -14,15 +14,27 @@ public class ParallaxEffect : MonoBehaviour
 
     float startZ;
 
+    [SerializeField]
+    private float paralaxMulti = 1;
+
 
     Vector2 travel => (Vector2)cam.transform.position - startPosition;
-    float distanceFromPlayer => transform.position.z - Player.position.z;
+    float distanceFromPlayer => (transform.position.z - Player.position.z) * paralaxMulti;
     float clippingPlane => cam.transform.position.z + (distanceFromPlayer > 0 ? cam.farClipPlane : cam.nearClipPlane);
     float parallaxFactor => Mathf.Abs(distanceFromPlayer) / clippingPlane;
 
 
     private void Start()
     {
+        if(Player == null)
+        {
+            Player = GameObject.Find("Player").transform;
+        }
+        if(cam == null)
+        {
+            cam = Camera.main;
+        }
+
         cam = Camera.main;
         Player = GameManagerScript.instance.player.transform;
         startPosition = transform.position;

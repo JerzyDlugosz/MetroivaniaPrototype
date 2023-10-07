@@ -19,6 +19,10 @@ public class CollectibleGameObject : MonoBehaviour
     protected int collectiblePositionX;
     [SerializeField]
     protected int collectiblePositionY;
+    [SerializeField]
+    protected Sprite collectibleSprite;
+    [SerializeField]
+    protected CollectibleType collectibleType;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -27,4 +31,11 @@ public class CollectibleGameObject : MonoBehaviour
             collectEvent.Invoke();
         }
     }
+}
+
+public enum CollectibleType
+{
+    StatUpgrade,
+    ArrowType,
+    PermanentUpgrade,
 }

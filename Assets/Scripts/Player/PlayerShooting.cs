@@ -10,9 +10,22 @@ public class PlayerShooting : MonoBehaviour
     private Player player;
     private float cooldown = 0f;
     private float recallCooldown = 0.1f;
+    [SerializeField]
+    private float recallTime = 2f;
+    [SerializeField]
+    private bool isRecallHoldable = false;
+    private float recallTimer;
+    private bool alreadyRecalled = false;
+    private bool SpawnedParticle = false;
 
     [SerializeField]
     private List<GameObject> ProjectileList = new List<GameObject>();
+
+    public float forceMultiplier = 1f;
+
+    [SerializeField]
+    private GameObject recallParticle;
+    private ParticleSystem particle;
 
     private void Update()
     {
@@ -26,11 +39,62 @@ public class PlayerShooting : MonoBehaviour
             recallCooldown -= Time.deltaTime;
         }
 
+        if (!player.playerData.isRecallButtonHeld)
+        {
+            if(particle != null) 
+            {
+                player.remainingArrowScript.OnArrowStoppedRefreshing();
+                particle.Stop();
+                particle = null;
+            }
+            recallTimer = recallTime;
+            alreadyRecalled = false;
+            SpawnedParticle = false;
+        }
+
+
         if (player.playerData.isRecallButtonHeld && recallCooldown <= 0)
         {
-            OnRecall();
-            recallCooldown += 0.1f;
-            return;
+            if(player.playerData.currentArrowCount >= player.playerData.maxArrowCount)
+            {
+                return;
+            }
+
+            if(alreadyRecalled)
+            {
+                recallTimer = recallTime;
+                if (isRecallHoldable)
+                {
+                    particle.Stop();
+                    particle = null;
+                    alreadyRecalled = false;
+                    SpawnedParticle = false;
+                }
+                return;
+            }
+
+            if (recallTimer > 0)
+            {
+                if (!SpawnedParticle)
+                {
+                    particle = Instantiate(recallParticle, transform).GetComponent<ParticleSystem>();
+                    SpawnedParticle = true;
+                }
+                recallTimer -= Time.deltaTime;
+
+                player.remainingArrowScript.ArrowRefreshIcon(1 - recallTimer);
+
+                return;
+            }
+
+            if(!alreadyRecalled)
+            {
+                alreadyRecalled = true;
+                OnRecall();
+                player.remainingArrowScript.OnArrowRefreshed();
+                recallCooldown += 0.1f; 
+                return;
+            }
         }
 
         if (player.playerData.isShooting && cooldown <= 0)
@@ -39,7 +103,6 @@ public class PlayerShooting : MonoBehaviour
             {
                 OnShoot(out float attackSpeed);
                 cooldown += attackSpeed;
-                player.arrowUsedEvent.Invoke();
             }
             return;
         }       
@@ -47,30 +110,61 @@ public class PlayerShooting : MonoBehaviour
 
     public void OnShoot(out float attackSpeed)
     {
+        player.PlayAttackSoundEffect();
+
         arrowPrefab = player.playerWeaponSwap.currentWeapon;
+
+        attackSpeed = arrowPrefab.GetComponent<Projectile>().projectileAttackSpeed;
+
+        if (arrowPrefab.GetComponent<PlayerProjectile>().projectileType != WeaponType.Basic)
+        {
+            Debug.Log("SpecialArrowtip");
+            //if(player.playerData.currentArrowtipsCount <= 0)
+            //{
+            //    Debug.LogWarning("No more arrowtips");
+            //    return;
+            //}
+            player.arrowtipUsedEvent.Invoke();
+        }
+        else
+        {
+            Debug.Log("NormalArrow");
+        }
+
+        player.arrowUsedEvent.Invoke();
 
         GameObject projectile = Instantiate(arrowPrefab, transform.position, Quaternion.Euler(0,0,player.playerAim.angle));
         ProjectileList.Add(projectile);
         PlayerProjectile playerProjectile = projectile.GetComponent<PlayerProjectile>();
 
-        playerProjectile.OnInstantiate(player.playerAim.angle);
-
-        attackSpeed = projectile.GetComponent<Projectile>().projectileAttackSpeed;
+        playerProjectile.OnInstantiate(player.playerAim.angle, player.playerAim.distance, forceMultiplier);
 
         playerProjectile.destroyEvent.AddListener(() => ProjectileList.Remove(projectile));
-        playerProjectile.destroyEvent.AddListener(RenewArrow);
+        //playerProjectile.destroyEvent.AddListener(RenewArrow);
     }
 
     public void OnRecall()
     {
-        for (int i = 0; i < ProjectileList.Count; i++)
+        if(ProjectileList.Count > 0)
         {
-            ProjectileList[i].GetComponent<PlayerProjectile>().recallEvent.Invoke();
+            ProjectileList[0].GetComponent<PlayerProjectile>().recallEvent.Invoke();
         }
+
+        //for (int i = ProjectileList.Count - 1; i >= 0; i--)
+        //{
+        //    ProjectileList[i].GetComponent<PlayerProjectile>().recallEvent.Invoke();
+        //}
+
+        RenewArrow();
     }
 
     void RenewArrow()
     {
         player.arrowRenewEvent.Invoke();
     }
+
+    //void RenewArrows()
+    //{
+    //    player.arrowsRenewEvent.Invoke();
+    //}
 }

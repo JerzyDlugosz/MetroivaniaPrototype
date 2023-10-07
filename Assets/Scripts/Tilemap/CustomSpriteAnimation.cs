@@ -13,6 +13,9 @@ public class CustomSpriteAnimation : MonoBehaviour
 
     public bool stopAnimation = false;
     public bool automaticAnimationLoop = false;
+    public bool oneShot = false;
+
+    private int oneShotCount = -1;
 
     private void Start()
     {
@@ -24,6 +27,9 @@ public class CustomSpriteAnimation : MonoBehaviour
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
+
+        if(oneShot)
+            oneShotCount = 0;
     }
 
     private void Update()
@@ -31,6 +37,15 @@ public class CustomSpriteAnimation : MonoBehaviour
         if (automaticAnimationLoop)
         {
             UpdateAnimationFrame();
+
+            if(oneShot)
+            {
+                if (oneShotCount < (int)animationFrame + 1)
+                    oneShotCount = (int)animationFrame + 1;
+                Debug.Log(oneShotCount);
+                if (oneShotCount >= sprites.Count)
+                    Destroy(gameObject);
+            }
         }
     }
 

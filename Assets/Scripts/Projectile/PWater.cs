@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PWater : HostileProjectile
-{    
-    private void Start()
+{
+    public override void Start()
     {
+        base.Start();
 
         wallCollisionEvent.AddListener(OnWallCollision);
         wallBounceEvent.AddListener(OnWallCollision);

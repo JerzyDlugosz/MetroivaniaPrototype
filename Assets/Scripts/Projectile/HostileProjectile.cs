@@ -7,17 +7,26 @@ using UnityEngine.Events;
 
 public class HostileProjectile : Projectile
 {
+    private Vector2 stoppedVelocity;
+    private float stoppedAngularVelocity;
+
+
     public override void OnInstantiate()
     {
         rb.AddRelativeForce(projectileForce);
         baseDrag = rb.drag;
 
-        destroyEvent.AddListener(() => Destroy(gameObject));
         entityCollisionEvent.AddListener(DestroyEventWithBaseNPC);
+        stoppedEvent.AddListener(OnStop);
     }
 
     private void Update()
     {
+        if(isStopped)
+        {
+            return;
+        }
+
         WaterCheck();
 
         if (rb.velocity.magnitude > 0)
@@ -30,6 +39,22 @@ public class HostileProjectile : Projectile
         if (projectileLifetime < 0)
         {
             destroyEvent.Invoke();
+        }
+    }
+
+    private void OnStop(bool state)
+    {
+        if(state) 
+        {
+            stoppedVelocity = rb.velocity;
+            stoppedAngularVelocity = rb.angularVelocity;
+            rb.bodyType = RigidbodyType2D.Static;
+        }
+        else
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = stoppedVelocity;
+            rb.angularVelocity = stoppedAngularVelocity;
         }
     }
 
@@ -46,6 +71,12 @@ public class HostileProjectile : Projectile
             collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(projectileDamage);
             entityCollisionEvent.Invoke(collision.GetComponentInParent<BaseNPC>());
         }
+        AdditionalOnTriggerEnter(collision);
+    }
+
+    protected virtual void AdditionalOnTriggerEnter(Collider2D collision)
+    {
+
     }
 
     public void StopCollision(float time)

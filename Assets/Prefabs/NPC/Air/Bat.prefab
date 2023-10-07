@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: -8602165084245878120}
   - component: {fileID: 6896842538500428315}
   - component: {fileID: 9060337988591019394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -38,7 +38,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5789901502336738557}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationSetter: {fileID: 5006463616003970055}
-  destinationTarget: 1
+  destinationTarget: 0
   target: {fileID: 0}
 --- !u!114 &6083905142331506770
 MonoBehaviour:
@@ -208,14 +209,23 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  spriteRenderer: {fileID: 38074700908325160}
+  onAttackAudioClip: {fileID: 8300000, guid: 3296169e1e9b26e4fa10617573cf3306, type: 3}
+  onHitAudioClip: {fileID: 8300000, guid: b3cdb04b2268b8a4abb9325ca6b303eb, type: 3}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: -4242172301975190168}
   NPCRigidbody: {fileID: 8474801966429086305}
-  spriteRenderer: {fileID: 38074700908325160}
   spriteAnimation: {fileID: 4675125136327379779}
   facingSide: -1
   enemyParticleController: {fileID: 6896842538500428315}
@@ -230,9 +240,10 @@ MonoBehaviour:
   health: 10
   speed: 2
   baseSpeed: 2
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
-  basicSpriteRotation: 1
   isRanged: 1
   rangedProjectilePrefab: {fileID: 6902544445906791381, guid: eda72651f5f11b947aaf3178b37edb0c, type: 3}
 --- !u!114 &4675125136327379779
@@ -253,6 +264,7 @@ MonoBehaviour:
   animationSpeed: 5
   stopAnimation: 0
   automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!50 &8474801966429086305
 Rigidbody2D:
   serializedVersion: 4
@@ -317,3 +329,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcDrops:
   - {fileID: 4976562938958509318, guid: 786a9755abee7e14eba4295ad0734fbc, type: 3}
+  randomizeDrops: 0
+  dropLocation: {fileID: 0}
+--- !u!1 &4716354720640664400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5789901502336738557}
+  - component: {fileID: 654022063093918631}
+  - component: {fileID: 2065170450413319685}
+  m_Layer: 0
+  m_Name: AggroRange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5789901502336738557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716354720640664400}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9008663120303266725}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &654022063093918631
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716354720640664400}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 9
+--- !u!114 &2065170450413319685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716354720640664400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6105f0bfedd75f24199142dc7887dc6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinationSetter: {fileID: 5006463616003970055}
+  isStationary: 0

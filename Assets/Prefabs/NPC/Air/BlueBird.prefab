@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: -4242172301975190168}
   - component: {fileID: 5006463616003970055}
   - component: {fileID: 7008736217625198905}
-  - component: {fileID: -3460100478254206631}
+  - component: {fileID: -7789663943703492467}
   - component: {fileID: 4675125136327379779}
   - component: {fileID: -2559803285031610307}
   - component: {fileID: 2930361049349689990}
   - component: {fileID: 5219063229474236311}
-  m_Layer: 0
+  - component: {fileID: -4710106566022702325}
+  m_Layer: 10
   m_Name: BlueBird
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -192,7 +193,7 @@ MonoBehaviour:
   destinationSetter: {fileID: 5006463616003970055}
   destinationTarget: 1
   target: {fileID: 0}
---- !u!114 &-3460100478254206631
+--- !u!114 &-7789663943703492467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,20 +202,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1604331692094765891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613cae9aff40f1d47b7fca831da8174b, type: 3}
+  m_Script: {fileID: 11500000, guid: fc12df021ba6a8341a3bf4f9f620efaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  spriteRenderer: {fileID: 38074700908325160}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: -4242172301975190168}
   NPCRigidbody: {fileID: -2559803285031610307}
-  spriteRenderer: {fileID: 38074700908325160}
   spriteAnimation: {fileID: 4675125136327379779}
   facingSide: -1
   enemyParticleController: {fileID: 5219063229474236311}
@@ -229,9 +239,12 @@ MonoBehaviour:
   health: 10
   speed: 3
   baseSpeed: 3
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
-  basicSpriteRotation: 1
+  isRanged: 0
+  rangedProjectilePrefab: {fileID: 0}
 --- !u!114 &4675125136327379779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,8 +261,9 @@ MonoBehaviour:
   - {fileID: -1606504834, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
   - {fileID: 1942036024, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 38074700908325160}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!50 &-2559803285031610307
 Rigidbody2D:
   serializedVersion: 4
@@ -300,3 +314,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathParticle: {fileID: 217049895306480580, guid: cae12caa1e8321b4cb034567d90209d9, type: 3}
+--- !u!114 &-4710106566022702325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604331692094765891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6014aaea0a7a3df49b03199453b96619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcDrops:
+  - {fileID: 4976562938958509318, guid: 786a9755abee7e14eba4295ad0734fbc, type: 3}
+  randomizeDrops: 0
+  dropLocation: {fileID: 0}

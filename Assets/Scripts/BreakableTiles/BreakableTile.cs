@@ -80,20 +80,22 @@ public class BreakableTile : MonoBehaviour
                 {
                     var pos = tilemap.WorldToCell(collision.GetContact(0).point);
 
+                    Debug.Log("can!");
+
                     if (tilemap.GetTile(pos) != null)
                     {
                         if(isObjectComposite)
                         {
                             foreach (var item in tilePos)
                             {
-                                StartCoroutine(timer(item));
+                                StartCoroutine(WallDestroyedAnim(item));
                             }
                             playerProjectile.wallCollisionEvent.Invoke();
                         }
                         else
                         {
                             
-                            StartCoroutine(timer(pos));
+                            StartCoroutine(WallDestroyedAnim(pos));
                             playerProjectile.wallCollisionEvent.Invoke();
                         }
                     }
@@ -124,7 +126,7 @@ public class BreakableTile : MonoBehaviour
         return false;
     }
 
-    IEnumerator timer(Vector3Int pos)
+    IEnumerator WallDestroyedAnim(Vector3Int pos)
     {
         for (int i = 0; i < onDestroyTiles.Count; i++)
         {

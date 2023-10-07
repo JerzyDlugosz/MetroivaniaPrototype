@@ -10,4 +10,8 @@ public class CustomTilemapData : MonoBehaviour
     public Tilemap ForegroundTilemap;
 
     public bool wasEdited;
+    public bool isPlayable;
+
+    public int xPos;
+    public int yPos;
 }

@@ -26,7 +26,7 @@ public class MinimapController : MonoBehaviour
 
     private int[,] unlockedMinimapBackgrounds;
     private int[,] unlockedMinimapWalls;
-    private int[,] unlockedMinimaDoors;
+    private int[,] unlockedMinimapDoors;
 
 
 
@@ -37,11 +37,13 @@ public class MinimapController : MonoBehaviour
 
     private int maxTilesInMap;
 
+    private MapIcon[,] mapIcons;
+
 
     public void SetupMinimap(int xSize, int ySize)
     {
 
-        maxTilesInMap = GlobalData.maxTilesInMap;
+        maxTilesInMap = GlobalData.maxTilemapsInMap;
 
         //unlockedMinimapBackgroundSprites = new Sprite[xSize, ySize];
         //unlockedMinimapWallSprites = new Sprite[xSize, ySize];
@@ -49,7 +51,7 @@ public class MinimapController : MonoBehaviour
 
         unlockedMinimapBackgrounds = new int[xSize, ySize];
         unlockedMinimapWalls = new int[xSize, ySize];
-        unlockedMinimaDoors = new int[xSize, ySize];
+        unlockedMinimapDoors = new int[xSize, ySize];
 
 
         unlockedMap = new bool[xSize, ySize];
@@ -108,9 +110,9 @@ public class MinimapController : MonoBehaviour
                 }
             }
 
-            unlockedMinimapBackgrounds[mapXPos, mapYPos] = 0;
+            unlockedMinimapBackgrounds[mapXPos, mapYPos] = (int)currentMap.mapPrefab.GetComponent<CustomTilemap>().zone;
             unlockedMinimapWalls[mapXPos, mapYPos] = 0;
-            unlockedMinimaDoors[mapXPos, mapYPos] = doorBitDirection;
+            unlockedMinimapDoors[mapXPos, mapYPos] = doorBitDirection;
 
 
             //unlockedMinimapBackgroundSprites[mapXPos, mapYPos] = backgroundSprites[0];
@@ -202,9 +204,9 @@ public class MinimapController : MonoBehaviour
 
 
 
-            unlockedMinimapBackgrounds[mapXPos, mapYPos] = 0;
+            unlockedMinimapBackgrounds[mapXPos, mapYPos] = (int)currentMap.mapPrefab.GetComponent<CustomTilemap>().zone;
             unlockedMinimapWalls[mapXPos, mapYPos] = wallBitDirection;
-            unlockedMinimaDoors[mapXPos, mapYPos] = doorBitDirection;
+            unlockedMinimapDoors[mapXPos, mapYPos] = doorBitDirection;
 
 
             //unlockedMinimapBackgroundSprites[mapXPos, mapYPos] = backgroundSprites[0];
@@ -221,6 +223,10 @@ public class MinimapController : MonoBehaviour
 
     public void UpdateMinimap(int xPosOffset, int yPosOffset)
     {
+        SetupMapIcons(unlockedMap, unlockedMinimapBackgrounds, unlockedMinimapWalls, unlockedMinimapDoors);
+
+
+
         //Change the whole 100,100 arrays into small 5,5 or 6,6 arrays for minimap
         var unlockedMinimap = new bool[minimapXSize + 1, minimapYSize + 1];
         var MinimapBcgSprites = new Sprite[minimapXSize + 1, minimapYSize + 1];
@@ -240,7 +246,7 @@ public class MinimapController : MonoBehaviour
                 unlockedMinimap[x, y] = unlockedMap[i, j];
                 MinimapBcgSprites[x, y] = backgroundSprites[unlockedMinimapBackgrounds[i, j]];
                 MinimapWallSprites[x, y] = wallSprites[unlockedMinimapWalls[i, j]];
-                MinimapdoorSprites[x, y] = doorSprites[unlockedMinimaDoors[i, j]];
+                MinimapdoorSprites[x, y] = doorSprites[unlockedMinimapDoors[i, j]];
                 y++;
             }
 
@@ -259,12 +265,12 @@ public class MinimapController : MonoBehaviour
             {
                 unlockedMap[i, j] = save.unlockedMap[i * maxTilesInMap + j];
                 unlockedMinimapBackgrounds[i, j] = save.unlockedMinimapBackgrounds[i * maxTilesInMap + j];
-                unlockedMinimaDoors[i, j] = save.unlockedMinimaDoors[i * maxTilesInMap + j];
+                unlockedMinimapDoors[i, j] = save.unlockedMinimaDoors[i * maxTilesInMap + j];
                 unlockedMinimapWalls[i, j] = save.unlockedMinimapWalls[i * maxTilesInMap + j];
 
                 Debug.Log($"L1. {save.unlockedMap[i * maxTilesInMap + j]}, {save.unlockedMinimapBackgrounds[i * maxTilesInMap + j]}, {save.unlockedMinimaDoors[i * maxTilesInMap + j]}, {save.unlockedMinimapWalls[i * maxTilesInMap + j]} ");
 
-                Debug.Log($"L2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimaDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
+                Debug.Log($"L2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimapDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
             }
         }
 
@@ -304,12 +310,12 @@ public class MinimapController : MonoBehaviour
                 Debug.Log("ay");
                 save.unlockedMap[i * maxTilesInMap + j] = unlockedMap[i, j];
                 save.unlockedMinimapBackgrounds[i * maxTilesInMap + j] = unlockedMinimapBackgrounds[i, j];
-                save.unlockedMinimaDoors[i * maxTilesInMap + j] = unlockedMinimaDoors[i, j];
+                save.unlockedMinimaDoors[i * maxTilesInMap + j] = unlockedMinimapDoors[i, j];
                 save.unlockedMinimapWalls[i * maxTilesInMap + j] = unlockedMinimapWalls[i, j];
 
                 Debug.Log($"S1. {save.unlockedMap[i * maxTilesInMap + j]}, {save.unlockedMinimapBackgrounds[i * maxTilesInMap + j]}, {save.unlockedMinimaDoors[i * maxTilesInMap + j]}, {save.unlockedMinimapWalls[i * maxTilesInMap + j]} ");
 
-                Debug.Log($"S2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimaDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
+                Debug.Log($"S2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimapDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
 
             }
         }
@@ -319,4 +325,103 @@ public class MinimapController : MonoBehaviour
         //save.unlockedMinimaDoors = unlockedMinimaDoors;
         //save.unlockedMinimapWalls = unlockedMinimapWalls;
     }
+
+    private void SetupMapIcons(bool[,] unlockedMaps, int[,] background, int[,] walls, int[,] doors)
+    {
+        int mapOffset = 20;
+        int mapSize = GlobalData.maxTilemapsInMap / 2;
+        mapIcons = new MapIcon[mapSize, mapSize];
+        for (int i = 0; i < mapSize; i++)
+        {
+            for (int j = 0; j < mapSize; j++)
+            {
+                mapIcons[i, j] = new MapIcon(unlockedMaps[i + mapOffset, j + mapOffset], backgroundSprites[background[i + mapOffset, j + mapOffset]], wallSprites[walls[i + mapOffset, j + mapOffset]], doorSprites[doors[i + mapOffset, j + mapOffset]]);
+            }
+        }
+    }
+
+    public MapIcon[,] GetUnlockedMap()
+    {
+        return mapIcons;
+    }
+
+    public Vector2Int GetCurrentLocation()
+    {
+        Vector2Int currentPos = new Vector2Int(currentXPos, currentYPos);
+        return currentPos;
+    }
+
+    //public bool[,] GetUnlockedMapBool()
+    //{
+    //    for (int i = 0; i < GlobalData.maxTilesInMap / 2; i++)
+    //    {
+    //        for (int j = 0; j < GlobalData.maxTilesInMap / 2; j++)
+    //        {
+    //            Debug.Log(unlockedMap[i, j]);
+    //        }
+    //    }
+
+    //    return unlockedMap;
+    //}
+
+    //public Sprite[,] GetUnlockedBackground()
+    //{
+    //    Sprite[,] sprites = new Sprite[GlobalData.maxTilesInMap / 2, GlobalData.maxTilesInMap / 2];
+
+    //    for (int i = 0; i < GlobalData.maxTilesInMap / 2; i++)
+    //    {
+    //        for (int j = 0; j < GlobalData.maxTilesInMap / 2; j++)
+    //        {
+    //            sprites[i, j] = backgroundSprites[unlockedMinimapBackgrounds[i, j]];
+    //        }
+    //    }
+
+    //    return sprites;
+    //}
+
+    //public Sprite[,] GetUnlockedWalls()
+    //{
+    //    Sprite[,] sprites = new Sprite[GlobalData.maxTilesInMap / 2, GlobalData.maxTilesInMap / 2];
+
+    //    for (int i = 0; i < GlobalData.maxTilesInMap / 2; i++)
+    //    {
+    //        for (int j = 0; j < GlobalData.maxTilesInMap / 2; j++)
+    //        {
+    //            sprites[i, j] = wallSprites[unlockedMinimapWalls[i, j]];
+    //        }
+    //    }
+
+    //    return sprites;
+    //}
+
+    //public Sprite[,] GetUnlockedDoors()
+    //{
+    //    Sprite[,] sprites = new Sprite[GlobalData.maxTilesInMap / 2, GlobalData.maxTilesInMap / 2];
+
+    //    for (int i = 0; i < GlobalData.maxTilesInMap / 2; i++)
+    //    {
+    //        for (int j = 0; j < GlobalData.maxTilesInMap / 2; j++)
+    //        {
+    //            sprites[i, j] = doorSprites[unlockedMinimapDoors[i, j]];
+    //        }
+    //    }
+
+    //    return sprites;
+    //}
+}
+
+public class MapIcon
+{
+    public MapIcon(bool _isUnlocked, Sprite _background, Sprite _walls, Sprite _doors)
+    {
+        isUnlocked = _isUnlocked;
+        background = _background;
+        walls = _walls;
+        doors = _doors;
+    }
+
+    public bool isUnlocked;
+    public Sprite background;
+    public Sprite walls;
+    public Sprite doors;
 }

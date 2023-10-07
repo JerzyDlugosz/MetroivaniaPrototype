@@ -26,12 +26,12 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private float speedIncreaseModifier = 2;
-    [SerializeField]
-    private float speedDecreaseModifier = 2;
+    //[SerializeField]
+    //private float speedDecreaseModifier = 2;
     [SerializeField]
     private float runningSpeedIncreaseModifier = 2;
-    [SerializeField]
-    private float runningSpeedDecreaseModifier = 2;
+    //[SerializeField]
+    //private float runningSpeedDecreaseModifier = 2;
 
     private float currentRunningSpeed = 1f;
     private float currentSpeed;

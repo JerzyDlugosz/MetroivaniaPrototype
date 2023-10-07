@@ -11,22 +11,35 @@ public class PBumerangArrow : PlayerProjectile
 
     private Vector2 opposingForceMagnitude;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         wallCollisionEvent.AddListener(() => projectileParticleController.OnCollision());
         recallEvent.AddListener(() => projectileParticleController.OnRecall());
+        endOfLifetimeEvent.AddListener(() => projectileParticleController.OnBreak());
 
         wallCollisionEvent.AddListener(OnWallCollision);
         wallBounceEvent.AddListener(OnWallCollision);
-
-        endOfLifetimeEvent.AddListener(() => recallEvent.Invoke());
+        beforeEndOfLifetimeEvent.AddListener(() => ShakeArrow());
     }
 
     private void Update()
     {
-        MainUpdate();
+        if (MainUpdate())
+        {
+            rb.AddForce(new Vector2(-opposingForceMagnitude.x, 0f) * bumerangForce);
+            if (isStuckInWall)
+            {
+                if (projectileLifetime < 1 && !isShaking)
+                {
+                    isShaking = true;
+                    beforeEndOfLifetimeEvent.Invoke();
+                }
+            }
+        }
+
         //Bumerang with only opposing x force;
-        rb.AddForce(new Vector2(-opposingForceMagnitude.x, 0f) * bumerangForce);
+        //rb.AddForce(new Vector2(-opposingForceMagnitude.x, 0f) * bumerangForce);
         //Bumerang with all opposing forces;
         //rb.AddForce(-opposingForceMagnitude * bumerangForce);
     }
@@ -37,11 +50,12 @@ public class PBumerangArrow : PlayerProjectile
         projectileLifetime += 5f;
         platformCollider.transform.localRotation = Quaternion.Euler(0f, 0f, -gameObject.transform.localEulerAngles.z);
         platformCollider.enabled = true;
+        isStuckInWall = true;
     }
 
-    public override void OnInstantiate(float angle)
+    public override void OnInstantiate(float angle, float distance, float multiplier)
     {
-        base.OnInstantiate(angle);
+        base.OnInstantiate(angle, distance, 1f);
 
         opposingForceMagnitude = MathExtensions.GetAngleMagnitude(angle, true);
         Debug.Log($"{opposingForceMagnitude.x},{opposingForceMagnitude.y}");

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField]
-    private AudioSource musicAudioSource;
-    [SerializeField]
-    private AudioSource effectsAudioSoruce;
+    public AudioSource musicAudioSource;
+    public AudioSource effectsAudioSoruce;
 
     private AudioClip currentMusicAudioClip;
 
-    [SerializeField, Range(0, 1)]
-    private float volume;
+    [Range(0, 1)]
+    public float musicVolume;
+    [Range(0, 1)]
+    public float effectsVolume;
 
 
     public void OnMapChange(Map currentMap)
@@ -45,10 +45,21 @@ public class AudioManager : MonoBehaviour
         PlayAudio(audioClip);
     }
 
+    public void PlaySoundEffect(AudioClip audioClip)
+    {
+        if (audioClip == null)
+        {
+            Debug.LogWarning("No audio clip to play");
+            return;
+        }
+        Debug.Log($"Playing: {audioClip.name}");
+        effectsAudioSoruce.PlayOneShot(audioClip, effectsVolume);
+    }
+
     private void Update()
     {
-        musicAudioSource.volume = volume;
-        effectsAudioSoruce.volume = volume;
+        musicAudioSource.volume = musicVolume;
+        effectsAudioSoruce.volume = effectsVolume;
     }
 
 }

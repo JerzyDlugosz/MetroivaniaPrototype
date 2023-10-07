@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,16 +14,18 @@ public class CustomTilemap : MonoBehaviour
     private float colliderSize;
     private float standartMapSize;
 
-    public void SetupMap()
+    public Zone zone;
+
+    public void FirstSetupMap()
     {
-        standartMapSize = GlobalData.mapSize;
+        standartMapSize = GlobalData.maxTimemaps;
         colliderSize = GlobalData.MapDoorCollisionSize;
 
         float[,] colliderPosition = {
-            { transform.position.x + 0, transform.position.y + standartMapSize / 2 - (colliderSize - 1) },
-            { transform.position.x + standartMapSize / 2 - (colliderSize - 1), transform.position.y + 0 },
-            { transform.position.x + 0, transform.position.y - standartMapSize / 2 + (colliderSize - 1) },
-            { transform.position.x - standartMapSize / 2 + (colliderSize - 1), transform.position.y + 0 }
+            { transform.position.x + 0, transform.position.y + (standartMapSize / 2) - (colliderSize - 1) },
+            { transform.position.x + (standartMapSize / 2) - (colliderSize - 1), transform.position.y + 0 },
+            { transform.position.x + 0, transform.position.y - (standartMapSize / 2) + (colliderSize - 1) },
+            { transform.position.x - (standartMapSize / 2) + (colliderSize - 1), transform.position.y + 0 }
         };
 
         float[,] colliderScale = {
@@ -51,8 +54,24 @@ public class CustomTilemap : MonoBehaviour
             //child.GetComponent<MapBorderCollision>().disableTriggerEnter();
             child.GetComponent<BoxCollider2D>().enabled = true;
         }
+    }
 
-        OnRoomEnter();
+    public bool OnRoomEnter()
+    {
+        if (TryGetComponent(out BossRoom comp))
+        {
+            comp.OnBossRoomEnter();
+            return true;
+        }
+        else
+        {
+            CameraData cameraData = Camera.main.GetComponent<CameraData>();
+            cameraData.CameraXBoundaryAdditionalOffset = cameraData.baseCameraXBoundaryAdditionalOffset;
+            cameraData.CameraYBoundaryAdditionalOffset = cameraData.baseCameraYBoundaryAdditionalOffset;
+
+            GameManagerScript.instance.player.mainCamera.GetComponent<UnityEngine.Experimental.Rendering.Universal.PixelPerfectCamera>().assetsPPU = cameraData.baseAssetsPPU;
+            return false;
+        }
     }
 
     public void EnableAllTriggers()
@@ -79,20 +98,25 @@ public class CustomTilemap : MonoBehaviour
         child.GetComponent<BoxCollider2D>().enabled = true;
     }
 
-    public void OnRoomEnter()
+    public void UpdatePosValues()
     {
-        if (TryGetComponent(out BossRoom comp))
-        {
-            comp.OnBossRoomEnter();
-        }
-        else
-        {
-            CameraData cameraData = GameManagerScript.instance.player.mainCamera.GetComponent<CameraData>();
-            cameraData.CameraXBoundaryAdditionalOffset = cameraData.baseCameraXBoundaryAdditionalOffset;
-            cameraData.CameraYBoundaryAdditionalOffset = cameraData.baseCameraYBoundaryAdditionalOffset;
+        string toBeSearched = "[";
+        int ix = name.IndexOf(toBeSearched);
 
-            GameManagerScript.instance.player.mainCamera.GetComponent<UnityEngine.Experimental.Rendering.Universal.PixelPerfectCamera>().assetsPPU = cameraData.baseAssetsPPU;
+        string toBeSearched2 = ",";
+        int ix2 = name.IndexOf(toBeSearched2);
 
-        }
+        string toBeSearched3 = "]";
+        int ix3 = name.IndexOf(toBeSearched3);
+
+
+        string xPos = name.Substring(ix + 1, ix2 - 1);
+        Debug.Log(xPos);
+        string yPos = name.Substring(ix2 + 1, ix3 - (ix2 + 1));
+        Debug.Log(yPos);
+
+        
+        GetComponent<CustomTilemapData>().xPos = int.Parse(xPos);
+        GetComponent<CustomTilemapData>().yPos = int.Parse(yPos);
     }
 }

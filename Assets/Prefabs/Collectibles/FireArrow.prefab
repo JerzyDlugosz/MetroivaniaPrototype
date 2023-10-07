@@ -128,6 +128,8 @@ MonoBehaviour:
   collectEvent:
     m_PersistentCalls:
       m_Calls: []
-  collectibleId: 0
+  collectibleId: 1
   collectiblePositionX: 0
   collectiblePositionY: 0
+  collectibleSprite: {fileID: 1230781378, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
+  collectibleType: 1

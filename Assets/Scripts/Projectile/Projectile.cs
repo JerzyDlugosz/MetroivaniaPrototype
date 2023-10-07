@@ -50,9 +50,13 @@ public class Projectile : BaseEntity
 
     protected ContactPoint2D[] contacts = new ContactPoint2D[10];
 
+    [HideInInspector]
     public OnWallCollisionEvent wallCollisionEvent;
+    [HideInInspector]
     public OnWallBounceEvent wallBounceEvent;
+    [HideInInspector]
     public OnEntityCollisionEvent entityCollisionEvent;
+    [HideInInspector]
     public OnEndOfLifetimeEvent endOfLifetimeEvent;
 
     public void SetBounceAngle(float value)
@@ -60,7 +64,7 @@ public class Projectile : BaseEntity
         bounceAngle = value;
     }
 
-    public virtual void OnInstantiate(float angle)
+    public virtual void OnInstantiate(float angle, float distance, float multiplier)
     {
 
     }
@@ -103,6 +107,19 @@ public class Projectile : BaseEntity
                 Debug.Log(angle);
                 if (angle < bounceAngle)
                 {
+                    if(collision.collider.TryGetComponent(out WallData wallData))
+                    {
+                        if(wallData.wallStickiness <= projectileStickiness)
+                        {
+                            wallCollisionEvent.Invoke();
+                            break;
+                        }
+                        else
+                        {
+                            wallBounceEvent.Invoke();
+                            break;
+                        }
+                    }
                     wallCollisionEvent.Invoke();
                     break;
                 }
@@ -113,6 +130,12 @@ public class Projectile : BaseEntity
                 }
             }
         }
+        AdditionalOnCollisionEnter(collision);
+    }
+
+    protected virtual void AdditionalOnCollisionEnter(Collision2D collision)
+    {
+
     }
 
     private void DebugStuff(Collision2D collision)

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1d73ee9a5265c48af086d5a7c9191d, type: 3}
   m_Name: testMap[9,5]
   m_EditorClassIdentifier: 
-  mapID: 122
+  mapID: 32
   mapName: 
   xSize: 0
   ySize: 0
   mapXOffset: 0
   mapYOffset: 0
   backgroundMusic: {fileID: 0}
-  mapPrefab: {fileID: 900727660, guid: e06cd0858ca3a6f4f89798d803b90747, type: 3}
+  mapPrefab: {fileID: 900727660, guid: 74d1366ff1ce1c8458011acfb79e75d2, type: 3}
   mapDoors: 01000000

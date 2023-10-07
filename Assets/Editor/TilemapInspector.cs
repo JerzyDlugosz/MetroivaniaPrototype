@@ -5,44 +5,28 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(CustomTilemap))]
+[CanEditMultipleObjects]
 public class TilemapInspector : Editor
 {
-    public VisualTreeAsset m_InspectorXML;
-    public VisualElement outsideColliders;
-
-    public override VisualElement CreateInspectorGUI()
+    void OnEnable()
     {
-        // Create a new VisualElement to be the root of our inspector UI
-        VisualElement myInspector = new VisualElement();
 
-        // Load from default reference
-        m_InspectorXML.CloneTree(myInspector);
-
-        VisualElement inspectorFoldout = myInspector.Q("Default");
-        VisualElement borderButton = myInspector.Q("TilemapBorders");
-
-        VisualElement xSize = myInspector.Q("xSize");
-        VisualElement ySize = myInspector.Q("ySize");
-        outsideColliders = myInspector.Q("outsideColliders");
-
-        borderButton.RegisterCallback<ClickEvent>(OnButtonClick);
-        
-
-        InspectorElement.FillDefaultInspector(inspectorFoldout, serializedObject, this);
-
-        // Return the finished inspector UI
-        return myInspector;
     }
 
-
-    public void OnButtonClick(ClickEvent evt)
+    public override void OnInspectorGUI()
     {
-        //outsideColliders = myInspector.Q("outsideColliders");
-        //foreach (Transform child in outsideColliders)
-        //{
 
-        //}
-        //GameObject Gobject = new GameObject();
-        //Instantiate(Gobject);
+        serializedObject.Update();
+
+        DrawDefaultInspector();
+
+        CustomTilemap customTilemapScript = (CustomTilemap)target;
+        if (GUILayout.Button("SetupTilemapBorders"))
+        {
+            customTilemapScript.FirstSetupMap();
+        }
+
+        serializedObject.ApplyModifiedProperties();
     }
+
 }

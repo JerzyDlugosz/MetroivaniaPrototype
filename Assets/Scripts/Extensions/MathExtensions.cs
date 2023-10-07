@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public static class MathExtensions
 {
@@ -55,5 +56,14 @@ public static class MathExtensions
     {
         float temp = value / maximumValue;
         return magnitude / temp;
+    }
+
+    public static float WrapAngle(float angle)
+    {
+        angle %= 360;
+        if (angle > 180)
+            return angle - 360;
+
+        return angle;
     }
 }

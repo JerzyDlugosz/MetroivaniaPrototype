@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,24 +11,69 @@ using UnityEngine.Events;
 [Serializable]
 public class OnRecallEvent : UnityEvent { }
 
+[Serializable]
+public class BeforeEndOfLifetimeEvent : UnityEvent { }
+
 
 public class PlayerProjectile : Projectile
 {
+    [HideInInspector]
     public OnRecallEvent recallEvent;
+    [HideInInspector]
+    public BeforeEndOfLifetimeEvent beforeEndOfLifetimeEvent;
 
-    public override void OnInstantiate(float angle)
+    [SerializeField]
+    private float maxProjectileForceDistance = 5f;
+
+    private Vector2 stoppedVelocity;
+    private float stoppedAngularVelocity;
+
+    [SerializeField]
+    private float shakeStrenght;
+    protected bool isStuckInWall = false;
+    protected bool isShaking = false;
+
+    public override void OnInstantiate(float angle, float distance, float multiplier)
     {
-        //rb.AddTorque(angle, ForceMode2D.Impulse);
-        rb.AddRelativeForce(projectileForce);
+        float distanceMagnitude = MathF.Abs(distance);
+
+        if (distanceMagnitude > maxProjectileForceDistance)
+        {
+            distanceMagnitude = maxProjectileForceDistance;
+        }
+
+        distanceMagnitude /= maxProjectileForceDistance;
+
+        Debug.Log(distanceMagnitude);
+
+        rb.AddRelativeForce((projectileForce * distanceMagnitude) * multiplier);
 
         Pushback(angle);
 
         baseDrag = rb.drag;
 
-        destroyEvent.AddListener(() => Destroy(gameObject));
-
         recallEvent.AddListener(() => destroyEvent.Invoke());
+        endOfLifetimeEvent.AddListener(() => destroyEvent.Invoke());
         entityCollisionEvent.AddListener(DestroyEventWithBaseNPC);
+        destroyEvent.AddListener(() => transform.DOKill());
+
+        stoppedEvent.AddListener(OnStop);
+    }
+
+    private void OnStop(bool state)
+    {
+        if (state)
+        {
+            stoppedVelocity = rb.velocity;
+            stoppedAngularVelocity = rb.angularVelocity;
+            rb.bodyType = RigidbodyType2D.Static;
+        }
+        else
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = stoppedVelocity;
+            rb.angularVelocity = stoppedAngularVelocity;
+        }
     }
 
     private void Pushback(float angle)
@@ -38,8 +84,13 @@ public class PlayerProjectile : Projectile
         GameManagerScript.instance.player.customRigidbody.AddRelativeForce(pushbackMagnitude * projectilePushBack);
     }
 
-    protected void MainUpdate()
+    protected bool MainUpdate()
     {
+        if (isStopped)
+        {
+            return false;
+        }
+
         WaterCheck();
 
         if (rb.velocity.magnitude > 0)
@@ -56,6 +107,7 @@ public class PlayerProjectile : Projectile
         }
 
         debugRays();
+        return true;
     }
 
     private void DestroyEventWithBaseNPC(BaseNPC baseNPC)
@@ -67,9 +119,24 @@ public class PlayerProjectile : Projectile
     {
         if (collision.CompareTag("Enemy"))
         {
-            BaseNPC baseNPC = collision.GetComponent<BaseNPC>();
-            baseNPC.TakeDamage(projectileDamage);
-            entityCollisionEvent.Invoke(baseNPC);
+            if(collision.TryGetComponent(out BaseNPC baseNPC))
+            {
+                baseNPC.TakeDamage(projectileDamage);
+                entityCollisionEvent.Invoke(baseNPC);
+                return;
+            }
+            BaseNPC parentBaseNPC = collision.GetComponentInParent<BaseNPC>();
+            parentBaseNPC.TakeDamage(projectileDamage);
+            entityCollisionEvent.Invoke(parentBaseNPC);
         }
+    }
+
+    protected void ShakeArrow()
+    {
+        float angle = MathExtensions.WrapAngle(transform.eulerAngles.z);
+        Debug.Log($"z angle: {angle}");
+        Vector2 vector = MathExtensions.GetAngleMagnitude(angle, false);
+        Debug.Log($"vector: {vector}");
+        transform.DOShakePosition(1f, new Vector3(shakeStrenght * vector.y, shakeStrenght * vector.x, 0f)).SetEase(Ease.Linear);
     }
 }
