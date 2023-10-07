@@ -11,7 +11,7 @@
 /[Uu]ser[Ss]ettings/
 
 # Scene only used in creating and editting tilemaps.
-/[Aa]ssets/Scenes/MainScene.unity
+/[Aa]ssets/Scenes/Generator/
 /[Aa]ssets/Scenes/Copies/
 
 # MemoryCaptures can get excessive in size.
