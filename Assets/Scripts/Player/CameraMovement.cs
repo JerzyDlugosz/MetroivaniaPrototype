@@ -20,17 +20,19 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private bool disableCameraBoundaries;
 
-    private bool stopCamera = false;
+    public bool stopCamera = false;
 
-    public SpriteRenderer blackout;
+    public Image blackout;
     
 
     private void Start()
     {
         cameraData = GetComponent<CameraData>();
+        blackout.DOFade(0, 0.5f);
+
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if(!stopCamera)
         {
@@ -112,5 +114,10 @@ public class CameraMovement : MonoBehaviour
     public void ResumeCameraMovement()
     {
         stopCamera = false;
+    }
+
+    public void ShakeCamera(float time, float strenght)
+    {
+        transform.DOShakePosition(time, strenght);
     }
 }

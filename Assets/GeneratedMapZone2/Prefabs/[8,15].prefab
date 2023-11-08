@@ -383,7 +383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &115365991
 RectTransform:
   m_ObjectHideFlags: 0
@@ -839,6 +839,7 @@ MonoBehaviour:
   compMapYSize: 2
   compMapXPos: {x: 8, y: 9}
   compMapYPos: {x: 15, y: 16}
+  maplist: {fileID: 0}
 --- !u!114 &283113092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,6 +858,8 @@ MonoBehaviour:
   bossEnterTrigger: {fileID: 6453247789878203628}
   door: {fileID: 819529601681229790}
   doorHideMoveAmmount: 4
+  bossMusic: {fileID: 8300000, guid: 5fad58e1b871b29438c4bf7c235924ec, type: 3}
+  VictoryMusic: {fileID: 8300000, guid: 698bcc01e3cdf844f82c57db1f47f7fe, type: 3}
   eyeBossComposite: {fileID: 6950568542622689460}
   movingBackground: {fileID: 115365992}
   pushForce: {x: -500, y: 0}
@@ -2144,6 +2147,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 765776137}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}
@@ -5038,6 +5042,7 @@ MonoBehaviour:
   compMapYSize: 0
   compMapXPos: {x: 4, y: 4}
   compMapYPos: {x: 6, y: 9}
+  maplist: {fileID: 0}
 --- !u!114 &1795056495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5146,10 +5151,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 180873311}
   onAttackAudioClip: {fileID: 0}
-  onHitAudioClip: {fileID: 0}
-  onDeathAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 1866184227}
   spriteAnimation: {fileID: 1866184229}
@@ -5324,10 +5332,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 1612380921}
   onAttackAudioClip: {fileID: 0}
-  onHitAudioClip: {fileID: 0}
-  onDeathAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 1910085197}
   spriteAnimation: {fileID: 1910085200}
@@ -6059,11 +6070,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.2795052e-36
+      e03: 8.62524e+25
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.9e-43
+      e13: 3.14e-43
       e20: 0
       e21: 0
       e22: 0
@@ -6297,10 +6308,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 601544521}
   onAttackAudioClip: {fileID: 0}
-  onHitAudioClip: {fileID: 0}
-  onDeathAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2117370336}
   spriteAnimation: {fileID: 2117370339}
@@ -6725,6 +6739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b47f109d8f4e7f459d46331566a85bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyOnEntry: 1
   onTriggerEntry:
     m_PersistentCalls:
       m_Calls:
@@ -6941,10 +6956,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 6517177469456196826}
   onAttackAudioClip: {fileID: 0}
-  onHitAudioClip: {fileID: 0}
-  onDeathAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 6517177470240105637}
   spriteAnimation: {fileID: 6517177470240105642}

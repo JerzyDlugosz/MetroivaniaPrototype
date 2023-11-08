@@ -219,6 +219,10 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 38074700908325160}
   onAttackAudioClip: {fileID: 0}
   onHitAudioClip: {fileID: 0}

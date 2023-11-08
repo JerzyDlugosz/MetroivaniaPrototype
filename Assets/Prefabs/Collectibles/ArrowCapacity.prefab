@@ -132,3 +132,8 @@ MonoBehaviour:
   collectiblePositionX: 0
   collectiblePositionY: 0
   collectibleSprite: {fileID: -1228972577, guid: aba6f58eb916b0f4597094b127260824, type: 3}
+  collectibleType: 0
+  collectibleSpriteID: -1
+  PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
+  collectibleName: Arrow Capacity+
+  collectibleDescription: Increases ammo capacity

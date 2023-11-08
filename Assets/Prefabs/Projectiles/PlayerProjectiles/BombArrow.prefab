@@ -115,7 +115,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 3888843744773897581}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   projectileType: 1
   projectileVelocity: {x: 0, y: 0}
   projectileForce: {x: 50, y: 0}
@@ -151,6 +158,7 @@ MonoBehaviour:
       m_Calls: []
   maxProjectileForceDistance: 5
   shakeStrenght: 0
+  OnWallCollisionAudio: {fileID: 8300000, guid: 5180d921381965a4ab75a2a192c5cf42, type: 3}
   explosionField: {fileID: 8679292657148777025, guid: 08c2749aa634989429ee7345735e64a1, type: 3}
 --- !u!50 &3888843744773897555
 Rigidbody2D:

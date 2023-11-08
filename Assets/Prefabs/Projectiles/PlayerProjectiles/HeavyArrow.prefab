@@ -116,6 +116,9 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 3888843744773897581}
   onAttackAudioClip: {fileID: 0}
   onHitAudioClip: {fileID: 0}
@@ -127,7 +130,7 @@ MonoBehaviour:
   projectileName: HeavyArrow
   projectileLifetime: 5
   bounceAngle: 80
-  projectileDamage: 20
+  projectileDamage: 60
   inWaterDrag: 4
   baseGravity: 1
   projectileStrenght: 0
@@ -155,6 +158,7 @@ MonoBehaviour:
       m_Calls: []
   maxProjectileForceDistance: 5
   shakeStrenght: 0.1
+  OnWallCollisionAudio: {fileID: 8300000, guid: 3245778ab0701f640a055ed449e181ed, type: 3}
   platformCollider: {fileID: 4156679310504935787}
 --- !u!50 &3888843744773897555
 Rigidbody2D:

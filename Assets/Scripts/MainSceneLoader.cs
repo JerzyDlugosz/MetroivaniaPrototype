@@ -20,7 +20,7 @@ public class MainSceneLoader : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoadMainSceneAsync());
-        InvokeRepeating("DoTheDotDotDot", 0f, 1f);
+        InvokeRepeating("DoTheDotDotDot", 0f, 0.5f);
     }
 
     IEnumerator LoadMainSceneAsync()
@@ -38,6 +38,8 @@ public class MainSceneLoader : MonoBehaviour
             loadingSlider.value = asyncLoad.progress;
             yield return null;
         }
+
+        yield return new WaitForSeconds(3);
     }
 
     private void DoTheDotDotDot()
@@ -55,7 +57,7 @@ public class MainSceneLoader : MonoBehaviour
 
     void RemoveDotInvoke()
     {
-        CancelInvoke("DoTheDotDotDot");
+        //CancelInvoke("DoTheDotDotDot");
         Debug.Log("Canceled Invoke on DoTheDotDotDot");
     }
 }

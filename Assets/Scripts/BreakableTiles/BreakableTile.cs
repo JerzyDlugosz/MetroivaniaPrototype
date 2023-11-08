@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
 
 [Serializable]
 public class OnTileHitEvent : UnityEvent { }
@@ -25,6 +24,9 @@ public class BreakableTile : MonoBehaviour
     private int tileStrength;
     [SerializeField]
     private int tileStickiness;
+
+    [SerializeField]
+    private AudioClip OnTileDestroyAudioClip;
 
     [SerializeField]
     private Tilemap tilemap;
@@ -59,6 +61,7 @@ public class BreakableTile : MonoBehaviour
             }
         }
 
+        onDestroyEvent.AddListener(() => GameStateManager.instance.audioManager.PlaySoundEffect(OnTileDestroyAudioClip));
         onDestroyEvent.AddListener(RemoveCollisions);
     }
 
@@ -79,8 +82,6 @@ public class BreakableTile : MonoBehaviour
                 if (CheckIfProjectileCanDestroyThisTile(playerProjectile.projectileStrenght))
                 {
                     var pos = tilemap.WorldToCell(collision.GetContact(0).point);
-
-                    Debug.Log("can!");
 
                     if (tilemap.GetTile(pos) != null)
                     {
@@ -128,6 +129,7 @@ public class BreakableTile : MonoBehaviour
 
     IEnumerator WallDestroyedAnim(Vector3Int pos)
     {
+        onDestroyEvent.Invoke();
         for (int i = 0; i < onDestroyTiles.Count; i++)
         {
             tilemap.SetTile(pos, onDestroyTiles[i]);

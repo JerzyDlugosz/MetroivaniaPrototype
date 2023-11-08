@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Pathfinding;
 using System;
 using System.Collections;
@@ -83,7 +84,8 @@ public class BaseNPC : BaseEntity
 
     public void ApplyForce(Vector2 force)
     {
-        NPCRigidbody.AddRelativeForce(force);
+        if(NPCRigidbody != null)
+            NPCRigidbody.AddRelativeForce(force);
     }
 
     protected void UpdateSpriteRotation(bool useRigidbody)
@@ -200,6 +202,11 @@ public class BaseNPC : BaseEntity
             yield return new WaitForSeconds(2f);
             isSlowed = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        transform.DOKill();
     }
 }
 

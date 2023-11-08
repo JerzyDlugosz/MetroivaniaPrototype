@@ -256,7 +256,9 @@ MonoBehaviour:
   - {fileID: -890387574, guid: de8f85a43c7a26e4e9e8cf9a08514ddf, type: 3}
   - {fileID: -162051518, guid: de8f85a43c7a26e4e9e8cf9a08514ddf, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 8997939550127850080}
+  stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!114 &8997939550127850092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,15 +271,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8eff31527c8dab43b4e7b4aad9e854d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
+  isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 8997939550127850080}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 4141227122412383776}
   NPCRigidbody: {fileID: 0}
-  spriteRenderer: {fileID: 8997939550127850080}
-  facingSide: 1
   spriteAnimation: {fileID: 4375598257768095755}
+  facingSide: 1
+  enemyParticleController: {fileID: 0}
+  onNPCDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onNPCHit:
+    m_PersistentCalls:
+      m_Calls: []
+  isInvincible: 0
+  maxHealth: 0
+  health: 0
+  speed: 0
+  baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
 --- !u!114 &8997939550127850081
 MonoBehaviour:
@@ -292,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationSetter: {fileID: 0}
+  destinationTarget: 0
   target: {fileID: 0}
 --- !u!114 &8997939550127850095
 MonoBehaviour:

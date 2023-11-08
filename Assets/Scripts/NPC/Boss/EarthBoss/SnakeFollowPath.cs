@@ -379,6 +379,7 @@ public class SnakeFollowPath : MonoBehaviour
             Projectile projectile = projectileGameObject.GetComponent<Projectile>();
 
             projectile.OnInstantiate();
+            projectile.GetComponent<Projectile>().wallCollisionEvent.AddListener(() => projectile.Bounce());
 
             projectile.SetBounceAngle(0);
         }

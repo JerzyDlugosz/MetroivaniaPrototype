@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 1441864147}
+  zone: 0
 --- !u!114 &23599427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +83,9 @@ MonoBehaviour:
   WallsTilemap: {fileID: 983049854}
   ForegroundTilemap: {fileID: 727077584}
   wasEdited: 1
+  isPlayable: 0
+  xPos: 0
+  yPos: 0
 --- !u!1 &567111762
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,6 +313,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &727077581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,6 +1063,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &983049848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3197,8 +3203,8 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 8
-      m_TileSpriteIndex: 8
-      m_TileMatrixIndex: 5
+      m_TileSpriteIndex: 4
+      m_TileMatrixIndex: 4
       m_TileColorIndex: 1
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -3232,15 +3238,15 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -315625506, guid: 171e98e6ab407a84b9189bbb5f4340bf, type: 3}
   - m_RefCount: 137
     m_Data: {fileID: -1962315582, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
   - m_RefCount: 54
     m_Data: {fileID: 363049255, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: 14189133, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: -320951586, guid: 8f444929c31d42d4bb16dc3922678bbb, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 9
@@ -3315,7 +3321,7 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
-  - m_RefCount: 13
+  - m_RefCount: 14
     m_Data:
       e00: 0.000000059604645
       e01: 0.99999994
@@ -3333,7 +3339,7 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
-  - m_RefCount: 159
+  - m_RefCount: 158
     m_Data:
       e00: 1
       e01: 0
@@ -3633,6 +3639,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1441864147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3926,3 +3933,4 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}

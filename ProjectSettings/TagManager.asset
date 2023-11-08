@@ -24,9 +24,9 @@ TagManager:
   - Enemy
   - EnemyWallCollision
   - EnemyObstacle
-  - 
-  - 
-  - 
+  - Laser
+  - EnemyAggro
+  - Lava
   - 
   - 
   - 

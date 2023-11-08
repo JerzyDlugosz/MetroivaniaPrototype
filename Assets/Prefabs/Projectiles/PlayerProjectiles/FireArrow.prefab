@@ -114,7 +114,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 3888843744773897581}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   projectileType: 1
   projectileVelocity: {x: 0, y: 0}
   projectileForce: {x: 100, y: 0}
@@ -126,7 +133,7 @@ MonoBehaviour:
   inWaterDrag: 2
   baseGravity: 1
   projectileStrenght: 1
-  projectileStickiness: 0
+  projectileStickiness: 3
   projectileParticleController: {fileID: 4649430829389527823}
   projectileAttackSpeed: 0.9
   rb: {fileID: 3888843744773897555}
@@ -150,6 +157,7 @@ MonoBehaviour:
       m_Calls: []
   maxProjectileForceDistance: 5
   shakeStrenght: 0
+  OnWallCollisionAudio: {fileID: 8300000, guid: 3245778ab0701f640a055ed449e181ed, type: 3}
   burningDamage: 1
 --- !u!50 &3888843744773897555
 Rigidbody2D:

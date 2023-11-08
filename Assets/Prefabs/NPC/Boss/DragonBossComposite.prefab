@@ -127,6 +127,9 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 1815789769277993662}
   onAttackAudioClip: {fileID: 0}
   onHitAudioClip: {fileID: 0}
@@ -399,6 +402,9 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 1815789769974783661}
   onAttackAudioClip: {fileID: 0}
   onHitAudioClip: {fileID: 0}
@@ -703,6 +709,9 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 2537268277473910469}
   onAttackAudioClip: {fileID: 0}
   onHitAudioClip: {fileID: 0}

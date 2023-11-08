@@ -36,6 +36,8 @@ public class Projectile : BaseEntity
     [SerializeField]
     protected float baseGravity;
 
+    protected float damageModifier = 1;
+
     protected float baseDrag;
 
     public int projectileStrenght;
@@ -64,7 +66,15 @@ public class Projectile : BaseEntity
         bounceAngle = value;
     }
 
-    public virtual void OnInstantiate(float angle, float distance, float multiplier)
+    public void Bounce()
+    {
+        Debug.Log("Rb vel: " + rb.velocity);
+        Vector2 vel2 = Vector2.Reflect(rb.velocity, Vector2.up);
+        Debug.Log("RB vel2: " + vel2);
+        rb.velocity = vel2;
+    }
+
+    public virtual void OnInstantiate(float angle, float distance, float multiplier, float _damageModifier)
     {
 
     }
@@ -116,7 +126,7 @@ public class Projectile : BaseEntity
                         }
                         else
                         {
-                            wallBounceEvent.Invoke();
+                            endOfLifetimeEvent.Invoke();
                             break;
                         }
                     }
@@ -127,6 +137,7 @@ public class Projectile : BaseEntity
                 {
                     Debug.Log("bounce");
                     wallBounceEvent.Invoke();
+                    break;
                 }
             }
         }

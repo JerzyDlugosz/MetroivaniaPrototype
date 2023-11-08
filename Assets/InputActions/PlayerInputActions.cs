@@ -134,6 +134,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AimPositionGamepad"",
+                    ""type"": ""Value"",
+                    ""id"": ""ab845d1c-ba72-4120-81e9-78794a438e68"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""37c2113f-6f0d-4078-9d08-d87761943134"",
                     ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b87d9110-5aa3-4c0d-8ea8-7fdd3826234c"",
+                    ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": ""StickDeadzone"",
                     ""groups"": ""Gamepad"",
@@ -326,17 +346,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""787aed7f-3158-4ece-a97d-0457d82be047"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""WeaponSwapLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""57a85715-4bbf-4bbb-a803-84e70d68ecc1"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
@@ -354,17 +363,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""WeaponSwapLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e17392b6-5e90-4a2c-8933-ed22e26d1065"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""WeaponSwapRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -397,6 +395,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2d38263-5d2b-4007-b700-4e3ab29c6c5d"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -499,6 +508,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9532dda2-a97b-4efd-9e3c-d24edbe0e08a"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone,ScaleVector2(x=4,y=4)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AimPositionGamepad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -559,17 +579,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d38e91ea-3eca-4f7e-8c51-d53cad43393a"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""ChangeMenuLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d7d24eb3-04d4-468b-892b-2b8a4759ef15"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
@@ -587,17 +596,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""ChangeMenuLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f1f30c2c-d240-4ac0-9a57-265e6d08ea24"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""ChangeMenuRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -630,12 +628,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         {
             ""name"": ""Keyboard"",
             ""bindingGroup"": ""Keyboard"",
-            ""devices"": []
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         },
         {
             ""name"": ""Gamepad"",
             ""bindingGroup"": ""Gamepad"",
-            ""devices"": []
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -653,6 +663,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_UpMotion = m_Player.FindAction("UpMotion", throwIfNotFound: true);
         m_Player_Recall = m_Player.FindAction("Recall", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_AimPositionGamepad = m_Player.FindAction("AimPositionGamepad", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
         m_PauseMenu_UnPause = m_PauseMenu.FindAction("UnPause", throwIfNotFound: true);
@@ -729,6 +740,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_UpMotion;
     private readonly InputAction m_Player_Recall;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_AimPositionGamepad;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -745,6 +757,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @UpMotion => m_Wrapper.m_Player_UpMotion;
         public InputAction @Recall => m_Wrapper.m_Player_Recall;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @AimPositionGamepad => m_Wrapper.m_Player_AimPositionGamepad;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -790,6 +803,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @AimPositionGamepad.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
+                @AimPositionGamepad.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
+                @AimPositionGamepad.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -830,6 +846,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @AimPositionGamepad.started += instance.OnAimPositionGamepad;
+                @AimPositionGamepad.performed += instance.OnAimPositionGamepad;
+                @AimPositionGamepad.canceled += instance.OnAimPositionGamepad;
             }
         }
     }
@@ -915,6 +934,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnUpMotion(InputAction.CallbackContext context);
         void OnRecall(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnAimPositionGamepad(InputAction.CallbackContext context);
     }
     public interface IPauseMenuActions
     {

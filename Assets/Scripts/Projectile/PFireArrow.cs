@@ -28,14 +28,12 @@ public class PFireArrow : PlayerProjectile
 
     public void OnWallCollision()
     {
-        Debug.Log("HitWall");
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
         destroyEvent.Invoke();
     }
 
     public void OnEnemyCollision(BaseNPC baseNPC)
     {
-        Debug.Log("HitEnemy");
-        //apply burn debuff
         baseNPC.Burning(burningDamage, 5);
     }
 }

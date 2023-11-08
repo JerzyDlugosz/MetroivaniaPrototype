@@ -17,6 +17,7 @@ public class PBasicArrow : PlayerProjectile
         wallCollisionEvent.AddListener(OnWallCollision);
         wallBounceEvent.AddListener(OnWallBounce);
         beforeEndOfLifetimeEvent.AddListener(() => ShakeArrow());
+        endOfLifetimeEvent.AddListener(() => GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio));
     }
 
     private void Update()
@@ -41,6 +42,7 @@ public class PBasicArrow : PlayerProjectile
         platformCollider.transform.localRotation = Quaternion.Euler(0f, 0f, -gameObject.transform.localEulerAngles.z);
         platformCollider.enabled = true;
         isStuckInWall = true;
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
     }
 
     public void OnWallBounce()

@@ -5309,6 +5309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: bad1c31625d49334ebd81a6f9746795e, type: 2}
   outsideColliders: {fileID: 4261519583634755758}
+  zone: 0
 --- !u!114 &9122659341031992406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5327,6 +5328,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 70563bbb84d46f54887d356da8278efa, type: 2}
   compMapXSize: 2
   compMapYSize: 2
+  compMapXPos: {x: 0, y: 0}
+  compMapYPos: {x: 0, y: 0}
+  maplist: {fileID: 0}
 --- !u!1 &7358101260745121954
 GameObject:
   m_ObjectHideFlags: 0

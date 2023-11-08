@@ -42,6 +42,7 @@ public class PGlueArrow : PlayerProjectile
         platformCollider.transform.localRotation = Quaternion.Euler(0f, 0f, -gameObject.transform.localEulerAngles.z);
         platformCollider.enabled = true;
         isStuckInWall = true;
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
     }
 
     public void OnEnemyCollision(BaseNPC baseNPC)

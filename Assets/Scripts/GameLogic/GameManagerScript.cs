@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -30,8 +29,6 @@ public class GameManagerScript : MonoBehaviour
     private int maxTilesInMap;
 
     private SavingAndLoading savingAndLoading;
-    [SerializeField]
-    private TilemapGenerator tilemapGenerator;
 
     private int spawnMapNumber;
     [SerializeField]
@@ -44,8 +41,15 @@ public class GameManagerScript : MonoBehaviour
 
     [SerializeField]
     private Transform preloadedMapsParent;
+    //[SerializeField]
+    //private bool preloadMaps;
     [SerializeField]
-    private bool preloadMaps;
+    private bool areMapsPreloaded;
+    [SerializeField]
+    private bool isMinimapAvailable = true;
+    [SerializeField]
+    private bool willLoadSaveFile = true;
+    public CameraMovement cameraMovement;
 
     private GameObject[,] preloadedMaps;
 
@@ -58,6 +62,13 @@ public class GameManagerScript : MonoBehaviour
     public EntitiesManager entitiesManager;
 
     public PauseMenu pauseMenu;
+
+    public EndScreen endScreen;
+
+    public Vector2Int mapPrefabsSize = new Vector2Int(20, 20);
+
+    private float timePlayed;
+    public bool countTimePlayed = true;
     private void Awake()
     {
         if (instance == null)
@@ -68,11 +79,17 @@ public class GameManagerScript : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        GlobalData.maxTimemaps = mapSize;
     }
 
     private void Start()
     {
+        GlobalData.maxTimemaps = mapSize;
+
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+        }
+
         try
         {
             foreach (var item in generatedMapsFoldersToHide)
@@ -87,86 +104,93 @@ public class GameManagerScript : MonoBehaviour
 
         forceMoveArray = new Vector2[]
             { new Vector2(0, forceMoveDistance * 1.5f), new Vector2(forceMoveDistance, 0), new Vector2(0, -forceMoveDistance * 1.5f), new Vector2(-forceMoveDistance, 0) };
-        minimap = GetComponent<MinimapController>();
+        if (isMinimapAvailable)
+            minimap = GetComponent<MinimapController>();
 
         savingAndLoading = GameStateManager.instance.GetComponent<SavingAndLoading>();
         maxTilesInMap = GlobalData.maxTilemapsInMap;
         centerMapOffset = maxTilesInMap / 2;
 
-        int mapNumber = spawnMapPos.x * 20 + spawnMapPos.y + 1;
+        int mapNumber = spawnMapPos.x * mapPrefabsSize.x + spawnMapPos.y + 1;
 
         CreateZone(0, mapNumber);
-
     }
 
     public void CreateZone(int zoneNumber, int _spawnMapNumber)
     {
 
         spawnMapNumber = _spawnMapNumber;
-        if (tilemapGenerator == null)
+
+#if (UNITY_EDITOR)
+
+        if (GameObject.Find("MapGenerator") != null)
         {
-            if (GameObject.Find("MapGenerator") != null)
-            {
-                tilemapGenerator = GameObject.Find("MapGenerator").GetComponent<TilemapGenerator>();
-                tilemapGenerator.SetupCompositeMaps();
-            }
+            GameObject.Find("MapGenerator").GetComponent<TilemapGenerator>().SetupCompositeMaps();
         }
-        else
+#endif
+
+        if (FindObjectOfType<CompositeMapController>() != null)
         {
-            tilemapGenerator.SetupCompositeMaps();
+            FindObjectOfType<CompositeMapController>().SetupCompositeMaps();
         }
 
         preloadedMaps = new GameObject[(int)GlobalData.maxTimemaps, (int)GlobalData.maxTimemaps];
 
-
-        minimap.SetupMinimap(maxTilesInMap, maxTilesInMap);
+        if (isMinimapAvailable)
+            minimap.SetupMinimap(maxTilesInMap, maxTilesInMap);
         LoadMapsToArray();
 
         Map currentMap = null;
-        if (!preloadMaps)
-        {
-            currentMap = LoadGame();
-            CreateMap(currentMap, true);
-        }
-        else
-        {
-            PreloadAllMaps();
-        }
+        currentMap = LoadGame();
+        CreateMap(currentMap, true);
+        //if (!preloadMaps)
+        //{
+        //    currentMap = LoadGame();
+        //    CreateMap(currentMap, true);
+        //}
+        //else
+        //{
+        //    PreloadAllMaps();
+        //}
 
-        OnMapChange(currentMap);
+        ChangeAudioOnMapChange(currentMap.mapPrefab.GetComponent<CustomTilemap>().zone);
     }
 
     private void Update()
     {
+        if (countTimePlayed)
+            timePlayed += Time.deltaTime;
+
         float x = player.transform.position.x + centerMapOffset * GlobalData.maxTimemaps;
         float y = player.transform.position.y + centerMapOffset * GlobalData.maxTimemaps;
 
         int mapXPos = (int)((x + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
         int mapYPos = (int)((y + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
 
-        //if(!delayMapUpdate)
-        //{
-            if (currentPos.x != mapXPos || currentPos.y != mapYPos)
+        if (!isMinimapAvailable)
+            return;
+
+        if (currentPos.x != mapXPos || currentPos.y != mapYPos)
+        {
+            if (currentMaps.Count > 1)
             {
-                if (currentMaps.Count > 1)
+                if (currentMaps[0].TryGetComponent(out CompositeTilemap component))
                 {
-                    if (currentMaps[0].TryGetComponent(out CompositeTilemap component))
-                    {
-                        minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos], currentMaps);
-                    }
-                    else
-                    {
-                        Debug.LogError("Broked");
-                    }
+                    minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos], currentMaps);
                 }
                 else
                 {
-                minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
+                    Debug.LogError("Cannot load map!");
                 }
-                currentPos.x = mapXPos;
-                currentPos.y = mapYPos;
             }
-        //}
+            else
+            {
+                minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
+            }
+            currentPos.x = mapXPos;
+            currentPos.y = mapYPos;
+        }
+
     }
 
     private void LoadMapsToArray()
@@ -183,31 +207,14 @@ public class GameManagerScript : MonoBehaviour
                 map.xSize = (int)GlobalData.maxTimemaps;
                 map.ySize = (int)GlobalData.maxTimemaps;
 
-                //Debug.Log($"{map.name}: x:{map.mapXOffset} y:{map.mapYOffset}");
-
                 mapArray[centerMapOffset + map.mapXOffset, centerMapOffset + map.mapYOffset] = map;
 
                 i++;
             }
         }
-
-        foreach (Map map in currentMapList.maps)
-        {
-            //Debug.Log($"MapArray : [{centerMapOffset + map.mapXOffset} , {centerMapOffset + map.mapYOffset}]");
-        }
     }
 
     #region SavingAndLoading Methods
-
-    public void LoadGameButton()
-    {
-        LoadGame();
-    }
-
-    public void SaveGameButton()
-    {
-        SaveGame();
-    }
 
     private bool MT221()
     {
@@ -236,7 +243,6 @@ public class GameManagerScript : MonoBehaviour
         {
             if(spawnMapNumber - 1 > -1 && spawnMapNumber - 1 < currentMapList.maps.Count)
             {
-                Debug.Log($"Spawn Pos:{currentMapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.maxTimemaps} ,{currentMapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.maxTimemaps}");
                 player.characterController.ForceTransportPlayer(new Vector2(currentMapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.maxTimemaps, currentMapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.maxTimemaps));
 
                 player.customCollider.enabled = true;
@@ -244,14 +250,23 @@ public class GameManagerScript : MonoBehaviour
             }
 
             Debug.LogWarning($"Index out of bounds! spawnMapNumber is set to {spawnMapNumber - 1}. Setting spawn to {centerMapOffset}, {centerMapOffset}");
+            player.customCollider.enabled = true;
+            return mapArray[centerMapOffset, centerMapOffset];
+        }
+        if (!willLoadSaveFile)
+        {
+            player.characterController.ForceTransportPlayer(new Vector2(currentMapList.maps[spawnMapNumber - 1].mapXOffset * GlobalData.maxTimemaps, currentMapList.maps[spawnMapNumber - 1].mapYOffset * GlobalData.maxTimemaps));
 
             player.customCollider.enabled = true;
-            return mapArray[centerMapOffset, centerMapOffset];        
+
+            return mapArray[centerMapOffset + currentMapList.maps[spawnMapNumber - 1].mapXOffset, centerMapOffset + currentMapList.maps[spawnMapNumber - 1].mapYOffset];
         }
 
         savingAndLoading.LoadGameFile(save);
         player.progressTracker.bossesSlayed = save.bossesSlayed;
         player.progressTracker.collectibles = save.collectibles;
+
+        timePlayed = save.timePlayed;
 
         player.playerData.maxHealth = save.maxHealth;
         player.playerData.health = save.currentHealth;
@@ -262,6 +277,9 @@ public class GameManagerScript : MonoBehaviour
         player.playerData.EarthSpirit = save.earthSpirit;
         player.playerData.FireSpirit = save.fireSpirit;
         player.playerWeaponSwap.unlockedWeapons = save.unlockedWeapons;
+
+        player.playerData.damageModifier = save.damageModifier;
+        player.playerData.reloadSpeedModifier = save.reloadSpeedModifier;
 
         player.OnBowUnlocked(save.unlockedBow);
 
@@ -294,6 +312,9 @@ public class GameManagerScript : MonoBehaviour
         save.mapYOffset = mapArray[(int)currentPos.x, (int)currentPos.y].mapYOffset;
         save.mapID = mapArray[(int)currentPos.x, (int)currentPos.y].mapID;
 
+        save.zone = mapArray[(int)currentPos.x, (int)currentPos.y].mapPrefab.GetComponent<CustomTilemap>().zone;
+        save.timePlayed = timePlayed;
+
         save.bossesSlayed = player.progressTracker.bossesSlayed;
         save.collectibles = player.progressTracker.collectibles;
 
@@ -307,6 +328,9 @@ public class GameManagerScript : MonoBehaviour
         save.waterSpirit = player.playerData.WaterSpirit;
         save.earthSpirit = player.playerData.EarthSpirit;
         save.fireSpirit = player.playerData.FireSpirit;
+
+        save.damageModifier = player.playerData.damageModifier;
+        save.reloadSpeedModifier = player.playerData.reloadSpeedModifier;
 
         savingAndLoading.SaveGameFile(save);
     }
@@ -422,16 +446,17 @@ public class GameManagerScript : MonoBehaviour
     {
         CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
 
-        Debug.Log(connectedMapXOffset + " " + connectedMapYOffset);
-        Debug.Log(tilemap.map.mapXOffset + " " + tilemap.map.mapYOffset);
+        //Debug.Log(connectedMapXOffset + " " + connectedMapYOffset);
+        //Debug.Log(tilemap.map.mapXOffset + " " + tilemap.map.mapYOffset);
         mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
         {
             player.characterController.StopMovement(true);
             camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
             {
-                player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
+                if (!camera.stopCamera)
+                    camera.SnapCameraPosition();
                 ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
-                AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                ChangeAudioOnMapChange(mapArray[connectedMapXOffset, connectedMapYOffset].mapPrefab.GetComponent<CustomTilemap>().zone);
                 camera.blackout.DOFade(0, fadeTime);
                 player.characterController.ForceTransportPlayer(forceMoveArray[(int)mapBorderCollision.direction] + mapBorderCollision.additionalPlayerMove);
                 player.characterController.StopMovement(false);
@@ -454,9 +479,9 @@ public class GameManagerScript : MonoBehaviour
                 player.characterController.StopMovement(true);
                 camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
                 {
-                    player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
-                    Debug.Log(mapArray[connectedMapXOffset, connectedMapYOffset]);
-                    AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                    if (!camera.stopCamera)
+                        camera.SnapCameraPosition();
+                    ChangeAudioOnMapChange(mapArray[connectedMapXOffset, connectedMapYOffset].mapPrefab.GetComponent<CustomTilemap>().zone);
                     camera.blackout.DOFade(0, fadeTime);
 
                     Vector2[] forceMoveMagnitudeArray = new Vector2[]
@@ -484,10 +509,10 @@ public class GameManagerScript : MonoBehaviour
                 player.characterController.StopMovement(true);
                 camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
                 {
-                    player.mainCamera.GetComponent<CameraMovement>().SnapCameraPosition();
-                    Debug.Log(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                    if (!camera.stopCamera)
+                        camera.SnapCameraPosition();
                     ChangeCurrentMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
-                    AudioOnMapChange(connectedMapXOffset, connectedMapYOffset);
+                    ChangeAudioOnMapChange(mapArray[connectedMapXOffset, connectedMapYOffset].mapPrefab.GetComponent<CustomTilemap>().zone);
                     camera.blackout.DOFade(0, fadeTime);
 
                     Vector2[] forceMoveMagnitudeArray = new Vector2[]
@@ -565,7 +590,7 @@ public class GameManagerScript : MonoBehaviour
                             ChangePreloadedMap(mapArray[connectedMapXOffset, connectedMapYOffset]);
                             player.characterController.ForceMovePlayer(forceMoveArray[(int)mapBorderCollision.direction]);
                             Camera.main.GetComponent<CameraMovement>().MoveCameraBetweenZones(forceMoveArray[(int)mapBorderCollision.direction]);
-                            GameStateManager.instance.audioManager.OnMapChange(mapArray[connectedMapXOffset, connectedMapYOffset]);
+                            GameStateManager.instance.audioManager.OnMapChange(tilemap.zone);
                         });
 
 
@@ -606,9 +631,12 @@ public class GameManagerScript : MonoBehaviour
         xCoord = NumericExtensions.SafeDivision(xCoord, xSizeMul * ySizeMul);
         yCoord = NumericExtensions.SafeDivision(yCoord, xSizeMul * ySizeMul);
 
-        Camera.main.GetComponent<CameraMovement>().SetCameraCenter(new Vector2(xCoord, yCoord));
-        Camera.main.GetComponent<CameraMovement>().MoveCamera(new Vector2(xCoord, yCoord));
-        Camera.main.GetComponent<CameraMovement>().SetCameraBoundary(xSizeMul, ySizeMul);
+        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+
+        camera.SetCameraCenter(new Vector2(xCoord, yCoord));
+        if(!camera.stopCamera)
+            camera.MoveCamera(new Vector2(xCoord, yCoord));
+        camera.SetCameraBoundary(xSizeMul, ySizeMul);
     }
     public void ChangeCurrentMap(Map nextMap)
     {
@@ -631,13 +659,20 @@ public class GameManagerScript : MonoBehaviour
         preloadedMaps[nextMap.mapXOffset, nextMap.mapYOffset].GetComponent<CustomTilemap>().DisableAllTriggers(1);
         preloadedMaps[nextMap.mapXOffset, nextMap.mapYOffset].SetActive(true);
     }
-    private void AudioOnMapChange(int mapXOffset, int mapYOffset)
+    private void ChangeAudioOnMapChange(Zone zone)
     {
-        GameStateManager.instance.audioManager.OnMapChange(mapArray[mapXOffset, mapYOffset]);
+        GameStateManager.instance.audioManager.OnMapChange(zone);
     }
-    private void OnMapChange(Map map)
+
+    public void LoadGameButton()
     {
-        GameStateManager.instance.audioManager.OnMapChange(map);
+        //Load Game by reloading the scene
+        GameStateManager.instance.LoadGameSceneWithLoadingScreen();
+
+        //Load Game in the same scene;
+        //Map map = LoadGame();
+        //ChangeCurrentMap(map);
+        //ChangeAudioOnMapChange(map.mapPrefab.GetComponent<CustomTilemap>().zone);
     }
 }
 

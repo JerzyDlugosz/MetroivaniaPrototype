@@ -117,7 +117,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 38074700908325160}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 8474801966429086305}
   spriteAnimation: {fileID: 4675125136327379779}

@@ -1257,6 +1257,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 442389740}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}
@@ -11573,6 +11574,7 @@ MonoBehaviour:
   compMapYSize: 3
   compMapXPos: {x: 2, y: 3}
   compMapYPos: {x: 11, y: 13}
+  maplist: {fileID: 0}
 --- !u!1 &1973447719
 GameObject:
   m_ObjectHideFlags: 0

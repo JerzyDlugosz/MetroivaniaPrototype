@@ -31,6 +31,12 @@ public class BaseEntity : MonoBehaviour
     public bool isStopped;
     public bool onFire;
     public bool onJumpPad;
+    public bool inForceField;
+    #endregion
+
+    #region effectModifiers
+    public float onJumpPadModifier;
+    public float inForceFieldModifier;
     #endregion
 
 
@@ -71,6 +77,17 @@ public class BaseEntity : MonoBehaviour
         }
         spriteRenderer.material.SetColor(colorID, Color.white);
         onFire = false;
+    }
+
+    public void RemoveAllDebuffs()
+    {
+        if (burningCoroutine != null)
+        {
+            StopCoroutine(burningCoroutine);
+        }
+        spriteRenderer.material.SetColor(colorID, Color.white);
+        onFire = false;
+        isSlowed = false;
     }
 
     public virtual void TakeDamage(float damage)

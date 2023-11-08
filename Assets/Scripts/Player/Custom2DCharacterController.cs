@@ -9,12 +9,7 @@ public class Custom2DCharacterController : MonoBehaviour
     private Player player;
     private PlayerData playerData;
 
-    private Vector3 velocity;
-
     private Vector2 motion;
-    private Vector2 JumpMotion;
-    private Vector3 animationMotion;
-    private Vector3 gravity;
 
     public float movementSpeed;
     public float jumpSpeed;
@@ -27,7 +22,13 @@ public class Custom2DCharacterController : MonoBehaviour
     private float jumpTimer;
 
     private bool stopMovement;
-    
+
+    public float moveSpeedModifier = 1f;
+    public float jumpSpeedModifier = 1f;
+    public float gravityModifier = 1f;
+
+    public float additionalJumpPadModifier = 1f;
+
     public void StopMovement(bool state)
     {
         stopMovement = state;
@@ -55,24 +56,8 @@ public class Custom2DCharacterController : MonoBehaviour
         playerData.playerState = PlayerStates.Idle;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-       // CheckPosition();
-
-        if(stopMovement)
-        {
-            return;
-        }
-
-        Movement();
-        Jump();
-        ApplyForce();
-        Climbing();
-        Swimming();
-
-        ResetGravity();
-
         if (jumpTimer > 0)
         {
             jumpTimer -= Time.deltaTime;
@@ -82,7 +67,139 @@ public class Custom2DCharacterController : MonoBehaviour
         playerData.playerMapPosition = new Vector2(((transform.position.x + 12) % 24) - 12, ((transform.position.y + 12) % 24) - 12);
     }
 
-    void CheckPosition()
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if(stopMovement)
+        {
+            return;
+        }
+        CheckIfPlayerIsGrounded();
+        CheckIfPlayerIsOnLadder();
+
+        StateModifiers();
+
+        MotionForAnimations();
+        CheckIfIdle();
+
+        ApplyForce();
+    }
+
+    void StateModifiers()
+    {
+        // in water, in lava, in forcefield, is reloading, on jump pad, on ladder
+        float waterMoveSpeedModifier = 1f;
+        float waterJumpSpeedModifier = 1f;
+        float waterGravityModfifier = 1f;
+
+        float lavaMoveSpeedModifier = 1f;
+        float lavaJumpSpeedModifier = 1f;
+        float lavaGravityModfifier = 1f;
+
+        float forcefieldMoveSpeedModifier = 1f;
+        float forcefieldJumpSpeedModifier = 1f;
+        float forcefieldGravityModfifier = 1f;
+
+        float reloadingMoveSpeedModifier = 1f;
+        float reloadingJumpSpeedModifier = 1f;
+        float reloadingGravityModifier = 1f;
+
+        float jumpPadMoveSpeedModifier = 1f;
+        float jumpPadJumpSpeedModifier = 1f;
+        float jumpPadGravityModifier = 1f;
+
+        float ladderMoveSpeedModifier = 1f;
+        float ladderJumpSpeedModifier = 1f;
+        float ladderGravityModifier = 1f;
+
+        float airStoneMoveSpeedModifier = 1f;
+        float airStoneJumpSpeedModifier = 1f;
+        float airStoneGravityModifier = 1f;
+
+        if(player.inWater)
+        {
+            if (playerData.FireSpirit)
+            {
+                waterMoveSpeedModifier = 0.8f;
+                waterJumpSpeedModifier = 0.8f;
+                waterGravityModfifier = 0.2f;
+            }
+            else
+            {
+                waterMoveSpeedModifier = 0.5f;
+                waterJumpSpeedModifier = 0.5f;
+                waterGravityModfifier = 0.1f;
+            }
+        }
+        if (player.inLava)
+        {
+            if(playerData.FireSpirit)
+            {
+                lavaMoveSpeedModifier = 0.66f;
+                lavaJumpSpeedModifier = 0.66f;
+                lavaGravityModfifier = 0.1f;
+            }
+            else
+            {
+                lavaMoveSpeedModifier = 0.33f;
+                lavaJumpSpeedModifier = 0.33f;
+                lavaGravityModfifier = 0.05f;
+            }
+        }
+        if (player.inForceField)
+        {
+            forcefieldMoveSpeedModifier = player.inForceFieldModifier;
+            forcefieldJumpSpeedModifier = player.inForceFieldModifier;
+            forcefieldGravityModfifier = 1f;
+        }
+        if(playerData.isRecallButtonHeld)
+        {
+            if (!playerData.EarthSpirit)
+            {
+                reloadingMoveSpeedModifier = 0f;
+                reloadingJumpSpeedModifier = 0f;
+                reloadingGravityModifier = 1f;
+            }
+            else
+            {
+                reloadingMoveSpeedModifier = 0.5f;
+                reloadingJumpSpeedModifier = 0.5f;
+                reloadingGravityModifier = 1f;
+            }
+        }
+        if (player.onJumpPad)
+        {
+            jumpPadMoveSpeedModifier = 1f;
+            jumpPadJumpSpeedModifier = 3f * additionalJumpPadModifier;
+            jumpPadGravityModifier = 1f;
+        }
+        if (player.onLadder)
+        {
+            ladderMoveSpeedModifier = 1f;
+            ladderJumpSpeedModifier = 1f;
+            ladderGravityModifier = 0f;
+        }
+        if(playerData.AirSpirit)
+        {
+            airStoneMoveSpeedModifier = 1.5f;
+            airStoneJumpSpeedModifier = 1.5f;
+            airStoneGravityModifier = 0.8f;
+        }
+        if (playerData.isDownButtonHeld)
+        {
+            waterGravityModfifier = 1f;
+            lavaGravityModfifier = 1f;
+            airStoneGravityModifier = 1f;
+        }
+
+
+        moveSpeedModifier = waterMoveSpeedModifier * lavaMoveSpeedModifier * forcefieldMoveSpeedModifier * reloadingMoveSpeedModifier * jumpPadMoveSpeedModifier * ladderMoveSpeedModifier * airStoneMoveSpeedModifier;
+        jumpSpeedModifier = waterJumpSpeedModifier * lavaJumpSpeedModifier * forcefieldJumpSpeedModifier * reloadingJumpSpeedModifier * jumpPadJumpSpeedModifier * ladderJumpSpeedModifier * airStoneJumpSpeedModifier;
+        gravityModifier = waterGravityModfifier * lavaGravityModfifier * forcefieldGravityModfifier * reloadingGravityModifier * jumpPadGravityModifier * ladderGravityModifier * airStoneGravityModifier;
+
+    }
+
+    void CheckIfIdle()
     {
         if(motion.y == 0)
         {
@@ -90,11 +207,10 @@ public class Custom2DCharacterController : MonoBehaviour
         }
     }
 
-    void Climbing()
+    void CheckIfPlayerIsOnLadder()
     {
         if(player.onLadder)
         {
-            player.customRigidbody.gravityScale = 0f;
             if (playerData.isUpButtonHeld)
             {
                 player.customRigidbody.velocity = new Vector2(player.customRigidbody.velocity.x, ladderSpeed);
@@ -106,48 +222,7 @@ public class Custom2DCharacterController : MonoBehaviour
         }
     }
 
-    void Swimming()
-    {
-        if (player.inWater)
-        {
-            Debug.Log("In Water");
-            playerData.playerState = PlayerStates.InWater;
-            player.customRigidbody.gravityScale = playerData.baseGravityScale / 10f;
-            jumpSpeed = playerData.baseJumpSpeed / 2;
-            movementSpeed = playerData.baseMovementSpeed / 2;
-
-            if (playerData.isDownButtonHeld)
-            {
-                player.customRigidbody.gravityScale = playerData.baseGravityScale;
-            }
-        }
-
-        if(player.inLava)
-        {
-            Debug.Log("In Lava");
-            playerData.playerState = PlayerStates.InLava;
-            player.customRigidbody.gravityScale = playerData.baseGravityScale / 20f;
-            jumpSpeed = playerData.baseJumpSpeed / 3;
-            movementSpeed = playerData.baseMovementSpeed / 3;
-
-            if (playerData.isDownButtonHeld)
-            {
-                player.customRigidbody.gravityScale = playerData.baseGravityScale;
-            }
-        }
-    }
-
-    void ResetGravity()
-    {
-        if (!player.onLadder && !player.inWater && !player.inLava && !player.onJumpPad)
-        {
-            player.customRigidbody.gravityScale = player.playerData.baseGravityScale;
-            jumpSpeed = playerData.baseJumpSpeed;
-            movementSpeed = playerData.baseMovementSpeed;
-        }
-    }
-
-    void Movement()
+    void MotionForAnimations()
     {
         if (playerData.isRunning)
         {
@@ -162,18 +237,18 @@ public class Custom2DCharacterController : MonoBehaviour
         playerData.motion = motion;
         playerData.animationMotion = motion;
     }
-
-    void Jump()
+    void CheckIfPlayerIsGrounded()
     {
         RaycastHit2D hit = Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, 0.2f, WallLayer);
 
-        if(hit.collider)
+        if (hit.collider)
         {
+            // Is Grounded
             player.isGrounded = true;
         }
         else
         {
-            playerData.playerState = PlayerStates.InAir;
+            // In Air
             player.isGrounded = false;
         }
 
@@ -186,20 +261,20 @@ public class Custom2DCharacterController : MonoBehaviour
         {
             player.isGrounded = true;
         }
-
-        if(player.onJumpPad)
-        {
-            player.characterController.jumpSpeed = playerData.baseJumpSpeed * 2;
-        }
     }
 
     void ApplyForce()
     {
-        if (jumpTimer <= 0 && playerData.isJumping && player.isGrounded)
+        jumpSpeed = playerData.baseJumpSpeed * jumpSpeedModifier;
+        movementSpeed = playerData.baseMovementSpeed * moveSpeedModifier;
+        player.customRigidbody.gravityScale = playerData.baseGravityScale * gravityModifier;
+
+        if (jumpTimer <= 0 && playerData.isJumping && player.isGrounded && jumpSpeedModifier > 0)
         {
             jumpTimer = 0.2f;
             player.playerAnimation.OnPlayerJump();
             player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
+            GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(player.onJumpAudio);
         }
 
         if (motion != Vector2.zero)

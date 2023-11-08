@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8598688568800370508}
   - component: {fileID: 6581756972684626715}
   - component: {fileID: 52431098809257514}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AggroRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 38074700908325160}
+  onAttackAudioClip: {fileID: 8300000, guid: 3b5947eafa2e95d458fa8271eb2ccc24, type: 3}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 0}
   spriteAnimation: {fileID: 4675125136327379779}

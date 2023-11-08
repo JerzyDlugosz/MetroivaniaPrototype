@@ -13,6 +13,7 @@ public class PHeavyArrow : PlayerProjectile
         wallCollisionEvent.AddListener(() => projectileParticleController.OnCollision());
         recallEvent.AddListener(() => projectileParticleController.OnRecall());
         endOfLifetimeEvent.AddListener(() => projectileParticleController.OnBreak());
+        endOfLifetimeEvent.AddListener(() => GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio));
 
         wallCollisionEvent.AddListener(OnWallCollision);
         wallBounceEvent.AddListener(OnWallBounce);
@@ -40,6 +41,7 @@ public class PHeavyArrow : PlayerProjectile
         platformCollider.transform.localRotation = Quaternion.Euler(0f, 0f, -gameObject.transform.localEulerAngles.z);
         platformCollider.enabled = true;
         isStuckInWall = true;
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
     }
 
     public void OnWallBounce()

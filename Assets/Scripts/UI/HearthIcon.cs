@@ -7,5 +7,6 @@ public class HearthIcon : MonoBehaviour
 {
     public Image outline;
     public Image hearth;
-    public Image flash;
+    public Image damageFlash;
+    public Image healingFlash;
 }

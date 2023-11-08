@@ -1,3 +1,4 @@
+using DG.Tweening;
 using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
@@ -5,12 +6,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.Playables;
 
 [Serializable]
 public class OnArrowCapacityIncreaseEvent : UnityEvent { }
 [Serializable]
 public class OnArrowTypeCollectedEvent : UnityEvent { }
+[Serializable]
+public class OnArrowDamageIncreaseEvent : UnityEvent { }
+[Serializable]
+public class OnArrowReloadSpeedIncreaseEvent : UnityEvent { }
 [Serializable]
 public class OnArrowUsedEvent : UnityEvent { }
 [Serializable]
@@ -36,6 +40,9 @@ public class OnMaxHealthUpdateEvent : UnityEvent { }
 public class OnHealthPickupEvent : UnityEvent<float> { }
 public class Player : BaseEntity
 {
+    protected static readonly int flashHealingID = Shader.PropertyToID("_FlashHealingStrength");
+    protected static readonly int deathID = Shader.PropertyToID("_DeathStrength");
+
     public PlayerData playerData;
     public PlayerAnimation playerAnimation;
     public Custom2DCharacterController characterController;
@@ -69,8 +76,22 @@ public class Player : BaseEntity
     private GameObject bow;
 
     private bool damageable = true;
+    private bool healable = true;
+    private bool isInvincible = false;
     public float additionalDamageTakenDelay;
 
+    #region AudioClips
+    public AudioClip onHealthRestoreAudio;
+    public AudioClip onJumpAudio;
+    public AudioClip onBeginReloadAudio;
+    public AudioClip onLoopReloadAudio;
+    public AudioClip onEndReloadAudio;
+    #endregion
+
+    [HideInInspector]
+    public OnArrowDamageIncreaseEvent arrowDamageIncreaseEvent;
+    [HideInInspector]
+    public OnArrowReloadSpeedIncreaseEvent arrowReloadSpeedIncreaseEvent;
     [HideInInspector]
     public OnArrowCapacityIncreaseEvent arrowCapacityIncreaseEvent;
     [HideInInspector]
@@ -105,6 +126,19 @@ public class Player : BaseEntity
     /// TemporaryFix, events dont work cause its not in order
     /// </summary>
     public RemainingArrowScript remainingArrowScript;
+
+    public GameObject deathScreen;
+
+    private Vector2 previousAimPosition = Vector2.zero;
+
+    private void Awake()
+    {
+        if(playerInput == null)
+        {
+            playerInput = GetComponent<PlayerInput>();
+        }
+    }
+
     public override void Start()
     {
         base.Start();
@@ -138,8 +172,41 @@ public class Player : BaseEntity
         playerInputActions.PauseMenu.ChangeMenuLeft.performed += ChangeMenuLeft_performed;
         playerInputActions.PauseMenu.ChangeMenuRight.performed += ChangeMenuRight_performed;
 
+        playerInputActions.Player.Sprint.performed += OnAnyAction;
+        playerInputActions.Player.Sprint.canceled += OnAnyAction;
+
+        playerInputActions.Player.Shoot.performed += OnAnyAction;
+        playerInputActions.Player.Shoot.canceled += OnAnyAction;
+
+        playerInputActions.Player.WeaponSwapLeft.performed += OnAnyAction;
+        playerInputActions.Player.WeaponSwapRight.performed += OnAnyAction;
+
+        playerInputActions.Player.Jump.performed += OnAnyAction;
+        playerInputActions.Player.Jump.canceled += OnAnyAction;
+
+        playerInputActions.Player.DownMotion.performed += OnAnyAction;
+        playerInputActions.Player.DownMotion.canceled += OnAnyAction;
+
+        playerInputActions.Player.UpMotion.performed += OnAnyAction;
+        playerInputActions.Player.UpMotion.canceled += OnAnyAction;
+
+        playerInputActions.Player.Recall.performed += OnAnyAction;
+        playerInputActions.Player.Recall.canceled += OnAnyAction;
+
+        playerInputActions.Player.Pause.canceled += OnAnyAction;
+        playerInputActions.PauseMenu.UnPause.canceled += OnAnyAction;
+
+        playerInputActions.PauseMenu.ChangeMenuLeft.performed += OnAnyAction;
+        playerInputActions.PauseMenu.ChangeMenuRight.performed += OnAnyAction;
+
+        playerInputActions.Player.Movement.performed += OnAnyAction;
+        playerInputActions.Player.AimPosition.performed += OnAnyAction;
+
 
         arrowCapacityIncreaseEvent.AddListener(OnArrowCapacityIncrease);
+        arrowDamageIncreaseEvent.AddListener(OnArrowDamageIncrease);
+        arrowReloadSpeedIncreaseEvent.AddListener(OnArrowReloadSpeedIncrease);
+
         arrowTypeCollectedEvent.AddListener(OnArrowTypeCollected);
         arrowUsedEvent.AddListener(OnArrowUsed);
         arrowtipUsedEvent.AddListener(OnArrowtipUsed);
@@ -180,6 +247,11 @@ public class Player : BaseEntity
     {
         bow.SetActive(value);
         playerData.unlockedBow = value;
+    }
+
+    private void OnAnyAction(InputAction.CallbackContext obj)
+    {
+        //currentControlScheme = obj.control.path;
     }
 
     private void Sprint_canceled(InputAction.CallbackContext obj)
@@ -259,6 +331,10 @@ public class Player : BaseEntity
 
     private void Pause_canceled(InputAction.CallbackContext obj)
     {
+        if(GameManagerScript.instance.pauseMenu == null)
+        {
+            return;
+        }
         Debug.Log(playerInput.currentActionMap.name);
         playerInput.SwitchCurrentActionMap("PauseMenu");
         GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
@@ -275,8 +351,11 @@ public class Player : BaseEntity
 
     private void UnPause_canceled(InputAction.CallbackContext obj)
     {
+        if (GameManagerScript.instance.pauseMenu == null)
+        {
+            return;
+        }
         GameManagerScript.instance.pauseMenu.gameObject.SetActive(false);
-        Debug.Log(playerInput.currentActionMap.name);
         playerInput.SwitchCurrentActionMap("Player");
         GameManagerScript.instance.entitiesManager.EntitiesPauseState(false);
         playerInputActions.Player.Enable();
@@ -295,16 +374,26 @@ public class Player : BaseEntity
 
     void ReadInput()
     {
-        rotationInput = playerInputActions.Player.Rotation.ReadValue<Vector2>();
         movementInput = playerInputActions.Player.Movement.ReadValue<Vector2>();
-        aimInput = playerInputActions.Player.AimPosition.ReadValue<Vector2>();
 
-        if (playerInputActions.Player.Rotation.activeControl != null)
+        if (playerInput.currentControlScheme == "Gamepad")
         {
-            currentInputControl = playerInputActions.Player.Rotation.activeControl.device.name;
+            aimInput = playerInputActions.Player.AimPositionGamepad.ReadValue<Vector2>();
+            if (Mathf.Abs(aimInput.x) < 0.05f)
+                aimInput.x = previousAimPosition.x;
+            if (Mathf.Abs(aimInput.y) < 0.05f)
+                aimInput.y = previousAimPosition.y;
+
+            aimInputScreenPosition = new Vector3(transform.position.x + aimInput.x, transform.position.y + aimInput.y, 0f);
         }
-        aimInputScreenPosition = Camera.main.ScreenToWorldPoint(aimInput);
+        else if(playerInput.currentControlScheme == "Keyboard")
+        {
+            aimInput = playerInputActions.Player.AimPosition.ReadValue<Vector2>();
+            aimInputScreenPosition = Camera.main.ScreenToWorldPoint(aimInput);
+        }
+
         aimInputScreenPosition.z = Camera.main.nearClipPlane;
+        previousAimPosition = aimInput;
     }
 
     void OnArrowUsed()
@@ -352,6 +441,17 @@ public class Player : BaseEntity
         playerData.currentArrowtipsCount += 2;
         playerData.maxArrowtipsCount += 2;
     }
+
+    void OnArrowDamageIncrease()
+    {
+        playerData.damageModifier += 0.05f;
+    }
+
+    void OnArrowReloadSpeedIncrease()
+    {
+        playerData.reloadSpeedModifier -= 0.05f;
+    }
+
     void OnArrowTypeCollected()
     {
         if(playerWeaponSwap.unlockedWeapons < playerWeaponSwap.availableWeapons.Length)
@@ -378,8 +478,27 @@ public class Player : BaseEntity
         remainingArrowScript.ChangeImagePrefab();
     }
 
+    public void RestoreHealth(float healthRestored)
+    {
+        if(healable)
+        {
+            float tempHealth = playerData.health + healthRestored;
+            if (tempHealth > playerData.maxHealth)
+            {
+                return;
+            }
+            HealthPickup(healthRestored);
+            StartCoroutine(HealingTimer());
+            GameStateManager.instance.audioManager.PlaySoundEffect(onHealthRestoreAudio);
+        }
+    }
+
     public override void TakeDamage(float damage)
     {
+        if(isInvincible)
+        {
+            return;
+        }
         if (damageable)
         {
             playerData.health -= damage;
@@ -387,7 +506,7 @@ public class Player : BaseEntity
             if(playerData.health <= 0)
             {
                 GameStateManager.instance.audioManager.PlaySoundEffect(onDeathAudioClip);
-                Debug.Log("You are dead!");
+                DeathScreen();
             }
 
             remainingHearthsScript.UpdateCurrentHealthOnImages((int)playerData.health);
@@ -396,15 +515,62 @@ public class Player : BaseEntity
         }
     }
 
+    private void DeathScreen()
+    {
+        GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
+        stoppedEvent.Invoke(true);
+        Invincibility(true);
+        SetInputState(false);
+        StartCoroutine(DeathAnimation());
+    }
+
+    IEnumerator DeathAnimation()
+    {
+        GameStateManager.instance.audioManager.RemoveAudio();
+        for (int i = 0; i < 100; i++)
+        {
+            playerSpriteRenderer.material.SetFloat(deathID, i / 100f);
+            yield return new WaitForFixedUpdate();
+        }
+        GameManagerScript.instance.cameraMovement.blackout.DOFade(1, 1f).OnComplete(() =>
+        {
+            deathScreen.SetActive(true);
+            GameManagerScript.instance.cameraMovement.blackout.DOFade(0, 1f);
+        });
+    }
+
+    public void Invincibility(bool state)
+    {
+        if (state)
+        {
+            spriteRenderer.material.SetFloat(InvincibilityID, 1);
+            isInvincible = true;
+        }
+        else
+        {
+            spriteRenderer.material.SetFloat(InvincibilityID, 0);
+            isInvincible = false;
+        }
+    }
+
+    public void SetInputState(bool state)
+    {
+        if(state)
+            playerInputActions.Enable();
+        else
+            playerInputActions.Disable();
+    }
+
     public void MaxHealthPickup()
     {
+        remainingHearthsScript.AddHearthImage();
         playerData.maxHealth += 4;
         HealthPickup(4);
     }
 
     public void HealthPickup(float healthAmmount)
     {
-        float tempHealth = playerData.health += healthAmmount;
+        float tempHealth = playerData.health + healthAmmount;
         if(tempHealth > playerData.maxHealth)
         {
             playerData.health = playerData.maxHealth;
@@ -420,12 +586,24 @@ public class Player : BaseEntity
     {
         damageable = false;
         playerAnimation.playerSpriteRenderer.material.SetFloat(flashID, 1);
-        remainingHearthsScript.FlashHearths(flashID, true);
+        remainingHearthsScript.FlashHearths(0, true);
         yield return new WaitForSeconds(0.1f);
         playerAnimation.playerSpriteRenderer.material.SetFloat(flashID, 0);
-        remainingHearthsScript.FlashHearths(flashID, false);
+        remainingHearthsScript.FlashHearths(0, false);
         yield return new WaitForSeconds(additionalDamageTakenDelay);
         damageable = true;
+    }
+
+    IEnumerator HealingTimer()
+    {
+        healable = false;
+        playerAnimation.playerSpriteRenderer.material.SetFloat(flashHealingID, 1);
+        remainingHearthsScript.FlashHearths(1, true);
+        yield return new WaitForSeconds(0.1f);
+        playerAnimation.playerSpriteRenderer.material.SetFloat(flashHealingID, 0);
+        remainingHearthsScript.FlashHearths(1, false);
+        yield return new WaitForSeconds(additionalDamageTakenDelay);
+        healable = true;
     }
 
     public void PlayAttackSoundEffect()

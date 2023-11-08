@@ -76,6 +76,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &5644473351749100879
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: 823891fdb91eb5c4593b979b2ee33813, type: 2}
   outsideColliders: {fileID: 9005889184309158058}
+  zone: 0
 --- !u!1 &5644473353181852850
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +340,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 8
-      m_TileSpriteIndex: 4
+      m_TileSpriteIndex: 10
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -347,7 +350,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 8
-      m_TileSpriteIndex: 5
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 2
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -4502,20 +4505,20 @@ Tilemap:
     m_Data: {fileID: 8074338581418846440, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   - m_RefCount: 22
     m_Data: {fileID: 4519664136019108208, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -3932762474534642510, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: -8560909203809222747, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -3932762474534642510, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 36
     m_Data:
@@ -12626,6 +12629,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &7652401198509244896
 GameObject:
   m_ObjectHideFlags: 0
@@ -12702,6 +12707,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &8080849111910417936
 GameObject:
   m_ObjectHideFlags: 0
@@ -12778,6 +12785,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &9005889184309158058
 GameObject:
   m_ObjectHideFlags: 0

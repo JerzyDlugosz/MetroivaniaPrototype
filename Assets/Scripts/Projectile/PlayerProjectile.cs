@@ -33,8 +33,12 @@ public class PlayerProjectile : Projectile
     protected bool isStuckInWall = false;
     protected bool isShaking = false;
 
-    public override void OnInstantiate(float angle, float distance, float multiplier)
+    [SerializeField]
+    protected AudioClip OnWallCollisionAudio;
+
+    public override void OnInstantiate(float angle, float distance, float multiplier, float _damageModifier)
     {
+        damageModifier = _damageModifier;
         float distanceMagnitude = MathF.Abs(distance);
 
         if (distanceMagnitude > maxProjectileForceDistance)
@@ -121,12 +125,12 @@ public class PlayerProjectile : Projectile
         {
             if(collision.TryGetComponent(out BaseNPC baseNPC))
             {
-                baseNPC.TakeDamage(projectileDamage);
+                baseNPC.TakeDamage(projectileDamage * damageModifier);
                 entityCollisionEvent.Invoke(baseNPC);
                 return;
             }
             BaseNPC parentBaseNPC = collision.GetComponentInParent<BaseNPC>();
-            parentBaseNPC.TakeDamage(projectileDamage);
+            parentBaseNPC.TakeDamage(projectileDamage * damageModifier);
             entityCollisionEvent.Invoke(parentBaseNPC);
         }
     }

@@ -1798,11 +1798,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.2795052e-36
+      e03: 8.62524e+25
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.9e-43
+      e13: 3.14e-43
       e20: 0
       e21: 0
       e22: 0
@@ -2148,6 +2148,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 982442949}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}
@@ -4991,6 +4992,7 @@ MonoBehaviour:
   compMapYSize: 0
   compMapXPos: {x: 4, y: 4}
   compMapYPos: {x: 6, y: 9}
+  maplist: {fileID: 0}
 --- !u!114 &1217325352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5117,6 +5119,7 @@ MonoBehaviour:
   compMapYSize: 3
   compMapXPos: {x: 2, y: 3}
   compMapYPos: {x: 11, y: 13}
+  maplist: {fileID: 0}
 --- !u!1 &1482510354
 GameObject:
   m_ObjectHideFlags: 0

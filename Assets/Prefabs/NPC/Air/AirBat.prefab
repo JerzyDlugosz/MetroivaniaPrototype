@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8474801966429086305}
   - component: {fileID: -8602165084245878120}
   - component: {fileID: 6896842538500428315}
+  - component: {fileID: -1723202795320436763}
   m_Layer: 10
   m_Name: AirBat
   m_TagString: Enemy
@@ -39,6 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5789901502336738557}
+  - {fileID: 976660678601880195}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -220,10 +222,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 38074700908325160}
-  onAttackAudioClip: {fileID: 8300000, guid: 3296169e1e9b26e4fa10617573cf3306, type: 3}
-  onHitAudioClip: {fileID: 8300000, guid: b3cdb04b2268b8a4abb9325ca6b303eb, type: 3}
-  onDeathAudioClip: {fileID: 0}
+  onAttackAudioClip: {fileID: 8300000, guid: be20ee8a458deba45af58f906c7c3440, type: 3}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: -4242172301975190168}
   NPCRigidbody: {fileID: 8474801966429086305}
   spriteAnimation: {fileID: 4675125136327379779}
@@ -240,12 +245,12 @@ MonoBehaviour:
   health: 10
   speed: 2
   baseSpeed: 2
-  damage: 0
+  damage: 2
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   isRanged: 1
-  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: eda72651f5f11b947aaf3178b37edb0c, type: 3}
+  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: 3189e16e00f80d14096c19291661e579, type: 3}
 --- !u!114 &4675125136327379779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,19 +278,19 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604331692094765891}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &-8602165084245878120
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -296,12 +301,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.3
 --- !u!114 &6896842538500428315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +320,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathParticle: {fileID: 217049895306480580, guid: cae12caa1e8321b4cb034567d90209d9, type: 3}
+--- !u!114 &-1723202795320436763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604331692094765891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6014aaea0a7a3df49b03199453b96619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcDrops:
+  - {fileID: 4976562938958509318, guid: 786a9755abee7e14eba4295ad0734fbc, type: 3}
+  randomizeDrops: 0
+  dropLocation: {fileID: 0}
 --- !u!1 &4716354720640664400
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +347,7 @@ GameObject:
   - component: {fileID: 5789901502336738557}
   - component: {fileID: 654022063093918631}
   - component: {fileID: 2065170450413319685}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AggroRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,3 +399,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destinationSetter: {fileID: 5006463616003970055}
   isStationary: 0
+--- !u!1 &6670879832584968947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 976660678601880195}
+  - component: {fileID: 8574630536195154383}
+  - component: {fileID: 2552438697668831083}
+  - component: {fileID: 1487195870733846143}
+  m_Layer: 10
+  m_Name: AttackCollision
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &976660678601880195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6670879832584968947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9008663120303266725}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &8574630536195154383
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6670879832584968947}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &2552438697668831083
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6670879832584968947}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
+--- !u!114 &1487195870733846143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6670879832584968947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3c0553b855fb0e479a05a0e9cf3f19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

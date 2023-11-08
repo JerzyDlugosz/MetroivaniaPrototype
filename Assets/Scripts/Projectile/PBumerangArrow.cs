@@ -51,11 +51,12 @@ public class PBumerangArrow : PlayerProjectile
         platformCollider.transform.localRotation = Quaternion.Euler(0f, 0f, -gameObject.transform.localEulerAngles.z);
         platformCollider.enabled = true;
         isStuckInWall = true;
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
     }
 
-    public override void OnInstantiate(float angle, float distance, float multiplier)
+    public override void OnInstantiate(float angle, float distance, float multiplier, float _damageModifier)
     {
-        base.OnInstantiate(angle, distance, 1f);
+        base.OnInstantiate(angle, distance, 1f, _damageModifier);
 
         opposingForceMagnitude = MathExtensions.GetAngleMagnitude(angle, true);
         Debug.Log($"{opposingForceMagnitude.x},{opposingForceMagnitude.y}");

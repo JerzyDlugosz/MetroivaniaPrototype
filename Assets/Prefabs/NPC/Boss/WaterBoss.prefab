@@ -55,6 +55,7 @@ MonoBehaviour:
   animationSpeed: 5
   stopAnimation: 0
   automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!114 &4070136275558122105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +95,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 4070136276342817290}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 0}
   spriteAnimation: {fileID: 4070136275558122106}
@@ -111,6 +119,7 @@ MonoBehaviour:
   health: 20
   speed: 0
   baseSpeed: 0
+  damage: 0
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
@@ -185,6 +194,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcDrops:
   - {fileID: 4976562938958509318, guid: 195ae97361897b144b151ab89074fb17, type: 3}
+  randomizeDrops: 1
+  dropLocation: {fileID: 0}
 --- !u!1 &4070136276342817288
 GameObject:
   m_ObjectHideFlags: 0

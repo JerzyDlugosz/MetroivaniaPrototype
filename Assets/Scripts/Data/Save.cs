@@ -12,9 +12,13 @@ public class Save
     public int[] unlockedMinimapBackgrounds = new int[100*100];
     public int[] unlockedMinimapWalls = new int[100 * 100];
     public int[] unlockedMinimaDoors = new int[100 * 100];
+    #endregion
+
+    #region SaveLocation
     public int mapXOffset;
     public int mapYOffset;
     public int mapID;
+    public Zone zone;
     #endregion
 
     #region BossAndCollectibleProgress
@@ -28,23 +32,17 @@ public class Save
     public byte maxArrowCount;
     public byte currentArrowCount;
     public byte unlockedWeapons;
+    public float reloadSpeedModifier;
+    public float damageModifier;
 
     public bool unlockedBow;
     public bool waterSpirit;
     public bool earthSpirit;
     public bool fireSpirit;
+    public bool airSpirit;
     #endregion
 
-}
-
-[System.Serializable]
-public class NestedIntArray
-{
-    public int[] array = new int[100];
-}
-
-[System.Serializable]
-public class NestedBoolArray
-{
-    public bool[] array = new bool[100];
+    #region Leaderboard
+    public float timePlayed;
+    #endregion
 }

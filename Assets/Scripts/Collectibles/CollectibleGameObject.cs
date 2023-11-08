@@ -23,12 +23,22 @@ public class CollectibleGameObject : MonoBehaviour
     protected Sprite collectibleSprite;
     [SerializeField]
     protected CollectibleType collectibleType;
+    [SerializeField]
+    protected CollectibleSpriteIDs collectibleSpriteID;
+    [SerializeField]
+    protected AudioClip PickupAudioClip;
+    [SerializeField]
+    protected string collectibleName;
+    [SerializeField]
+    protected string collectibleDescription;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
+            GameStateManager.instance.audioManager.PlaySoundEffect(PickupAudioClip);
             collectEvent.Invoke();
+            CCollider.enabled = false;
         }
     }
 }
@@ -38,4 +48,5 @@ public enum CollectibleType
     StatUpgrade,
     ArrowType,
     PermanentUpgrade,
+    Spirit
 }

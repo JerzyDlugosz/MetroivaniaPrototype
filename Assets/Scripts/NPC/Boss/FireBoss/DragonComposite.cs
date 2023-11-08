@@ -35,8 +35,10 @@ public class DragonComposite : MonoBehaviour
         if (compositeEnemyHealth <= 0) 
         {
             OnCompositeEnemyDeath();
+            Debug.Log("Count: " + dragonParts.Count);
             for (int i = 0; i < dragonParts.Count; i++)
             {
+                Debug.Log("Part: " + dragonParts[i].name);
                 dragonParts[i].onNPCDeath.Invoke();
             }
         }

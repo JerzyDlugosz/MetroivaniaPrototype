@@ -15,6 +15,11 @@ public class RamBatEnemy : BaseNPC
     [SerializeField]
     private float chargeForce;
 
+    [SerializeField]
+    private Collider2D circleCollider;
+    [SerializeField]
+    private Collider2D boxCollider;
+
     public override void Start()
     {
         base.Start();
@@ -92,6 +97,9 @@ public class RamBatEnemy : BaseNPC
         Debug.Log(magnitude);
         NPCRigidbody.AddForce(chargeForce * magnitude);
 
+        circleCollider.enabled = false;
+        boxCollider.enabled = true;
+
         float distance = Vector2.Distance(transform.position, GameManagerScript.instance.player.transform.position);
         StartCoroutine(delay(distance / 4));
 
@@ -103,5 +111,8 @@ public class RamBatEnemy : BaseNPC
         stoppedEvent.Invoke(false);
         isStopped = false;
         NPCRigidbody.velocity = Vector2.zero;
+
+        circleCollider.enabled = true;
+        boxCollider.enabled = false;
     }
 }

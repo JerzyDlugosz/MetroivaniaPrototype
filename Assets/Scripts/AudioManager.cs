@@ -9,27 +9,77 @@ public class AudioManager : MonoBehaviour
 
     private AudioClip currentMusicAudioClip;
 
+    /// <summary>
+    /// Zone music. Lists can contain loop or start + loop
+    /// </summary>
+    [SerializeField]
+    private List<AudioClip> Zone1Music;
+    [SerializeField]
+    private List<AudioClip> Zone2Music;
+    [SerializeField]
+    private List<AudioClip> Zone3Music;
+    [SerializeField]
+    private List<AudioClip> MenuMusic;
+
     [Range(0, 1)]
     public float musicVolume;
     [Range(0, 1)]
     public float effectsVolume;
 
 
-    public void OnMapChange(Map currentMap)
+    private void Start()
     {
-        if (currentMap.backgroundMusic == null)
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 0.5f);
+    }
+
+    public void OnMapChange(Zone zone)
+    {
+        Debug.LogWarning("zone: " + zone);
+        switch (zone)
         {
-            Debug.LogWarning($"{currentMap.name} has no background music");
-            musicAudioSource.Stop();
-            currentMusicAudioClip = null;
-            return;
+            case Zone.Zone1:
+                PlayAudioFromList(Zone1Music);
+
+                break;
+
+            case Zone.Zone2:
+                PlayAudioFromList(Zone2Music);
+
+                break;
+
+            case Zone.Zone3:
+                PlayAudioFromList(Zone3Music);
+
+                break;
+            case Zone.Menu:
+                PlayAudioFromList(MenuMusic);
+
+                break;
+        }
+    }
+
+    private void PlayAudioFromList(List<AudioClip> audioClips)
+    {
+        foreach (var item in audioClips)
+        {
+            if (currentMusicAudioClip == item)
+                return;
         }
 
-        if (currentMusicAudioClip == currentMap.backgroundMusic)
-            return;
+        currentMusicAudioClip = audioClips[0];
+        if (audioClips.Count > 1)
+        {
+            musicAudioSource.Stop();
+            musicAudioSource.PlayOneShot(audioClips[0]);
 
-        currentMusicAudioClip = currentMap.backgroundMusic;
-        PlayAudio(currentMusicAudioClip);
+            musicAudioSource.clip = audioClips[1];
+            musicAudioSource.PlayScheduled(AudioSettings.dspTime + audioClips[0].length);
+        }
+        else
+        {
+            PlayAudio(audioClips[0]);
+        }
     }
 
     private void PlayAudio(AudioClip audioClip)
@@ -38,6 +88,13 @@ public class AudioManager : MonoBehaviour
         musicAudioSource.Stop();
         musicAudioSource.clip = audioClip;
         musicAudioSource.Play();
+    }
+
+    public void RemoveAudio()
+    {
+        musicAudioSource.Stop();
+        musicAudioSource.clip = null;
+        currentMusicAudioClip = null;
     }
 
     public void ChangeAudio(AudioClip audioClip)
@@ -61,5 +118,4 @@ public class AudioManager : MonoBehaviour
         musicAudioSource.volume = musicVolume;
         effectsAudioSoruce.volume = effectsVolume;
     }
-
 }

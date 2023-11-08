@@ -42,7 +42,7 @@ public class CustomSpriteAnimation : MonoBehaviour
             {
                 if (oneShotCount < (int)animationFrame + 1)
                     oneShotCount = (int)animationFrame + 1;
-                Debug.Log(oneShotCount);
+
                 if (oneShotCount >= sprites.Count)
                     Destroy(gameObject);
             }

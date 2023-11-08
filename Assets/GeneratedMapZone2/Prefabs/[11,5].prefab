@@ -3806,8 +3806,28 @@ CompositeCollider2D:
         Y: 9999999
       - X: 0
         Y: 10000000
-      - X: 60000000
+      - X: 10000000
+        Y: 9999999
+      - X: 10000000
         Y: 10000000
+      - X: 20000000
+        Y: 9999999
+      - X: 20000000
+        Y: 10000000
+      - X: 30000000
+        Y: 9999999
+      - X: 30000000
+        Y: 10000000
+      - X: 40000000
+        Y: 9999999
+      - X: 40000000
+        Y: 10000000
+      - X: 50000000
+        Y: 9999999
+      - X: 50000000
+        Y: 10000000
+      - X: 60000000
+        Y: 9999999
       - X: 60000000
         Y: 60000000
       - X: -60000000
@@ -3876,7 +3896,7 @@ CompositeCollider2D:
       - {x: -7.9999704, y: 0}
       - {x: -7, y: 0.000029300001}
       - {x: -6.9999704, y: 1}
-      - {x: 6, y: 1.0000293}
+      - {x: 6, y: 1.0000292}
       - {x: 5.999971, y: 6}
       - {x: -6, y: 6.0000296}
       - {x: -5.9999704, y: 9}
@@ -14457,6 +14477,7 @@ MonoBehaviour:
   compMapYSize: 3
   compMapXPos: {x: 11, y: 11}
   compMapYPos: {x: 5, y: 7}
+  maplist: {fileID: 0}
 --- !u!1 &1236865550
 GameObject:
   m_ObjectHideFlags: 0
@@ -15033,6 +15054,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 1408599053}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}

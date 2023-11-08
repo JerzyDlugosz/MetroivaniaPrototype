@@ -21,7 +21,14 @@ public class MenuMap : CustomUIMenu
     [SerializeField]
     private GameObject currentTileHighlight;
     [SerializeField]
+    private GameObject currentTileHighlight2;
+    [SerializeField]
     private Transform mapHolder;
+
+    [SerializeField]
+    private float tempXPos;
+    [SerializeField]
+    private float tempYPos;
 
     private void Awake()
     {
@@ -32,6 +39,7 @@ public class MenuMap : CustomUIMenu
     {
         SetMinimap();
         currentTileHighlight.GetComponent<MinimapAnimation>().RestartCoroutine();
+        currentTileHighlight2.GetComponent<MinimapAnimation>().RestartCoroutine();
     }
 
     public void SetupMinimap(int _minimapXSize, int _minimapYSize)
@@ -98,11 +106,11 @@ public class MenuMap : CustomUIMenu
         Vector2Int currentPos = GameManagerScript.instance.minimap.GetCurrentLocation();
         Debug.Log(currentPos.x + " " + currentPos.y);
 
-        float mapTileSize = 32;
+        float mapTileSize = 16;
 
-        float temp1 = ((currentPos.x - 30) * mapTileSize) + mapTileSize/2;
-        float temp2 = ((currentPos.y - 30) * mapTileSize) + mapTileSize/2;
-        currentTileHighlight.transform.localPosition = new Vector3(temp1, temp2, 0f);
-        //mapHolder.transform.localPosition = new Vector3(temp1, temp2, 0f);
+        float temp1 = -((currentPos.x - 32) * mapTileSize);
+        float temp2 = -((currentPos.y - 32) * mapTileSize);
+
+        mapHolder.transform.localPosition = new Vector3(temp1, temp2, 0f);
     }
 }

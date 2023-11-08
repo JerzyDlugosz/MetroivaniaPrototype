@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1816191322, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
+  m_Sprite: {fileID: -520704181, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,8 +128,13 @@ MonoBehaviour:
   collectEvent:
     m_PersistentCalls:
       m_Calls: []
-  collectibleId: 4
+  collectibleId: 3
   collectiblePositionX: 0
   collectiblePositionY: 0
   collectibleSprite: {fileID: -520704181, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
   collectibleType: 1
+  collectibleSpriteID: 2
+  PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
+  collectibleName: Bomb Arrow
+  collectibleDescription: Arrow tipped with highly unstable explosive powder. Use
+    with caution

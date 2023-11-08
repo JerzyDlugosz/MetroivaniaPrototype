@@ -1651,9 +1651,17 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[2].Array.data[44].Y
       value: -120000000
       objectReference: {fileID: 0}
+    - target: {fileID: 2384392525270007670, guid: dce2cdae6fc89124c8c07563ebbe1299, type: 3}
+      propertyPath: m_AnimatedTiles.Array.data[46].second.m_AnimationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2384392525270007670, guid: dce2cdae6fc89124c8c07563ebbe1299, type: 3}
+      propertyPath: m_AnimatedTiles.Array.data[77].second.m_AnimationSpeed
+      value: 5.0000005
+      objectReference: {fileID: 0}
     - target: {fileID: 4184865039874448650, guid: dce2cdae6fc89124c8c07563ebbe1299, type: 3}
       propertyPath: m_Name
-      value: MapTemplate (1)
+      value: Map1
       objectReference: {fileID: 0}
     - target: {fileID: 4184865039874448650, guid: dce2cdae6fc89124c8c07563ebbe1299, type: 3}
       propertyPath: m_IsActive

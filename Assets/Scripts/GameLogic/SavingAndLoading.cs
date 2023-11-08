@@ -81,4 +81,31 @@ public class SavingAndLoading : MonoBehaviour
             return false;
         }
     }
+
+    /// <summary>
+    /// Get player progress from save file. Returns in order: MapCompletedPercent, ItemsCollectedPercent, BossesKilledPercent, TotalPercent.
+    /// </summary>
+    /// <param name="save"></param>
+    /// <returns></returns>
+    public float[] LoadSaveFileProgress(Save save)
+    {
+        float mapCompletedPercent;
+        float itemsCollectedPercent;
+        float bossesKilledPercent;
+        float totalPercent;
+
+        int unlockedMapCount = 0;
+        foreach (var item in save.unlockedMap)
+        {
+            if (item)
+                unlockedMapCount++;
+        }
+        mapCompletedPercent = ((int)((unlockedMapCount / 131f) * 100f));
+        itemsCollectedPercent = ((int)((save.collectibles.Count / 17f) * 100));
+        bossesKilledPercent = ((int)((save.bossesSlayed.Count / 5) * 100));
+
+        totalPercent = mapCompletedPercent + itemsCollectedPercent + bossesKilledPercent / 3;
+
+        return new float[] {mapCompletedPercent, itemsCollectedPercent, bossesKilledPercent, totalPercent};
+    }
 }

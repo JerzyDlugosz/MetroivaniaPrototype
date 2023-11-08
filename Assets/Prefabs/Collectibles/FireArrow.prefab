@@ -133,3 +133,6 @@ MonoBehaviour:
   collectiblePositionY: 0
   collectibleSprite: {fileID: 1230781378, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
   collectibleType: 1
+  PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
+  collectibleName: Fire Arrow
+  collectibleDescription: Arrow tipped with burning oil

@@ -173,9 +173,9 @@ public class MinimapController : MonoBehaviour
                 int x = currentMap.mapXOffset * -1 - tilemap.map.mapXOffset * -1;     //Abs does not work for example [5,1],[5,0],[5,-1]
                 int y = currentMap.mapYOffset * -1 - tilemap.map.mapYOffset * -1;     //Need to test it on positive/ positive and negative numbers
 
-                Debug.Log($"{currentMap.name} and {item.name}");
+                //Debug.Log($"{currentMap.name} and {item.name}");
 
-                Debug.Log($"{currentMap.mapXOffset},{currentMap.mapYOffset} i {tilemap.map.mapXOffset},{tilemap.map.mapYOffset}");
+                //Debug.Log($"{currentMap.mapXOffset},{currentMap.mapYOffset} i {tilemap.map.mapXOffset},{tilemap.map.mapYOffset}");
                 if (y == 0)
                 {
                     if (x == 1)
@@ -198,7 +198,7 @@ public class MinimapController : MonoBehaviour
                         wallBitDirection += 8;
                     }
                 }
-                Debug.Log(wallBitDirection);
+                //Debug.Log(wallBitDirection);
                 i++;
             }
 

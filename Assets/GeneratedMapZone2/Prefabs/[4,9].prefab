@@ -426,6 +426,7 @@ MonoBehaviour:
   compMapYSize: 0
   compMapXPos: {x: 4, y: 4}
   compMapYPos: {x: 6, y: 9}
+  maplist: {fileID: 0}
 --- !u!1 &545998694
 GameObject:
   m_ObjectHideFlags: 0
@@ -7910,7 +7911,7 @@ Tilemap:
       - {fileID: 1403899665, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
       - {fileID: -879838082, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
       - {fileID: -1392981027, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
-      m_AnimationSpeed: 3.0000002
+      m_AnimationSpeed: 3
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   m_TileAssetArray:
@@ -12880,6 +12881,7 @@ MonoBehaviour:
   compMapYSize: 0
   compMapXPos: {x: 4, y: 4}
   compMapYPos: {x: 6, y: 9}
+  maplist: {fileID: 0}
 --- !u!114 &603114254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15747,6 +15749,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 1892486846}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}

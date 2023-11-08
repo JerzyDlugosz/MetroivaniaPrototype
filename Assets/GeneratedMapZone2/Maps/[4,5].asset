@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1d73ee9a5265c48af086d5a7c9191d, type: 3}
+  m_Name: '[4,5]'
+  m_EditorClassIdentifier: 
+  mapID: 20
+  mapName: 
+  xSize: 0
+  ySize: 0
+  mapXOffset: 0
+  mapYOffset: 0
+  backgroundMusic: {fileID: 0}
+  mapPrefab: {fileID: 1606433270, guid: e48fbc6df063bfc459071386b0651f53, type: 3}
+  mapDoors: 0200000003000000

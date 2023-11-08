@@ -10,8 +10,6 @@ public class BirdBoss : BaseNPC
     [SerializeField]
     private bool isUsingVelocityForAnimation = false;
     [SerializeField]
-    private bool isUsingRigidbody = false;
-    [SerializeField]
     private bool basicSpriteRotation = true;
 
     [SerializeField]
@@ -131,6 +129,8 @@ public class BirdBoss : BaseNPC
 
     public void OnDeath()
     {
+
+        GameManagerScript.instance.player.progressTracker.AddBoss(bossData);
         enemyParticleController.OnDeath();
         Destroy(gameObject);
     }

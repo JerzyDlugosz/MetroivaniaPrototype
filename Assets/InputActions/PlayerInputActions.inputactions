@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AimPositionGamepad",
+                    "type": "Value",
+                    "id": "ab845d1c-ba72-4120-81e9-78794a438e68",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -174,6 +183,17 @@
                     "name": "",
                     "id": "37c2113f-6f0d-4078-9d08-d87761943134",
                     "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Gamepad",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b87d9110-5aa3-4c0d-8ea8-7fdd3826234c",
+                    "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "StickDeadzone",
                     "groups": "Gamepad",
@@ -304,17 +324,6 @@
                 },
                 {
                     "name": "",
-                    "id": "787aed7f-3158-4ece-a97d-0457d82be047",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "WeaponSwapLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "57a85715-4bbf-4bbb-a803-84e70d68ecc1",
                     "path": "<Keyboard>/q",
                     "interactions": "",
@@ -332,17 +341,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "WeaponSwapLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e17392b6-5e90-4a2c-8933-ed22e26d1065",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "WeaponSwapRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -375,6 +373,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2d38263-5d2b-4007-b700-4e3ab29c6c5d",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -477,6 +486,17 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9532dda2-a97b-4efd-9e3c-d24edbe0e08a",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone,ScaleVector2(x=4,y=4)",
+                    "groups": "Gamepad",
+                    "action": "AimPositionGamepad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -537,17 +557,6 @@
                 },
                 {
                     "name": "",
-                    "id": "d38e91ea-3eca-4f7e-8c51-d53cad43393a",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "ChangeMenuLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d7d24eb3-04d4-468b-892b-2b8a4759ef15",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -565,17 +574,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ChangeMenuLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f1f30c2c-d240-4ac0-9a57-265e6d08ea24",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "ChangeMenuRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -608,12 +606,24 @@
         {
             "name": "Keyboard",
             "bindingGroup": "Keyboard",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         },
         {
             "name": "Gamepad",
             "bindingGroup": "Gamepad",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }

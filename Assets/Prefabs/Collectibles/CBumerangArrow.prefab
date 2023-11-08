@@ -128,8 +128,12 @@ MonoBehaviour:
   collectEvent:
     m_PersistentCalls:
       m_Calls: []
-  collectibleId: 2
+  collectibleId: 5
   collectiblePositionX: 0
   collectiblePositionY: 0
   collectibleSprite: {fileID: 1663998453, guid: 0737d29bddf82b64c9ea53b4bbcabf84, type: 3}
   collectibleType: 1
+  collectibleSpriteID: 4
+  PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
+  collectibleName: Bummerang Arrow
+  collectibleDescription: Arrow with magical properties

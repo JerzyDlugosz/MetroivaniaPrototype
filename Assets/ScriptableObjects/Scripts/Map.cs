@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 [CreateAssetMenu(menuName = "ScriptableObjects/Map")]
 public class Map : ScriptableObject
 {

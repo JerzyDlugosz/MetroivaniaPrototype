@@ -1,17 +1,17 @@
-using Pathfinding.Util;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
-using static UnityEditor.Progress;
+
+#if (UNITY_EDITOR)
 
 public class TilemapGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameManagerScript gameManagerScript;
+    [SerializeField]
+    private MapList tilemapGenMapList;
     [SerializeField]
     private GameObject tilemapTemplatePrefab;
     [SerializeField]
@@ -38,7 +38,11 @@ public class TilemapGenerator : MonoBehaviour
     private List<TileBase> groupAnimationTiles;
 
     [SerializeField]
-    private TileBase wallHelperTile;
+    private TileBase zone1WallHelperTile;
+    [SerializeField]
+    private TileBase zone2WallHelperTile;
+    [SerializeField]
+    private TileBase zone3WallHelperTile;
 
     private byte[,] mapArray;
     private byte[,] mapCornerArray;
@@ -55,7 +59,7 @@ public class TilemapGenerator : MonoBehaviour
     /// Path to where saved assets will be stored (.prefab, .asset)
     /// </summary>
     [SerializeField]
-    private string folderPath = "Assets/GeneratedMap";
+    private string folderPath = "Assets/GeneratedMapZone2";
 
     /// <summary>
     /// Additional path to where Map scriptable objects will be stored ("folderPath + "/" + mapFolder")
@@ -104,7 +108,7 @@ public class TilemapGenerator : MonoBehaviour
     {
         if(gameManagerScript == null)
         {
-            gameManagerScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
+            gameManagerScript = GameManagerScript.instance;
         }
     }
 
@@ -275,7 +279,7 @@ public class TilemapGenerator : MonoBehaviour
         {
             if (mapCornerArray[i % foregroundTilemap.cellBounds.size.x, i / foregroundTilemap.cellBounds.size.x] == 1)
             {
-                foregroundTilemap.SetTile(pos, wallHelperTile);
+                foregroundTilemap.SetTile(pos, zone1WallHelperTile);
             }
 
             i++;
@@ -299,6 +303,8 @@ public class TilemapGenerator : MonoBehaviour
 
         Debug.Log(temp);
     }
+
+
 
     #region FolderSaving
 
@@ -344,7 +350,7 @@ public class TilemapGenerator : MonoBehaviour
 
         CheckForDoors(map);
 
-        string assetPath = $"{folderPath}/{mapFolder}/testMap[{nameIndex / mapSize.x},{nameIndex % mapSize.x}].asset";
+        string assetPath = $"{folderPath}/{mapFolder}/[{nameIndex / mapSize.x},{nameIndex % mapSize.x}].asset";
         AssetDatabase.CreateAsset(map, assetPath);
 
         return map;
@@ -444,16 +450,19 @@ public class TilemapGenerator : MonoBehaviour
 
         guids = AssetDatabase.FindAssets("MapList", new string[] { $"{folderPath}" });
 
-        MapList maplist = new MapList();
+        MapList maplist = ScriptableObject.CreateInstance<MapList>();
         foreach (var guid in guids)
         {
             var path = AssetDatabase.GUIDToAssetPath(guid);
             maplist = AssetDatabase.LoadAssetAtPath<MapList>(path);
         }
 
+
+        tilemapGenMapList = maplist;
         gameManagerScript.currentMapList = maplist;
     }
     #endregion
+
 
     public void RegenerateForegroundMap()
     {
@@ -532,15 +541,34 @@ public class TilemapGenerator : MonoBehaviour
                 foregroundTilemap.SetTile(pos, null);
                 try
                 {
+
                     if (mapCornerArray[i % foregroundTilemap.cellBounds.size.x, i / foregroundTilemap.cellBounds.size.x] == 1)
                     {
-                        foregroundTilemap.SetTile(pos, wallHelperTile);
+                        if(item.GetComponent<CustomTilemap>().zone == Zone.Zone1)
+                        {
+                            foregroundTilemap.SetTile(pos, zone1WallHelperTile);
+                        }
+
+                        if (item.GetComponent<CustomTilemap>().zone == Zone.Zone2)
+                        {
+                            foregroundTilemap.SetTile(pos, zone2WallHelperTile);
+                        }
+
+                        if (item.GetComponent<CustomTilemap>().zone == Zone.Zone3)
+                        {
+                            foregroundTilemap.SetTile(pos, zone3WallHelperTile);
+                        }
+
+                        if (item.GetComponent<CustomTilemap>().zone == Zone.Menu)
+                        {
+                            foregroundTilemap.SetTile(pos, zone1WallHelperTile);
+                        }
                     }
                 }
                 catch (Exception exc)
                 {
 
-                    Debug.Log(exc);
+                    Debug.LogError(exc);
                 }
 
                 i++;
@@ -576,12 +604,13 @@ public class TilemapGenerator : MonoBehaviour
     {
         string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { $"{folderPath}/{prefabFolder}" });
 
-        foreach (var guid in guids)
+        foreach (var item in gameManagerScript.currentMapList.maps)
         {
-            var path = AssetDatabase.GUIDToAssetPath(guid);
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-
-            if (prefab.TryGetComponent<CompositeTilemap>(out CompositeTilemap comp))
+            if (item == null)
+            {
+                continue;
+            }
+            if (item.mapPrefab.TryGetComponent<CompositeTilemap>(out CompositeTilemap comp))
             {
                 comp.connectedTilemaps.Clear();
             }
@@ -597,22 +626,22 @@ public class TilemapGenerator : MonoBehaviour
             }
             if (item.mapPrefab.TryGetComponent<CompositeTilemap>(out CompositeTilemap comp))
             {
-                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                CompositeTilemap compPrefab = prefab.GetComponent<CompositeTilemap>();
+                //var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                //GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                //CompositeTilemap compPrefab = prefab.GetComponent<CompositeTilemap>();
 
-                comp.connectedTilemaps.Clear();
+                //comp.connectedTilemaps.Clear();
 
                 for (int j = comp.compMapXPos.x; j < comp.compMapXPos.y + 1; j++)
                 {
                     for (int k = comp.compMapYPos.x; k < comp.compMapYPos.y + 1; k++)
                     {
-                        Debug.Log($"{i},{compPrefab}");
-                        Debug.Log((j * mapSize.x) + k);
-                        comp.connectedTilemaps.Add(gameManagerScript.currentMapList.maps[(j * mapSize.x) + k]);
+                        //Debug.Log($"{i},{compPrefab}");
+                        //Debug.Log((j * mapSize.x) + k);
+                        comp.connectedTilemaps.Add(tilemapGenMapList.maps[(j * mapSize.x) + k]);
                         //compPrefab.connectedTilemaps.Add(gameManagerScript.currentMapList.maps[(j * mapSize.x) + k]);
-                        compPrefab.compMapXSize = compPrefab.compMapXPos.y - compPrefab.compMapXPos.x + 1;
-                        compPrefab.compMapYSize = compPrefab.compMapYPos.y - compPrefab.compMapYPos.x + 1;
+                        comp.compMapXSize = comp.compMapXPos.y - comp.compMapXPos.x + 1;
+                        comp.compMapYSize = comp.compMapYPos.y - comp.compMapYPos.x + 1;
 
                     }
                 }
@@ -647,15 +676,13 @@ public class TilemapGenerator : MonoBehaviour
         //}
 
         RecheckDoorsForCompositeMaps();
-
     }
 
     private void RecheckDoorsForCompositeMaps()
     {
-        string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { $"{folderPath}/{prefabFolder}" });
 
         int i = 0;
-        foreach (var item in gameManagerScript.currentMapList.maps)
+        foreach (var item in tilemapGenMapList.maps)
         {
             if(item == null)
             {
@@ -680,26 +707,26 @@ public class TilemapGenerator : MonoBehaviour
                     (i + mapSize.y) % (mapSize.x * mapSize.y)
                 };
 
-                foreach (var item2 in gameManagerScript.currentMapList.maps[i].mapDoors)
+                foreach (var item2 in tilemapGenMapList.maps[i].mapDoors)
                 {
-                    Debug.Log($"1. {item2}");
+                    //Debug.Log($"1. [{i/20}.{i%20}] {item2}");
                 }
 
-                if (comp.connectedTilemaps.Contains(gameManagerScript.currentMapList.maps[temp[0]]))
-                    gameManagerScript.currentMapList.maps[i].mapDoors.Remove(Direction.Down);
+                if (comp.connectedTilemaps.Contains(tilemapGenMapList.maps[temp[0]]))
+                    tilemapGenMapList.maps[i].mapDoors.Remove(Direction.Down);
 
-                if (comp.connectedTilemaps.Contains(gameManagerScript.currentMapList.maps[temp[1]]))
-                    gameManagerScript.currentMapList.maps[i].mapDoors.Remove(Direction.Up);
+                if (comp.connectedTilemaps.Contains(tilemapGenMapList.maps[temp[1]]))
+                    tilemapGenMapList.maps[i].mapDoors.Remove(Direction.Up);
 
-                if (comp.connectedTilemaps.Contains(gameManagerScript.currentMapList.maps[temp[2]]))
-                    gameManagerScript.currentMapList.maps[i].mapDoors.Remove(Direction.Left);
+                if (comp.connectedTilemaps.Contains(tilemapGenMapList.maps[temp[2]]))
+                    tilemapGenMapList.maps[i].mapDoors.Remove(Direction.Left);
 
-                if (comp.connectedTilemaps.Contains(gameManagerScript.currentMapList.maps[temp[3]]))
-                    gameManagerScript.currentMapList.maps[i].mapDoors.Remove(Direction.Right);
+                if (comp.connectedTilemaps.Contains(tilemapGenMapList.maps[temp[3]]))
+                    tilemapGenMapList.maps[i].mapDoors.Remove(Direction.Right);
 
-                foreach (var item2 in gameManagerScript.currentMapList.maps[i].mapDoors)
+                foreach (var item2 in tilemapGenMapList.maps[i].mapDoors)
                 {
-                    Debug.Log($"2. {item2}");
+                    //Debug.Log($"2. [{i / 20}.{i % 20}] {item2}");
                 }
             }
             i++;
@@ -1058,6 +1085,8 @@ public class TilemapGenerator : MonoBehaviour
         }
     }
 }
+
+#endif
 
 [Serializable]
 public class NoiseData

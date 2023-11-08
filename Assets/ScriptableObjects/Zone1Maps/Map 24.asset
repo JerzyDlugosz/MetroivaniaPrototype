@@ -18,5 +18,6 @@ MonoBehaviour:
   ySize: 0
   mapXOffset: 0
   mapYOffset: 0
+  backgroundMusic: {fileID: 0}
   mapPrefab: {fileID: 6081231469140573322, guid: 3501a0fae75813543a67b89347043e39, type: 3}
   mapDoors: 

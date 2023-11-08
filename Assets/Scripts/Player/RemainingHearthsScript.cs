@@ -14,8 +14,6 @@ public class RemainingHearthsScript : MonoBehaviour
     private void Start()
     {
         SetHearthImages();
-
-        GameManagerScript.instance.player.maxHealthUpdateEvent.AddListener(AddHearthImage);
     }
 
     private void SetHearthImages()
@@ -48,11 +46,13 @@ public class RemainingHearthsScript : MonoBehaviour
         for (int i = 0; i < targetedHearth; i++)
         {
             hearthImages[i].GetComponent<HearthIcon>().hearth.fillAmount = 1f;
-            hearthImages[i].GetComponent<HearthIcon>().flash.fillAmount = 1f;
+            hearthImages[i].GetComponent<HearthIcon>().damageFlash.fillAmount = 1f;
+            hearthImages[i].GetComponent<HearthIcon>().healingFlash.fillAmount = 1f;
         }
 
         hearthImages[targetedHearth].GetComponent<HearthIcon>().hearth.fillAmount = healthFillAmmount / 4f;
-        hearthImages[targetedHearth].GetComponent<HearthIcon>().flash.fillAmount = healthFillAmmount / 4f;
+        hearthImages[targetedHearth].GetComponent<HearthIcon>().damageFlash.fillAmount = healthFillAmmount / 4f;
+        hearthImages[targetedHearth].GetComponent<HearthIcon>().healingFlash.fillAmount = healthFillAmmount / 4f;
     }
 
     void ResetHearthImages()
@@ -60,20 +60,35 @@ public class RemainingHearthsScript : MonoBehaviour
         foreach (var item in hearthImages)
         {
             item.GetComponent<HearthIcon>().hearth.fillAmount = 0f;
-            item.GetComponent<HearthIcon>().flash.fillAmount = 0f;
+            item.GetComponent<HearthIcon>().damageFlash.fillAmount = 0f;
+            item.GetComponent<HearthIcon>().healingFlash.fillAmount = 0f;
         }
     }
 
-    private void AddHearthImage()
+    public void AddHearthImage()
     {
         hearthImages.Add(Instantiate(hearthImagePrefab, transform));
     }
 
-    public void FlashHearths(int flashID, bool state)
+    public void FlashHearths(int flashType, bool state)
     {
-        foreach (var item in hearthImages)
+        if(flashType == 0)
         {
-            item.GetComponent<HearthIcon>().hearth.gameObject.SetActive(!state);
+            foreach (var item in hearthImages)
+            {
+                item.GetComponent<HearthIcon>().hearth.gameObject.SetActive(!state);
+                item.GetComponent<HearthIcon>().damageFlash.gameObject.SetActive(state);
+                item.GetComponent<HearthIcon>().healingFlash.gameObject.SetActive(!state);
+            }
+        }
+        if(flashType == 1)
+        {
+            foreach (var item in hearthImages)
+            {
+                item.GetComponent<HearthIcon>().hearth.gameObject.SetActive(!state);
+                item.GetComponent<HearthIcon>().damageFlash.gameObject.SetActive(!state);
+                item.GetComponent<HearthIcon>().healingFlash.gameObject.SetActive(state);
+            }
         }
     }
 }

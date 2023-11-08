@@ -36,5 +36,10 @@ public class ProgressTrackerInspector : Editor
             }
         }
         EditorGUILayout.Space();
+        if (GUILayout.Button("Give Player HpUP"))
+        {
+            GameManagerScript.instance.player.maxHealthUpdateEvent.Invoke();
+        }
+        EditorGUILayout.Space();
     }
 }

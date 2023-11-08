@@ -12545,6 +12545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: 823891fdb91eb5c4593b979b2ee33813, type: 2}
   outsideColliders: {fileID: 4264710847994187349}
+  zone: 0
 --- !u!114 &4855621146889537874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12572,6 +12573,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01b9392862ab58b40ab9733a3ed4ddf9, type: 2}
   compMapXSize: 3
   compMapYSize: 4
+  compMapXPos: {x: 0, y: 0}
+  compMapYPos: {x: 0, y: 0}
+  maplist: {fileID: 0}
 --- !u!1 &1867881192745227084
 GameObject:
   m_ObjectHideFlags: 0
@@ -12649,6 +12653,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &3307570447668719391
 GameObject:
   m_ObjectHideFlags: 0
@@ -12726,6 +12731,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &4030971149197699311
 GameObject:
   m_ObjectHideFlags: 0
@@ -12803,6 +12809,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &4264710847994187349
 GameObject:
   m_ObjectHideFlags: 0
@@ -12915,3 +12922,4 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}

@@ -105,6 +105,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7744176889449319817}
   jumpPadCollider: {fileID: 7744176889687221700}
   spriteAnimation: {fileID: 7744176889449319829}
+  activeOnStart: 0
 --- !u!50 &7744176889449319819
 Rigidbody2D:
   serializedVersion: 4

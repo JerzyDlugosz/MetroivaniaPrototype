@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class LaserTrap : MonoBehaviour
 {
-
-    [SerializeField]
-    private GameObject laser;
+    public GameObject laser;
     private SpriteRenderer laserSpriteRenderer;
     private BoxCollider2D laserCollider;
     [SerializeField]
@@ -14,22 +12,50 @@ public class LaserTrap : MonoBehaviour
     [SerializeField]
     private float startAttackOffset;
 
+    public bool usedByController = false;
+
+    [SerializeField]
+    private float damage = 1;
+
     [SerializeField]
     private List<Sprite> laserSprites = new List<Sprite>();
+
+    public Coroutine laserCoroutine;
 
     private void Start()
     {
         laserSpriteRenderer = laser.GetComponent<SpriteRenderer>();
         laserCollider = laser.GetComponent<BoxCollider2D>();
+        SetLaser(0f, 0);
+        if (!usedByController)
+        {
+            if (attackDelay == 0)
+            {
+                SetLaser(0.75f, 3);
+            }
+            else
+            {
+                StartLaserCoroutine();
+            }
+        }
+    }
 
-        if(attackDelay == 0)
-        {
-            SetLaser(0.75f, 3);
-        }
-        else
-        {
-            StartCoroutine(AttackCoroutine());
-        }
+    public void SetData(float _attackDelay, float _attackOffset)
+    {
+        attackDelay = _attackDelay;
+        startAttackOffset = _attackOffset;
+    }
+
+    public void StartLaserCoroutine()
+    {
+        laserCoroutine = StartCoroutine(AttackCoroutine());
+    }
+
+    public void StopLaserCoroutine()
+    {
+        StopCoroutine(laserCoroutine);
+        laserCoroutine = null;
+        SetLaser(0f, 0);
     }
 
     IEnumerator AttackCoroutine()
@@ -59,23 +85,26 @@ public class LaserTrap : MonoBehaviour
 
     private void SetLaser(float colliderSize, int laserSprite)
     {
-        if(colliderSize == 0)
+        if(laserSprites.Count > 0)
         {
-            laserCollider.enabled = false;
+            if (colliderSize == 0)
+            {
+                laserCollider.enabled = false;
+            }
+            else
+            {
+                laserCollider.enabled = true;
+                laserCollider.size = new Vector2(colliderSize, 1f);
+            }
+            laserSpriteRenderer.sprite = laserSprites[laserSprite];
         }
-        else
-        {
-            laserCollider.enabled = true;
-            laserCollider.size = new Vector2(colliderSize, 1f);
-        }
-        laserSpriteRenderer.sprite = laserSprites[laserSprite];
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(1);
+            collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(damage);
         }
     }
 }

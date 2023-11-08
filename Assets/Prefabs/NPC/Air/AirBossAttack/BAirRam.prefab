@@ -83,7 +83,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c0553b855fb0e479a05a0e9cf3f19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burstDamage: 0
 --- !u!1 &4741359492105129194
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,6 +102,7 @@ GameObject:
   - component: {fileID: 2455448086641006024}
   - component: {fileID: 592658507379041714}
   - component: {fileID: 4805878010944738688}
+  - component: {fileID: 2597726581425237912}
   m_Layer: 11
   m_Name: BAirRam
   m_TagString: Enemy
@@ -304,10 +304,13 @@ MonoBehaviour:
   isStopped: 0
   onFire: 0
   onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 6271349101090971265}
-  onAttackAudioClip: {fileID: 0}
-  onHitAudioClip: {fileID: 0}
-  onDeathAudioClip: {fileID: 0}
+  onAttackAudioClip: {fileID: 8300000, guid: be20ee8a458deba45af58f906c7c3440, type: 3}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 1346519932819174081}
   NPCRigidbody: {fileID: 2455448086641006024}
   spriteAnimation: {fileID: 1688405590745087210}
@@ -324,12 +327,14 @@ MonoBehaviour:
   health: 6
   speed: 2
   baseSpeed: 2
-  damage: 1
+  damage: 2
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   chargeAttackSpeed: 2
   chargeForce: 500
+  circleCollider: {fileID: 2597726581425237912}
+  boxCollider: {fileID: 4805878010944738688}
 --- !u!114 &1688405590745087210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +395,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4741359492105129194}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -409,3 +414,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 0.5}
   m_EdgeRadius: 0
+--- !u!58 &2597726581425237912
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4741359492105129194}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5

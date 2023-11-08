@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -62,7 +63,14 @@ public class SlimeEnemy : BaseNPC
 
     public void OnStop(bool state)
     {
-
+        if (state)
+        {
+            transform.DOPause();
+        }
+        else
+        {
+            transform.DOPlay();
+        }
     }
     private void AttackPattern1()
     {

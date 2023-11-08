@@ -9,13 +9,22 @@ public class OnConditionMetEvent : UnityEvent { }
 public class ConditionalTilemap : MonoBehaviour
 {
     public OnConditionMetEvent conditionMetEvent;
+    public bool onBossKilled;
     public int killedBossID;
-    public bool willBeDestroyed;
+    public bool onEventTriggered;
     private void Start()
     {
-        if (GameManagerScript.instance.player.progressTracker.CheckBossID(killedBossID))
+        if(onBossKilled)
         {
-            conditionMetEvent.Invoke();
+            if (GameManagerScript.instance.player.progressTracker.CheckBossID(killedBossID))
+            {
+                conditionMetEvent.Invoke();
+            }
         }
+    }
+
+    public void OnEventTrigger()
+    {
+        conditionMetEvent.Invoke();
     }
 }

@@ -18,6 +18,13 @@ public class Lava : MonoBehaviour
         }
         else if(collision.transform.parent.TryGetComponent(out BaseEntity parentComp))
         {
+            if(parentComp.TryGetComponent(out Player playerComp))
+            {
+                if(playerComp.playerData.FireSpirit)
+                {
+                    return;
+                }
+            }
             if (parentComp.onFire)
             {
                 return;
@@ -26,7 +33,7 @@ public class Lava : MonoBehaviour
             parentComp.Burning(0.5f, 3);
             return;
         }
-        collision.GetComponentInParent<BaseEntity>().inWater = true;
+        collision.GetComponentInParent<BaseEntity>().inLava = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -41,6 +48,6 @@ public class Lava : MonoBehaviour
             parentComp.inLava = false;
             return;
         }
-        collision.GetComponentInParent<BaseEntity>().inWater = false;
+        collision.GetComponentInParent<BaseEntity>().inLava = false;
     }
 }

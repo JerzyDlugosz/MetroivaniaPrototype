@@ -11,6 +11,8 @@ public class BirdBossRoom : BossRoom
     {
         base.OnBossRoomEnter();
 
+        //OnDropPickupEvent.AddListener(() => { MoveBossDoor(); });
+
         //GameManagerScript.instance.player.playerShooting.forceMultiplier = 2f;
         if (GameManagerScript.instance.player.progressTracker.CheckBossID(birdBoss.bossData))
         {
@@ -22,17 +24,24 @@ public class BirdBossRoom : BossRoom
 
     public void OnBossFightStart()
     {
-        door.transform.DOLocalMoveX(0, 1f);
+        door.transform.DOLocalMoveY(0, 1f);
         birdBoss.gameObject.SetActive(true);
         birdBoss.onNPCDeath.AddListener(OnBossFightEnd);
+        GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
     }
 
     private void OnBossFightEnd()
     {
         StopAllCoroutines();
         DOTween.KillAll(false);
-        door.transform.DOLocalMoveX(doorHideMoveAmmount, 1f);
-
+        MoveBossDoor();
         GameManagerScript.instance.player.playerShooting.forceMultiplier = 1f;
+        GameStateManager.instance.audioManager.RemoveAudio();
+        GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
+    }
+
+    public void MoveBossDoor()
+    {
+        door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
     }
 }

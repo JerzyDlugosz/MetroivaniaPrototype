@@ -132,4 +132,9 @@ MonoBehaviour:
   collectiblePositionX: 0
   collectiblePositionY: 0
   collectibleSprite: {fileID: -1714473993, guid: 8dcc11495707ae3429954fb58969289a, type: 3}
-  collectibleType: 2
+  collectibleType: 3
+  collectibleSpriteID: 7
+  PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
+  collectibleName: Fire Stone
+  collectibleDescription: Stone that contains the power of a Salamander. Allows the
+    holder to move in lava

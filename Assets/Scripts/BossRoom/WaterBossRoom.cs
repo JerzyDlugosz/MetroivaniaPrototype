@@ -16,6 +16,8 @@ public class WaterBossRoom : BossRoom
     [SerializeField]
     private List<GameObject> obstacleTilemaps;
     [SerializeField]
+    private Transform obstaclesHolder;
+    [SerializeField]
     private GameObject platform;
 
     [SerializeField]
@@ -29,6 +31,7 @@ public class WaterBossRoom : BossRoom
     private Transform waterGameobject;
 
     private GameObject currentObstacle;
+    private bool isInWater = false;
 
     public override void OnBossRoomEnter()
     {
@@ -47,7 +50,9 @@ public class WaterBossRoom : BossRoom
     private void HideObstacle()
     {
         currentObstacle.GetComponent<Collider2D>().enabled = false;
-        currentObstacle.transform.DOLocalMoveY(-7, 2).OnComplete(() => 
+        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1.5f, 1);
+        shootableButton.gameObject.SetActive(false);
+        obstaclesHolder.transform.DOLocalMoveY(-7, 2).OnComplete(() => 
         {
             currentObstacle.SetActive(false);
         });
@@ -59,10 +64,12 @@ public class WaterBossRoom : BossRoom
     public void ShowObstacle()
     {
         GetRandomObstacle();
+        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1.5f, 1);
+        shootableButton.gameObject.SetActive(true);
 
         currentObstacle.GetComponent<Collider2D>().enabled = true;
         currentObstacle.SetActive(true);
-        currentObstacle.transform.DOLocalMoveY(0, 2);
+        obstaclesHolder.DOLocalMoveY(0, 2);
 
         platform.SetActive(false);
     }
@@ -77,7 +84,6 @@ public class WaterBossRoom : BossRoom
         //Hide water and show platforms
         bossEnemy.Invincibility(false);
 
-        //bossEnemy.OnStun(time + 3f);
         bossEnemy.OnStun(true);
         HideObstacle();
         bossEnemy.transform.DOLocalRotate(new Vector3(0, 0, 0), 1.5f);
@@ -85,6 +91,7 @@ public class WaterBossRoom : BossRoom
 
         yield return new WaitForSeconds(time);
 
+        bossEnemy.RemoveAllDebuffs();
 
         //Show water and hide platforms
         bossEnemy.transform.DOLocalRotate(new Vector3(0, 0, -90), 1.5f);
@@ -92,8 +99,8 @@ public class WaterBossRoom : BossRoom
 
         GameManagerScript.instance.player.characterController.StopMovement(true);
 
-        waterGameobject.transform.localPosition = new Vector3(60, 12, -0.5f);
-        waterGameobject.transform.DOLocalMoveX(0, 4);
+        waterGameobject.transform.localPosition = new Vector3(84, 12, -0.5f);
+        waterGameobject.transform.DOLocalMoveX(24, 4);
     }
 
     private void GetRandomObstacle()
@@ -138,6 +145,7 @@ public class WaterBossRoom : BossRoom
         bossEnemy.gameObject.SetActive(true);
         bossEnemy.Invincibility(true);
         bossEnemy.onNPCDeath.AddListener(OnBossFightEnd);
+        GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
     }
 
     private void OnBossFightEnd()
@@ -145,16 +153,22 @@ public class WaterBossRoom : BossRoom
         StopAllCoroutines();
         DOTween.KillAll(false);
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
+        GameStateManager.instance.audioManager.RemoveAudio();
+        GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
     }
 
     public void OnWaterTriggerEnter()
     {
-
-        GameManagerScript.instance.player.transform.DOMove(playerPushbackPosition.position, 2f).OnComplete(() => {
-            ShowObstacle();
-            GameManagerScript.instance.player.characterController.StopMovement(false);
-            bossEnemy.Invincibility(true);
-            bossEnemy.OnStun(false);
-        }).SetEase(Ease.Linear);
+        if(!isInWater)
+        {
+            isInWater = true;
+            GameManagerScript.instance.player.transform.DOMove(playerPushbackPosition.position, 2f).OnComplete(() => {
+                ShowObstacle();
+                GameManagerScript.instance.player.characterController.StopMovement(false);
+                bossEnemy.Invincibility(true);
+                bossEnemy.OnStun(false);
+                isInWater = false;
+            }).SetEase(Ease.Linear);
+        }
     }
 }

@@ -6088,6 +6088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: 09db8b027bd217b43a775cdea1d5cafb, type: 2}
   outsideColliders: {fileID: 2760321492128040393}
+  zone: 0
 --- !u!1 &8522695913872546020
 GameObject:
   m_ObjectHideFlags: 0

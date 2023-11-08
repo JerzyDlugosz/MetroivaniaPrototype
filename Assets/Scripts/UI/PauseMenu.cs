@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class OnMenuSwap : UnityEvent { }
@@ -24,11 +26,53 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     public OnMenuSwap onMenuSwapEvent;
 
+    [SerializeField]
+    private List<TextMeshProUGUI> leftText;
+    [SerializeField]
+    private List<TextMeshProUGUI> rightText;
+
     private void Awake()
     {
         menus.Add(ItemMenu);
         menus.Add(MapMenu);
         menus.Add(OptionsMenu);
+    }
+
+    private void OnEnable()
+    {
+        OnControlSchemeChange(GameManagerScript.instance.player.playerInput);
+        GameManagerScript.instance.player.playerInput.onControlsChanged += OnControlSchemeChange;
+    }
+
+    private void OnDisable()
+    {
+        GameManagerScript.instance.player.playerInput.onControlsChanged -= OnControlSchemeChange;
+    }
+
+    private void OnControlSchemeChange(PlayerInput input)
+    {
+        if (input.currentControlScheme == "Gamepad")
+        {
+            foreach (var item in leftText)
+            {
+                item.text = "LB";
+            }
+            foreach (var item in rightText)
+            {
+                item.text = "RB";
+            }
+        }
+        else
+        {
+            foreach (var item in leftText)
+            {
+                item.text = "Q";
+            }
+            foreach (var item in rightText)
+            {
+                item.text = "R";
+            }
+        }
     }
 
     public void SwitchMenu(int direction)

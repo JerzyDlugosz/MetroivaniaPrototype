@@ -100,7 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laser: {fileID: 8482814509637793242}
-  attackTimer: 2
+  attackDelay: 0
+  startAttackOffset: 0
+  usedByController: 0
+  damage: 1
   laserSprites:
   - {fileID: 0}
   - {fileID: 1568805667, guid: f936738175ecca54d8592f0cb01bdc7c, type: 3}

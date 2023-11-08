@@ -1260,6 +1260,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &918603535
 GameObject:
   m_ObjectHideFlags: 0
@@ -7469,6 +7470,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &979294592
 GameObject:
   m_ObjectHideFlags: 0
@@ -7546,6 +7548,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1273091991
 GameObject:
   m_ObjectHideFlags: 0
@@ -7947,6 +7950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 1279645582}
+  zone: 0
 --- !u!114 &1779750905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7963,6 +7967,9 @@ MonoBehaviour:
   WallsTilemap: {fileID: 918603541}
   ForegroundTilemap: {fileID: 121605164}
   wasEdited: 1
+  isPlayable: 0
+  xPos: 0
+  yPos: 0
 --- !u!1 &1941036465
 GameObject:
   m_ObjectHideFlags: 0
@@ -8040,3 +8047,4 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}

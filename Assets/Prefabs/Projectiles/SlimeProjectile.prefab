@@ -108,11 +108,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
   isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 0}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   projectileType: 0
   projectileVelocity: {x: 0, y: 0}
   projectileForce: {x: 30, y: 0}
@@ -175,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recallParticle: {fileID: 0}
   collisionParticle: {fileID: 0}
+  breakParticle: {fileID: 0}
 --- !u!61 &6902544445906791400
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -10,8 +10,16 @@ public class MinimapAnimation : MonoBehaviour
     [SerializeField]
     private List<Sprite> sprites;
     [SerializeField]
-    private float animationSpeed; 
+    private float animationSpeed;
+    [SerializeField]
+    private bool OnStart = true;
     private void Start()
+    {
+        if(OnStart)
+            StartCoroutine(TileAnimation());
+    }
+
+    public void ManuallyStartCoroutine()
     {
         StartCoroutine(TileAnimation());
     }

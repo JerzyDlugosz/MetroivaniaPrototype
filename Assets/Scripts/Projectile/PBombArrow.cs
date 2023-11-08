@@ -31,6 +31,7 @@ public class PBombArrow : PlayerProjectile
         //fancy explosion thing
         GameObject eplosion = Instantiate(explosionField, transform.position, Quaternion.identity);
         eplosion.GetComponent<ExplosionField>().OnInstantiate();
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
         destroyEvent.Invoke();
     }
 }

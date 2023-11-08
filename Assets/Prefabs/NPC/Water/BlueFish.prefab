@@ -83,7 +83,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c0553b855fb0e479a05a0e9cf3f19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burstDamage: 0
 --- !u!1 &1479680260313477485
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +386,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 38074700908325160}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: -4242172301975190168}
   NPCRigidbody: {fileID: 3040031146912023613}
   spriteAnimation: {fileID: 4675125136327379779}

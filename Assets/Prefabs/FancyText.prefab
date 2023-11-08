@@ -2225,21 +2225,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c3ad55e0dd12b439d179010fe87848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textMeshPro: {fileID: 0}
-  text:
-  - {fileID: 8617431032396891251}
-  - {fileID: 8617431031496273003}
-  - {fileID: 8617431031168577849}
-  - {fileID: 8617431031834533424}
-  - {fileID: 8617431032221138764}
-  - {fileID: 8617431031022514503}
-  - {fileID: 8617431030712384165}
-  - {fileID: 8617431032084288597}
-  - {fileID: 8617431032362313406}
-  - {fileID: 8617431030624945400}
-  - {fileID: 8617431031682307571}
-  - {fileID: 8617431031096782856}
-  - {fileID: 8617431031813906870}
-  - {fileID: 8617431031546827477}
-  - {fileID: 8617431030957156687}
-  - {fileID: 8617431030834202305}
+  letters: []
+  animationDuration: 0
+  animationDistance: 0
+  lettersWith0Offset: {fileID: 0}
+  lettersWith25Offset: {fileID: 0}
+  lettersWith50Offset: {fileID: 0}
+  lettersWith75Offset: {fileID: 0}
+  lettersWith100Offset: {fileID: 0}

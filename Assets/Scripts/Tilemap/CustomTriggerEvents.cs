@@ -8,13 +8,18 @@ using UnityEngine.Events;
 public class OnTriggerEntry : UnityEvent { }
 public class CustomTriggerEvents : MonoBehaviour
 {
+    [SerializeField]
+    private bool destroyOnEntry = true;
     public OnTriggerEntry onTriggerEntry;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
             onTriggerEntry.Invoke();
-            Destroy(gameObject);
+            if(destroyOnEntry)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

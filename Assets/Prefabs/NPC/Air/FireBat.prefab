@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 3270907106272327054}
   - component: {fileID: 8812666506836393229}
   - component: {fileID: 6360958053702552212}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: FireBat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -40,6 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8476826168826268651}
+  - {fileID: 1613960280999193475}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -220,7 +221,14 @@ MonoBehaviour:
   isSlowed: 0
   isStopped: 0
   onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
   spriteRenderer: {fileID: 2701355472433825342}
+  onAttackAudioClip: {fileID: 8300000, guid: be20ee8a458deba45af58f906c7c3440, type: 3}
+  onHitAudioClip: {fileID: 8300000, guid: 464ad547808db434ba9b17d869116f97, type: 3}
+  onDeathAudioClip: {fileID: 8300000, guid: b6aa81ca398b9ff48a69378aacb68533, type: 3}
   path: {fileID: 6979073108878338686}
   NPCRigidbody: {fileID: 5793577166870515063}
   spriteAnimation: {fileID: 7285418243226018901}
@@ -237,7 +245,7 @@ MonoBehaviour:
   health: 10
   speed: 2
   baseSpeed: 2
-  damage: 0
+  damage: 1
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
@@ -270,19 +278,19 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3727251977543717973}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &3270907106272327054
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -293,12 +301,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.3
 --- !u!114 &8812666506836393229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +336,89 @@ MonoBehaviour:
   - {fileID: 4976562938958509318, guid: 786a9755abee7e14eba4295ad0734fbc, type: 3}
   randomizeDrops: 0
   dropLocation: {fileID: 0}
+--- !u!1 &5150853777068688371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613960280999193475}
+  - component: {fileID: 7860768097320499407}
+  - component: {fileID: 4072431218067586667}
+  - component: {fileID: 1102167114554744703}
+  m_Layer: 10
+  m_Name: AttackCollision
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1613960280999193475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5150853777068688371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6412936344250528947}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &7860768097320499407
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5150853777068688371}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &4072431218067586667
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5150853777068688371}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
+--- !u!114 &1102167114554744703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5150853777068688371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3c0553b855fb0e479a05a0e9cf3f19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7244527501734456390
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +430,7 @@ GameObject:
   - component: {fileID: 8476826168826268651}
   - component: {fileID: 3236378776251335857}
   - component: {fileID: 4130528001721686291}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AggroRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}

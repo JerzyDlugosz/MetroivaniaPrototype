@@ -23,9 +23,10 @@ public class ShootableButton : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.TryGetComponent(out Projectile projectile))
+        if (collision.collider.TryGetComponent(out PlayerProjectile projectile))
         {
-            projectile.wallCollisionEvent.Invoke();
+            //projectile.wallCollisionEvent.Invoke();
+            projectile.destroyEvent.Invoke();
             onButtonHit.Invoke();
         }
     }

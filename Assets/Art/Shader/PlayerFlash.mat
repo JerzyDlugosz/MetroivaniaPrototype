@@ -39,11 +39,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _DamageScale: 1
+    - _DeathStrength: 0
+    - _FlashHealingStrength: 0
     - _FlashStrength: 0
     - _InvincibilityStrength: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _FlashColor: {r: 1, g: 1, b: 1, a: 0}
+    - _FlashHealingColor: {r: 0, g: 1, b: 0, a: 0}
     - _InputColor: {r: 1, g: 1, b: 1, a: 0}
     - _InvincibilityColor: {r: 0.490566, g: 0.490566, b: 0.490566, a: 1}
   m_BuildTextureStacks: []

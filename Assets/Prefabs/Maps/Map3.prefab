@@ -2379,7 +2379,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 8
-      m_TileSpriteIndex: 14
+      m_TileSpriteIndex: 15
       m_TileMatrixIndex: 2
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3934,10 +3934,10 @@ Tilemap:
     m_Data: {fileID: 4519664136019108208, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   - m_RefCount: 38
     m_Data: {fileID: -2913927307954446974, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -3932762474534642510, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -3932762474534642510, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: -6537453368205885854, guid: 4e794009527fa49a7a0e11880aaa3a50, type: 3}
   m_TileMatrixArray:
@@ -12546,8 +12546,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: 50b4c6bd5f4b17b4c9142a87261733e4, type: 2}
-  colliderSize: 2
   outsideColliders: {fileID: 5909297335852867419}
+  zone: 0
 --- !u!1001 &3877877369657661752
 PrefabInstance:
   m_ObjectHideFlags: 0

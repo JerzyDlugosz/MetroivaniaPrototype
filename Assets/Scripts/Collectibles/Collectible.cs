@@ -9,6 +9,6 @@ public class Collectible
     public int collectibleId;
     public int collectiblePosX;
     public int collectiblePosY;
-    public Sprite sprite;
+    public CollectibleSpriteIDs spriteId;
     public CollectibleType collectibleType;
 }

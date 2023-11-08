@@ -29,6 +29,7 @@ public class SnakeBossRoom : BossRoom
             Debug.Log(part.bossEnemy);
             part.bossEnemy.Invincibility(true);
             part.bossEnemy.onNPCDeath.AddListener(OnBossFightEnd);
+            GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
         }
     }
     private void OnBossFightEnd()
@@ -36,6 +37,8 @@ public class SnakeBossRoom : BossRoom
         StopAllCoroutines();
         DOTween.KillAll(false);
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
+        GameStateManager.instance.audioManager.RemoveAudio();
+        GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
     }
 
 }

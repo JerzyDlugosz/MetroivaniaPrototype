@@ -1,14 +1,17 @@
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager instance;
     public AudioManager audioManager;
     public SavingAndLoading savingAndLoading;
+
+    public int LoadingSceneNumber;
 
     private void Awake()
     {
@@ -26,13 +29,18 @@ public class GameStateManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "PersistentScene")
         {
-            LoadScene(1);
+            SceneManager.LoadScene(1);
         }
     }
 
     public void LoadScene(int sceneNumber)
     {
         StartCoroutine(LoadAsyncScene(sceneNumber));
+    }
+
+    public void LoadGameSceneWithLoadingScreen()
+    {
+        StartCoroutine(LoadAsyncGameScene());
     }
 
     public void ExitApplication()
@@ -42,10 +50,21 @@ public class GameStateManager : MonoBehaviour
 
     IEnumerator LoadAsyncScene(int sceneNumber)
     {
+
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneNumber);
         while (!asyncLoad.isDone)
         {
             Debug.Log(asyncLoad.progress);
+            yield return null;
+        }
+    }
+
+    IEnumerator LoadAsyncGameScene()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(LoadingSceneNumber);
+        while (!asyncLoad.isDone)
+        {
             yield return null;
         }
     }

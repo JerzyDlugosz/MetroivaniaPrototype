@@ -16,6 +16,10 @@ public class ItemMenu : CustomUIMenu
     private TextMeshProUGUI hpCount;
     [SerializeField]
     private TextMeshProUGUI arrowCount;
+    [SerializeField]
+    private TextMeshProUGUI arrowDamageCount;
+    [SerializeField]
+    private TextMeshProUGUI ReloadSpeedCount;
 
     public override void OnMenuSwap()
     {
@@ -29,24 +33,28 @@ public class ItemMenu : CustomUIMenu
         ClearMenu();
 
         PlayerData playerData = GameManagerScript.instance.player.playerData;
+        ProgressTracker progressTracker = GameManagerScript.instance.player.progressTracker;
 
-        foreach (var item in GameManagerScript.instance.player.progressTracker.collectibles)
+
+        foreach (var item in progressTracker.GetCollectibles())
         {
-            if (item.collectibleType == CollectibleType.PermanentUpgrade)
+            if (item.collectibleType == CollectibleType.Spirit)
             {
                 GameObject prefab = Instantiate(itemPrefab, upgradeItemHolder.transform);
-                prefab.GetComponent<Image>().sprite = item.sprite;
+                prefab.GetComponent<Image>().sprite = progressTracker.CollectibleSprites[(int)item.spriteId];
             }
             else if(item.collectibleType == CollectibleType.ArrowType)
             {
                 GameObject prefab = Instantiate(itemPrefab, arrowTypeHolder.transform);
-                prefab.GetComponent<Image>().sprite = item.sprite;
+                prefab.GetComponent<Image>().sprite = progressTracker.CollectibleSprites[(int)item.spriteId];
             }
         }
 
 
         hpCount.text = (playerData.maxHealth / 4).ToString();
         arrowCount.text = playerData.maxArrowCount.ToString();
+        arrowDamageCount.text = ((playerData.damageModifier - 1) * 20).ToString();
+        ReloadSpeedCount.text = Mathf.Abs((playerData.reloadSpeedModifier - 1) * 20).ToString();
     }
 
     private void ClearMenu()

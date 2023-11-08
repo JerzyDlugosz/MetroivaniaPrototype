@@ -70,8 +70,7 @@ public class SavePoint : MonoBehaviour
             inGameText.ClearText();
             inGameText.gameObject.SetActive(false);
             Destroy(inGameText.gameObject);
+            isSaving = false;
         }
-
-        isSaving = false;
     }
 }

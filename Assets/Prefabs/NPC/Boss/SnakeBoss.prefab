@@ -52,14 +52,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261691962323035}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 6082442574127676109}
-  spriteRenderer: {fileID: 2711261691962323035}
   spriteAnimation: {fileID: 2711261691962323032}
   facingSide: 1
   enemyParticleController: {fileID: 7654248420437146282}
@@ -74,6 +87,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -114,7 +129,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 6902544445906791381, guid: d15ecf8e864243c4aa63df15968725a4, type: 3}
@@ -259,8 +273,9 @@ MonoBehaviour:
   - {fileID: -1220609921, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: -2052812367, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261690531334419}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!1 &2711261690789939577
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,14 +328,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261691718417997}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2711261690789939570}
-  spriteRenderer: {fileID: 2711261691718417997}
   spriteAnimation: {fileID: 2711261691718417994}
   facingSide: 1
   enemyParticleController: {fileID: 2711261690789939578}
@@ -335,6 +363,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -375,7 +405,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 0}
@@ -520,8 +549,9 @@ MonoBehaviour:
   - {fileID: 876519717, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: 1734991262, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261690822131860}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!1 &2711261690842809390
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,8 +653,9 @@ MonoBehaviour:
   - {fileID: -767783046, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: 1238814451, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261690842809379}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!1 &2711261691256823827
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,14 +708,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261690822131860}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2711261691256823820}
-  spriteRenderer: {fileID: 2711261690822131860}
   spriteAnimation: {fileID: 2711261690822131861}
   facingSide: 1
   enemyParticleController: {fileID: 2711261691256823828}
@@ -699,6 +743,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -739,7 +785,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 0}
@@ -884,8 +929,9 @@ MonoBehaviour:
   - {fileID: -1393129169, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: -2099127808, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261691350017988}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!1 &2711261691494388880
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,14 +984,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261690531334419}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2711261691494388877}
-  spriteRenderer: {fileID: 2711261690531334419}
   spriteAnimation: {fileID: 2711261690531334416}
   facingSide: 1
   enemyParticleController: {fileID: 2711261691494388885}
@@ -960,6 +1019,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -1000,7 +1061,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 0}
@@ -1145,8 +1205,9 @@ MonoBehaviour:
   - {fileID: 434998409, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: -1116179849, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261691718417997}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0
 --- !u!1 &2711261691783185805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,14 +1260,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261690842809379}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2711261691783185798}
-  spriteRenderer: {fileID: 2711261690842809379}
   spriteAnimation: {fileID: 2711261690842809376}
   facingSide: 1
   enemyParticleController: {fileID: 2711261691783185806}
@@ -1221,6 +1295,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -1261,7 +1337,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 0}
@@ -1365,6 +1440,11 @@ MonoBehaviour:
   currentWaypoint: 0
   compositeEnemyHealth: 100
   compositeEnemyMaxHealth: 100
+  bossData:
+    bossId: 0
+    bossName: 
+    bossXPos: 0
+    bossYPos: 0
 --- !u!1 &2711261691829338488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,14 +1497,27 @@ MonoBehaviour:
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  stoppedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   inWater: 0
+  inLava: 0
   inAir: 0
   isGrounded: 0
   onLadder: 0
   isSlowed: 0
+  isStopped: 0
+  onFire: 0
+  onJumpPad: 0
+  inForceField: 0
+  onJumpPadModifier: 0
+  inForceFieldModifier: 0
+  spriteRenderer: {fileID: 2711261691350017988}
+  onAttackAudioClip: {fileID: 0}
+  onHitAudioClip: {fileID: 0}
+  onDeathAudioClip: {fileID: 0}
   path: {fileID: 0}
   NPCRigidbody: {fileID: 2711261691829338485}
-  spriteRenderer: {fileID: 2711261691350017988}
   spriteAnimation: {fileID: 2711261691350017989}
   facingSide: 1
   enemyParticleController: {fileID: 2711261691829338493}
@@ -1439,6 +1532,8 @@ MonoBehaviour:
   health: 0
   speed: 0
   baseSpeed: 0
+  damage: 0
+  canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   basicSpriteRotation: 0
@@ -1479,7 +1574,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   canMove: 0
-  distanceRange: 0.1
   moveSpeed: 2
   moveSpeedMultiplier: 1
   snakeProjectile: {fileID: 0}
@@ -1624,5 +1718,6 @@ MonoBehaviour:
   - {fileID: -1786663782, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   - {fileID: -1368950012, guid: f996fb533ed6cc844a2addfb7df1b3ed, type: 3}
   animationSpeed: 5
-  spriteRenderer: {fileID: 2711261691962323035}
   stopAnimation: 0
+  automaticAnimationLoop: 0
+  oneShot: 0

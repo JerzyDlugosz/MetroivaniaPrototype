@@ -47,12 +47,16 @@ public class PlayerData : MonoBehaviour
 
     public byte currentArrowtipsCount = 0;
     public byte maxArrowtipsCount = 0;
+
+    public float damageModifier = 1;
+    public float reloadSpeedModifier = 1;
     #endregion
 
     #region Collectibles
     public bool WaterSpirit = false;
     public bool EarthSpirit = false;
     public bool FireSpirit = false;
+    public bool AirSpirit = false;
     #endregion
 
     public Vector2 playerGlobalPosition;

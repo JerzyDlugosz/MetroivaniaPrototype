@@ -12019,7 +12019,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -4, y: -12, z: 0}
@@ -12100,7 +12100,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -4, y: -9, z: 0}
@@ -12127,7 +12127,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -4, y: -8, z: 0}
@@ -12235,7 +12235,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -4, y: -4, z: 0}
@@ -16543,6 +16543,7 @@ MonoBehaviour:
       m_Calls: []
   tileStrength: 0
   tileStickiness: 0
+  OnTileDestroyAudioClip: {fileID: 8300000, guid: 32eed3e4e9cf8cd42a2525c60ef10494, type: 3}
   tilemap: {fileID: 1776869650}
   onDestroyTiles:
   - {fileID: 11400000, guid: deb192db0dae9764fa32d3857e7c56b4, type: 2}
@@ -17768,6 +17769,7 @@ MonoBehaviour:
   compMapYSize: 1
   compMapXPos: {x: 8, y: 10}
   compMapYPos: {x: 9, y: 9}
+  maplist: {fileID: 0}
 --- !u!1001 &644819160
 PrefabInstance:
   m_ObjectHideFlags: 0

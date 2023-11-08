@@ -7,6 +7,8 @@ public class DragonBossRoom : BossRoom
 {
     [SerializeField]
     private DragonComposite dragonComposite;
+    [SerializeField]
+    private GameObject Ladder;
     public override void OnBossRoomEnter()
     {
         base.OnBossRoomEnter();
@@ -16,6 +18,8 @@ public class DragonBossRoom : BossRoom
         {
             Destroy(dragonComposite.gameObject);
             Destroy(bossEnterTrigger.gameObject);
+            Ladder.SetActive(true);
+            GameManagerScript.instance.player.playerShooting.forceMultiplier = 1f;
             return;
         }
     }
@@ -25,6 +29,7 @@ public class DragonBossRoom : BossRoom
         door.transform.DOLocalMoveY(0, 1f);
         dragonComposite.gameObject.SetActive(true);
         dragonComposite.dragonParts[0].onNPCDeath.AddListener(OnBossFightEnd);
+        GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
     }
 
     private void OnBossFightEnd()
@@ -34,5 +39,8 @@ public class DragonBossRoom : BossRoom
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
 
         GameManagerScript.instance.player.playerShooting.forceMultiplier = 1f;
+        GameStateManager.instance.audioManager.RemoveAudio();
+        GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
+        Ladder.SetActive(true);
     }
 }

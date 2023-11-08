@@ -77,6 +77,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &2033263530964708377
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,6 +601,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &3339258315517088829
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,6 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 3175751049269728606}
+  zone: 0
 --- !u!114 &8129073091424800997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1011,6 +1014,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &4283244651642526703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,6 +1346,7 @@ MonoBehaviour:
       m_Calls: []
   isDisabled: 0
   isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &5810875925542266369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,6 +1908,7 @@ MonoBehaviour:
   compMapYSize: 0
   compMapXPos: {x: 4, y: 4}
   compMapYPos: {x: 6, y: 9}
+  maplist: {fileID: 0}
 --- !u!1 &8507054268603909463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2268,3 +2274,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   Player: {fileID: 0}
+  paralaxMulti: 1

@@ -14460,8 +14460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: baf90576d7db019449202d931a6a9c8f, type: 2}
-  colliderSize: 2
   outsideColliders: {fileID: 4250617565398108924}
+  zone: 0
 --- !u!1001 &6714810223850392735
 PrefabInstance:
   m_ObjectHideFlags: 0

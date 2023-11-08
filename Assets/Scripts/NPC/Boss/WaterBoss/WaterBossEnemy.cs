@@ -109,40 +109,11 @@ public class WaterBossEnemy : BaseNPC
         Destroy(gameObject);
     }
 
-    public void OnStun(float time)
-    {
-        StopAllCoroutines();
-        StartCoroutine(StunTimer(time));
-    }
-
     public void OnStun(bool state)
     {
         StopAllCoroutines();
         stunIcon.SetActive(state);
         isStunned = state;
-    }
-
-    IEnumerator StunTimer(float stunTime)
-    {
-        stunIcon.SetActive(true);
-        isStunned = true;
-        yield return new WaitForSeconds(stunTime);
-        isStunned = false;
-        stunIcon.SetActive(false);
-    }
-
-    private IEnumerator TimedAttackLogic()
-    {
-        do
-        {
-            yield return new WaitForSeconds(5);
-            GetRandomAttackPattern();
-        } while (true);
-    }
-
-    private void AttackLogic()
-    {
-        AttackPattern1(false, 0);
     }
 
     private void GetRandomAttackPattern()

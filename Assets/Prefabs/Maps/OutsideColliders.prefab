@@ -76,6 +76,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &4976954304365599610
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +154,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &7481312916664518243
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +267,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &8150218255046928169
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,3 +345,5 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isADoor: 0
+  additionalPlayerMove: {x: 0, y: 0}

@@ -648,6 +648,10 @@ MonoBehaviour:
   noiseXScale: 0.005
   noiseYScale: 0.005
   animationSpeed: 0.5
+  isUsingNoise: 1
+  isUsingRandomNumbers: 0
+  randomMinTime: 0
+  randomMaxTime: 0
 --- !u!1 &2672369349265487917
 GameObject:
   m_ObjectHideFlags: 0
@@ -16712,6 +16716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 691852614641544543}
+  zone: 0
 --- !u!1001 &7947448425622465340
 PrefabInstance:
   m_ObjectHideFlags: 0
