@@ -127,9 +127,9 @@ MonoBehaviour:
   projectileForce: {x: 100, y: 0}
   projectilePushBack: 100
   projectileName: FireArrow
-  projectileLifetime: 5
+  projectileLifetime: 3
   bounceAngle: 360
-  projectileDamage: 1
+  projectileDamage: 0.5
   inWaterDrag: 2
   baseGravity: 1
   projectileStrenght: 1
@@ -158,7 +158,7 @@ MonoBehaviour:
   maxProjectileForceDistance: 5
   shakeStrenght: 0
   OnWallCollisionAudio: {fileID: 8300000, guid: 3245778ab0701f640a055ed449e181ed, type: 3}
-  burningDamage: 1
+  burningDamage: 0.5
 --- !u!50 &3888843744773897555
 Rigidbody2D:
   serializedVersion: 4

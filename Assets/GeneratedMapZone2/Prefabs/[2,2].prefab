@@ -5494,6 +5494,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &497863413
@@ -13228,6 +13229,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1238860502
@@ -13804,6 +13806,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1446653618
@@ -14783,11 +14786,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 8.62524e+25
+      e03: 1.24399775e-33
       e10: 0
       e11: 0
       e12: 0
-      e13: 3.14e-43
+      e13: 1.65e-43
       e20: 0
       e21: 0
       e22: 0
@@ -14819,11 +14822,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 8.62524e+25
+      e03: 1.24399775e-33
       e10: 0
       e11: 0
       e12: 0
-      e13: 3.14e-43
+      e13: 1.65e-43
       e20: 0
       e21: 0
       e22: 0
@@ -15036,6 +15039,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1613122183
@@ -15345,6 +15349,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 862065691}
   zone: 1
+  specialRoom: 0
 --- !u!114 &1715804793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15640,6 +15645,10 @@ PrefabInstance:
     - target: {fileID: 2835242833736423734, guid: ae1c13297b1e40d46a11707f349f6cbe, type: 3}
       propertyPath: m_Name
       value: CBombArrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772519204165095840, guid: ae1c13297b1e40d46a11707f349f6cbe, type: 3}
+      propertyPath: collectibleId
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6042296618064194243, guid: ae1c13297b1e40d46a11707f349f6cbe, type: 3}
       propertyPath: m_RootOrder

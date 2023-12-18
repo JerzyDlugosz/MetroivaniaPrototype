@@ -33,7 +33,7 @@ public class SlimeEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(isUsingRigidbody);
+        UpdateSpriteDirection(isUsingRigidbody);
         if (!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();
@@ -95,7 +95,7 @@ public class SlimeEnemy : BaseNPC
     {
         health -= damage;
 
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }

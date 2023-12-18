@@ -33,7 +33,7 @@ public class SnakeBossEnemy : BaseNPC
             return;
         }
         if (basicSpriteRotation)
-            UpdateSpriteRotation(isUsingRigidbody);
+            UpdateSpriteDirection(isUsingRigidbody);
 
         if (!isUsingVelocityForAnimation)
         {
@@ -55,14 +55,14 @@ public class SnakeBossEnemy : BaseNPC
 
         foreach (var item in compositeEnemy.enemyParts)
         {
-            float scale = (compositeEnemy.compositeEnemyMaxHealth - compositeEnemy.compositeEnemyHealth) / (compositeEnemy.compositeEnemyMaxHealth / 4);
+            float scale = (compositeEnemy.compositeEnemyMaxHealth - compositeEnemy.compositeEnemyHealth) / compositeEnemy.compositeEnemyMaxHealth;
             item.bossEnemy.spriteRenderer.material.SetFloat(DamageScaleID, 1 + scale);
-            item.moveSpeedMultiplier = 1 + (scale / 4);
+            item.moveSpeedMultiplier = 1 + (scale / 16);
 
 
         }
 
-        if (compositeEnemy.compositeEnemyHealth < 0f)
+        if (compositeEnemy.compositeEnemyHealth <= 0f)
         {
             compositeEnemy.OnCompositeEnemyDeath();
             foreach (var item in compositeEnemy.enemyParts)

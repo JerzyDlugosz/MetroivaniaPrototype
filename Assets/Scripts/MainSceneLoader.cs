@@ -14,11 +14,23 @@ public class MainSceneLoader : MonoBehaviour
     [SerializeField]
     private Slider loadingSlider;
 
+    [SerializeField]
+    private List<GameObject> tilemaps= new List<GameObject>();
+
     private int currentDots = 0;
     private string dots = "";
 
     private void Start()
     {
+        Save save = GameStateManager.instance.savingAndLoading.GetSaveFile(GameStateManager.instance.savingAndLoading.currentSaveFile);
+        if(GameStateManager.instance.savingAndLoading.LoadGameFile(save))
+        {
+            tilemaps[(int)save.zone].SetActive(true);
+        }
+        else
+        {
+            tilemaps[0].SetActive(true);
+        }
         StartCoroutine(LoadMainSceneAsync());
         InvokeRepeating("DoTheDotDotDot", 0f, 0.5f);
     }

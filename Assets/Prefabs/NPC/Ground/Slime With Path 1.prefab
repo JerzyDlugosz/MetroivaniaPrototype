@@ -241,7 +241,7 @@ MonoBehaviour:
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
-  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: df6b6eb950871e747902346a50518257, type: 3}
+  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: 921c3f353ccd62342af926913732666a, type: 3}
   attackAngle: 90
 --- !u!114 &3377626719381956039
 MonoBehaviour:

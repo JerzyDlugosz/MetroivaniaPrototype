@@ -10,6 +10,7 @@ TagManager:
   - Projectile
   - Enemy
   - HostileProjectile
+  - ExplosionField
   layers:
   - Default
   - TransparentFX

@@ -15,6 +15,7 @@ public class CustomTilemap : MonoBehaviour
     private float standartMapSize;
 
     public Zone zone;
+    public SpecialRoom specialRoom;
 
     public void FirstSetupMap()
     {

@@ -10,10 +10,13 @@ public class AggroRangeScript : MonoBehaviour
     [SerializeField]
     private bool isStationary;
     private BaseNPC baseNPC;
+    private float baseReachedDistance;
 
     private void Start()
     {
         baseNPC = GetComponentInParent<BaseNPC>();
+        if(!isStationary)
+            baseReachedDistance = destinationSetter.GetComponent<AIPath>().endReachedDistance;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,6 +31,7 @@ public class AggroRangeScript : MonoBehaviour
             {
                 baseNPC.canAttack = true;
                 destinationSetter.target = collision.transform;
+                destinationSetter.GetComponent<AIPath>().endReachedDistance = baseReachedDistance;
             }
         }
     }

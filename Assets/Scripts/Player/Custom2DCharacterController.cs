@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.ParticleSystem;
 
 public class Custom2DCharacterController : MonoBehaviour
 {
@@ -28,6 +29,17 @@ public class Custom2DCharacterController : MonoBehaviour
     public float gravityModifier = 1f;
 
     public float additionalJumpPadModifier = 1f;
+
+    public bool performedDoubleJump = false;
+
+    public float dashTimer = 2f;
+    public float dashCooldown = 0f;
+    public int maxDashes = 3;
+    public int currentDashes = 3;
+
+    public float dashForce;
+    public GameObject dashParticle;
+
 
     public void StopMovement(bool state)
     {
@@ -62,6 +74,7 @@ public class Custom2DCharacterController : MonoBehaviour
         {
             jumpTimer -= Time.deltaTime;
         }
+        DashRecharge();
 
         playerData.playerGlobalPosition = new Vector2(transform.position.x, transform.position.y);
         playerData.playerMapPosition = new Vector2(((transform.position.x + 12) % 24) - 12, ((transform.position.y + 12) % 24) - 12);
@@ -179,12 +192,12 @@ public class Custom2DCharacterController : MonoBehaviour
             ladderJumpSpeedModifier = 1f;
             ladderGravityModifier = 0f;
         }
-        if(playerData.AirSpirit)
-        {
-            airStoneMoveSpeedModifier = 1.5f;
-            airStoneJumpSpeedModifier = 1.5f;
-            airStoneGravityModifier = 0.8f;
-        }
+        //if(playerData.AirSpirit)
+        //{
+        //    airStoneMoveSpeedModifier = 1.5f;
+        //    airStoneJumpSpeedModifier = 1.5f;
+        //    airStoneGravityModifier = 0.8f;
+        //}
         if (playerData.isDownButtonHeld)
         {
             waterGravityModfifier = 1f;
@@ -243,12 +256,13 @@ public class Custom2DCharacterController : MonoBehaviour
 
         if (hit.collider)
         {
-            // Is Grounded
+            player.inAir = false;
+            performedDoubleJump = false;
             player.isGrounded = true;
         }
         else
         {
-            // In Air
+            player.inAir = true;
             player.isGrounded = false;
         }
 
@@ -269,13 +283,18 @@ public class Custom2DCharacterController : MonoBehaviour
         movementSpeed = playerData.baseMovementSpeed * moveSpeedModifier;
         player.customRigidbody.gravityScale = playerData.baseGravityScale * gravityModifier;
 
-        if (jumpTimer <= 0 && playerData.isJumping && player.isGrounded && jumpSpeedModifier > 0)
-        {
-            jumpTimer = 0.2f;
-            player.playerAnimation.OnPlayerJump();
-            player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
-            GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(player.onJumpAudio);
-        }
+        if(player.inAir)
+            player.customRigidbody.drag = playerData.baseInAirDrag;
+        else
+            player.customRigidbody.drag = playerData.baseOnGroundDrag;
+
+        //if (jumpTimer <= 0 && playerData.isJumping && player.isGrounded && jumpSpeedModifier > 0)
+        //{
+        //    jumpTimer = 0.2f;
+        //    player.playerAnimation.OnPlayerJump();
+        //    player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
+        //    GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(player.onJumpAudio);
+        //}
 
         if (motion != Vector2.zero)
         {
@@ -288,11 +307,94 @@ public class Custom2DCharacterController : MonoBehaviour
         }
     }
 
+    public void Jump()
+    {
+        if (jumpTimer <= 0 && player.isGrounded && jumpSpeedModifier > 0)
+        {
+            jumpTimer = 0.2f;
+            player.playerAnimation.OnPlayerJump();
+            player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
+            GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(player.onJumpAudio);
+        }
+        else if (playerData.AirSpirit && !performedDoubleJump)
+        {
+            player.playerAnimation.OnPlayerJump();
+            player.customRigidbody.AddForce(jumpSpeed * Vector2.up);
+            GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(player.onJumpAudio);
+            performedDoubleJump = true;
+        }
+    }
+
+    public void DashRecharge()
+    {
+        if(currentDashes < maxDashes)
+        {
+            if (dashCooldown <= 0)
+            {
+                dashCooldown += dashTimer;
+                currentDashes += 1;
+                player.dashController.FillDashImage();
+                return;
+            }
+
+            if (dashCooldown > 0)
+            {
+                dashCooldown -= Time.deltaTime;
+            }
+        }
+    }
+
+    public void LeftDash()
+    {
+        if(currentDashes > 0)
+        {
+            player.customRigidbody.AddForce(dashForce * Vector2.left);
+            currentDashes -= 1;
+            player.dashController.EmptyDashImage();
+            Instantiate(dashParticle, transform.position, Quaternion.identity);
+            if (playerData.AirSpirit)
+                InvincibilityTimer(0.4f);
+            else
+                InvincibilityTimer(0.05f);
+        }
+    }
+
+    public void RightDash()
+    {
+        if (currentDashes > 0)
+        {
+            player.customRigidbody.AddForce(dashForce * Vector2.right);
+            currentDashes -= 1;
+            player.dashController.EmptyDashImage();
+            Instantiate(dashParticle, transform.position, Quaternion.identity);
+            if(playerData.AirSpirit)
+                InvincibilityTimer(0.4f);
+            else
+                InvincibilityTimer(0.05f);
+        }
+    }
+
+    public void InvincibilityTimer(float invTime)
+    {
+        player.Invincibility(true);
+        StartCoroutine(InvincibilityCouroutine(invTime));
+    }
+
+    IEnumerator InvincibilityCouroutine(float invTime)
+    {
+        yield return new WaitForSeconds(invTime);
+        player.Invincibility(false);
+    }
+
     public void ForceMovePlayer(Vector2 position)
     {
         player.customRigidbody.MovePosition(player.customRigidbody.position + position);
     }
 
+    /// <summary>
+    /// Transports player to a position while retaining his direction
+    /// </summary>
+    /// <param name="position"></param>
     public void ForceTransportPlayer(Vector2 position)
     {
         //player.customRigidbody.bodyType = RigidbodyType2D.Static;
@@ -300,6 +402,10 @@ public class Custom2DCharacterController : MonoBehaviour
         //player.customRigidbody.bodyType = RigidbodyType2D.Dynamic;
     }
 
+    /// <summary>
+    /// Transports player to a position
+    /// </summary>
+    /// <param name="position"></param>
     public void ForceTransportPlayerToPosition(Vector2 position)
     {
         //player.customRigidbody.bodyType = RigidbodyType2D.Static;

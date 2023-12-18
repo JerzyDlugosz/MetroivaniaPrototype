@@ -34,6 +34,6 @@ public class PFireArrow : PlayerProjectile
 
     public void OnEnemyCollision(BaseNPC baseNPC)
     {
-        baseNPC.Burning(burningDamage, 5);
+        baseNPC.Burning(burningDamage, 3);
     }
 }

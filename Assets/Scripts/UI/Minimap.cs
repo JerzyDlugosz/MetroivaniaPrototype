@@ -11,7 +11,7 @@ public class Minimap : MonoBehaviour
     private Image[,] backgroundSpritesArray;
     private Image[,] wallSpritesminimapArray;
     private Image[,] doorSpritesminimapArray;
-
+    private Image[,] specialSpritesminimapArray;
 
     [SerializeField]
     private Sprite emptyMinimapTile;
@@ -28,6 +28,7 @@ public class Minimap : MonoBehaviour
         backgroundSpritesArray = new Image[minimapXSize, minimapYSize];
         wallSpritesminimapArray = new Image[minimapXSize, minimapYSize];
         doorSpritesminimapArray = new Image[minimapXSize, minimapYSize];
+        specialSpritesminimapArray = new Image[minimapXSize, minimapYSize];
 
         for (int i = 0; i < minimapXSize; i++)
         {
@@ -36,12 +37,14 @@ public class Minimap : MonoBehaviour
                 backgroundSpritesArray[i, j] = minimapTiles[i + j * minimapYSize].background;
                 wallSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].walls;
                 doorSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].doors;
+                specialSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].special;
 
                 backgroundSpritesArray[i, j].sprite = backgroundSprite;
 
                 backgroundSpritesArray[i, j].enabled = true;
                 wallSpritesminimapArray[i, j].enabled = true;
                 doorSpritesminimapArray[i, j].enabled = true;
+                specialSpritesminimapArray[i, j].enabled = true;
             }
         }
     }
@@ -53,6 +56,7 @@ public class Minimap : MonoBehaviour
             minimapSprite.background.sprite = emptyMinimapTile;
             minimapSprite.walls.enabled = false;
             minimapSprite.doors.enabled = false;
+            minimapSprite.special.enabled = false;
         }
     }
 
@@ -67,10 +71,12 @@ public class Minimap : MonoBehaviour
                 {
                     wallSpritesminimapArray[i, j].enabled = true;
                     doorSpritesminimapArray[i, j].enabled = true;
+                    specialSpritesminimapArray[i, j].enabled = true;
 
                     backgroundSpritesArray[i, j].sprite = unlockedMinimapSprites[0][i, j];
                     wallSpritesminimapArray[i, j].sprite = unlockedMinimapSprites[1][i, j];
                     doorSpritesminimapArray[i, j].sprite = unlockedMinimapSprites[2][i, j];
+                    specialSpritesminimapArray[i, j].sprite = unlockedMinimapSprites[3][i, j];
                     //wallSpritesminimapArray[i, j].enabled = unlockedMinimap[i, j];
                 }
             }

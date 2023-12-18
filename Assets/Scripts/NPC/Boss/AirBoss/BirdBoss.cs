@@ -13,7 +13,7 @@ public class BirdBoss : BaseNPC
     private bool basicSpriteRotation = true;
 
     [SerializeField]
-    private float attackSpeed = 4f;
+    private float attackSpeed = 1f;
     private float attackCooldown;
 
     [SerializeField]
@@ -60,10 +60,10 @@ public class BirdBoss : BaseNPC
         onNPCHit.AddListener(OnHit);
         onNPCDeath.AddListener(OnDeath);
 
-        attackCooldown = attackSpeed;
+        attackCooldown = 3f;
         stoppedEvent.AddListener(OnStop);
 
-        attackPattern2Laser.transform.DOLocalRotate(new Vector3(0, 0, -360f), 10f, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear).SetLoops(-1);
+        //attackPattern2Laser.transform.DOLocalRotate(new Vector3(0, 0, -360f), 10f, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear).SetLoops(-1);
     }
 
     private void Update()
@@ -82,7 +82,7 @@ public class BirdBoss : BaseNPC
             }
         }
 
-        UpdateSpriteRotation(false);
+        UpdateSpriteDirection(false);
         spriteAnimation.UpdateAnimationFrame();
 
 
@@ -94,17 +94,19 @@ public class BirdBoss : BaseNPC
 
         if (attackCooldown <= 0)
         {
-            attackCooldown = attackSpeed;
             AttackLogic();
         }
+
+        attackPattern2Laser.transform.Rotate(0, 0, -0.4f * attackSpeed);
 
     }
     private void OnHit(float damage)
     {
         health -= damage;
-        float scale = (maxHealth - health) / (maxHealth / 4);
+        float scale = (maxHealth - health) / maxHealth;
         spriteRenderer.material.SetFloat(DamageScaleID, 1 + scale);
-        if (health < 0f)
+        attackSpeed = 1 + scale / 2;
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }
@@ -127,6 +129,17 @@ public class BirdBoss : BaseNPC
         }
     }
 
+    public void FadeIn()
+    {
+        spriteRenderer.DOFade(1, 2f);
+        GameManagerScript.instance.cameraHolder.DOShakePosition(2f, 1.5f);
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alpha);
+    }
+
     public void OnDeath()
     {
 
@@ -141,10 +154,13 @@ public class BirdBoss : BaseNPC
 
         switch (rand)
         {
+            //Wind Attack
             case 0:
-                attackCooldown += 6f;
+                attackCooldown += 6f / attackSpeed;
                 StartCoroutine(AttackPattern1());
                 break;
+
+            //Laser Attack
             case 1:
                 attackCooldown += 8f;
                 StartCoroutine(AttackPattern2());

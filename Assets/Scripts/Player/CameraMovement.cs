@@ -1,9 +1,6 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -43,27 +40,32 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    public void SetBlackout(float value)
+    {
+        blackout.color = new Color(0, 0, 0, value);
+    }
+
     public void SnapCameraPosition()
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.localPosition.z);
     }
 
     void FollowPlayer()
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.localPosition.z);
     }
 
     void SmoothFollowPlayer()
     {
         Vector3 velocity = Vector3.zero;
-        Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+        Vector3 targetPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.localPosition.z);
+        transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPosition, ref velocity, smoothTime);
     }
 
     void CheckBoundaries()
     {
-        float cameraXPos = transform.position.x;
-        float cameraYPos = transform.position.y;
+        float cameraXPos = transform.localPosition.x;
+        float cameraYPos = transform.localPosition.y;
 
         Vector2Int CameraXBoundary = new Vector2Int(-(int)(GlobalData.maxTimemaps - 16) / 2, (int)(GlobalData.maxTimemaps - 16) / 2);
         Vector2Int CameraYBoundary = new Vector2Int((-(int)(GlobalData.maxTimemaps - 16) / 2) - 1, ((int)(GlobalData.maxTimemaps - 16) / 2) + 1);
@@ -76,14 +78,14 @@ public class CameraMovement : MonoBehaviour
         Vector3 pos = new Vector3(
             Mathf.Max(maxA, Mathf.Min(minA, cameraXPos)),
             Mathf.Max(maxB, Mathf.Min(minB, cameraYPos)),
-            transform.position.z);
+            transform.localPosition.z);
 
-        transform.position = pos;
+        transform.localPosition = pos;
     }
 
     public void MoveCamera(Vector2 targetPosition)
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(player.transform.position.x, player.transform.position.y, transform.localPosition.z);
         //transform.position = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
     }
 
@@ -114,10 +116,5 @@ public class CameraMovement : MonoBehaviour
     public void ResumeCameraMovement()
     {
         stopCamera = false;
-    }
-
-    public void ShakeCamera(float time, float strenght)
-    {
-        transform.DOShakePosition(time, strenght);
     }
 }

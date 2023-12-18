@@ -89,6 +89,11 @@ public class SavingAndLoading : MonoBehaviour
     /// <returns></returns>
     public float[] LoadSaveFileProgress(Save save)
     {
+
+        float maxMap = 116; //124 - 8 for last boss and secret boss. Maybe -1 just to make it more glich proof
+        float maxItems = 29; //24 + 4 spirits
+        float maxBosses = 4; //6 - 1 last boss - 1 secret boss
+
         float mapCompletedPercent;
         float itemsCollectedPercent;
         float bossesKilledPercent;
@@ -100,12 +105,18 @@ public class SavingAndLoading : MonoBehaviour
             if (item)
                 unlockedMapCount++;
         }
-        mapCompletedPercent = ((int)((unlockedMapCount / 131f) * 100f));
-        itemsCollectedPercent = ((int)((save.collectibles.Count / 17f) * 100));
-        bossesKilledPercent = ((int)((save.bossesSlayed.Count / 5) * 100));
 
-        totalPercent = mapCompletedPercent + itemsCollectedPercent + bossesKilledPercent / 3;
+        mapCompletedPercent = Mathf.Min((unlockedMapCount / maxMap) * 100f, 100);
+        itemsCollectedPercent = Mathf.Min((save.collectibles.Count / maxItems) * 100f, 100);
+        bossesKilledPercent = Mathf.Min((save.bossesSlayed.Count / maxBosses) * 100f, 100);
+
+        totalPercent = (mapCompletedPercent + itemsCollectedPercent + bossesKilledPercent) / 3;
 
         return new float[] {mapCompletedPercent, itemsCollectedPercent, bossesKilledPercent, totalPercent};
+    }
+
+    public bool loadTrueEndingState(Save save)
+    {
+        return save.trueEndingReached;
     }
 }

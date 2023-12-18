@@ -38,7 +38,7 @@ public class MinimapAnimation : MonoBehaviour
             image.sprite = sprites[i];
             i++;
             if (i >= sprites.Count) i = 0;
-            yield return new WaitForSeconds(animationSpeed);
+            yield return new WaitForSecondsRealtime(animationSpeed);
         } while (true);
     }
 }

@@ -133,8 +133,8 @@ MonoBehaviour:
   projectileDamage: 1
   inWaterDrag: 0
   baseGravity: 0
-  projectileStrenght: 0
-  projectileStickiness: 0
+  projectileStrenght: -1
+  projectileStickiness: 9
   projectileParticleController: {fileID: 3137825298789390885}
   projectileAttackSpeed: 0
   rb: {fileID: 6902544445906791380}

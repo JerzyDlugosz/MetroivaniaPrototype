@@ -10,7 +10,6 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField]
     private List<Sprite> playerSprites;
 
-    public SpriteRenderer playerSpriteRenderer;
     [SerializeField]
     private float moveAnimationSpeed;
     [SerializeField]
@@ -20,6 +19,10 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        if(player.isStopped)
+        {
+            return;
+        }
         UpdatePlayerAnimaitonVelocity();
         UpdatePlayerSprite();
 
@@ -48,14 +51,14 @@ public class PlayerAnimation : MonoBehaviour
             spriteVelocity = playerSprites.Count - 1;
         }
 
-        playerSpriteRenderer.sprite = playerSprites[spriteVelocity];
+        player.playerSpriteRenderer.sprite = playerSprites[spriteVelocity];
     }
 
     public void OnPlayerJump()
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(playerSpriteRenderer.transform.DOScaleY(0.9f, jumpAnimationSpeed));
-        sequence.Append(playerSpriteRenderer.transform.DOScaleY(1f, jumpAnimationSpeed));
+        sequence.Append(player.playerSpriteRenderer.transform.DOScaleY(0.8f, jumpAnimationSpeed));
+        sequence.Append(player.playerSpriteRenderer.transform.DOScaleY(1f, jumpAnimationSpeed));
     }
 }

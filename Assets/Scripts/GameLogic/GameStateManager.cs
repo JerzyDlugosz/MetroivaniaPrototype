@@ -35,16 +35,19 @@ public class GameStateManager : MonoBehaviour
 
     public void LoadScene(int sceneNumber)
     {
+        DOTween.KillAll();
         StartCoroutine(LoadAsyncScene(sceneNumber));
     }
 
     public void LoadGameSceneWithLoadingScreen()
     {
+        DOTween.KillAll();
         StartCoroutine(LoadAsyncGameScene());
     }
 
     public void ExitApplication()
     {
+        DOTween.KillAll();
         Application.Quit();
     }
 

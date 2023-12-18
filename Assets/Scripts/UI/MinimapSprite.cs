@@ -8,4 +8,5 @@ public class MinimapSprite : MonoBehaviour
     public Image background;
     public Image walls;
     public Image doors;
+    public Image special;
 }

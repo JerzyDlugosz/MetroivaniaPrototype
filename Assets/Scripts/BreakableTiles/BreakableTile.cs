@@ -61,8 +61,10 @@ public class BreakableTile : MonoBehaviour
             }
         }
 
+        if(isObjectComposite)
+            onDestroyEvent.AddListener(RemoveCollisions);
+
         onDestroyEvent.AddListener(() => GameStateManager.instance.audioManager.PlaySoundEffect(OnTileDestroyAudioClip));
-        onDestroyEvent.AddListener(RemoveCollisions);
     }
 
     private void RemoveCollisions()
@@ -106,6 +108,7 @@ public class BreakableTile : MonoBehaviour
                     playerProjectile.wallCollisionEvent.Invoke();
                 }
             }
+            return;
         }
     }
 

@@ -9,6 +9,31 @@ public class ProgressTracker : MonoBehaviour
     public List<BossData> bossesSlayed = new List<BossData>();
     public List<Collectible> collectibles = new List<Collectible>();
 
+    public int cArrowDamageCount = 0;
+    public int cArrowReloadSpeedCount = 0;
+    public int cArrowCapacityCount = 0;
+    public int cHealthUpCount = 2;
+
+    public void OnArrowDamageAdd()
+    {
+        cArrowDamageCount++;
+    }
+
+    public void OnArrowReloadSpeedAdd()
+    { 
+        cArrowReloadSpeedCount++; 
+    }
+
+    public void OnArrowCapacityAdd()
+    {
+        cArrowCapacityCount++;
+    }
+
+    public void OnHealthUpAdd()
+    {
+        cHealthUpCount++;
+    }
+
     public void AddBoss(BossData _bossData)
     {
         BossData bossData = new BossData();

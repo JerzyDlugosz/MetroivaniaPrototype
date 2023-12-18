@@ -3817,6 +3817,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &132728015
@@ -3895,6 +3896,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &149241657
@@ -6028,7 +6030,7 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
 --- !u!114 &149241660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6041,6 +6043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8caf1c298dcd34d9aab65462ff7674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Maskable: 1
 --- !u!61 &149241659
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7128,11 +7131,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 8.62524e+25
+      e03: 1.24399775e-33
       e10: 0
       e11: 0
       e12: 0
-      e13: 3.14e-43
+      e13: 1.65e-43
       e20: 0
       e21: 0
       e22: 0
@@ -7626,6 +7629,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1224781773
@@ -7826,6 +7830,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 661407781}
   zone: 2
+  specialRoom: 0
 --- !u!114 &1242150081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7841,7 +7846,7 @@ MonoBehaviour:
   BackgroundTilemap: {fileID: 1256917600}
   WallsTilemap: {fileID: 71943684}
   ForegroundTilemap: {fileID: 438665524}
-  wasEdited: 0
+  wasEdited: 1
   isPlayable: 1
   xPos: 16
   yPos: 9
@@ -15152,6 +15157,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1836348170
@@ -15680,6 +15686,18 @@ PrefabInstance:
     - target: {fileID: 6467632624636445593, guid: dbe6d38ecaf5c5545a0decc5988c49a6, type: 3}
       propertyPath: m_Name
       value: ArrowReloadSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195019602572722286, guid: dbe6d38ecaf5c5545a0decc5988c49a6, type: 3}
+      propertyPath: collectibleId
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195019602572722286, guid: dbe6d38ecaf5c5545a0decc5988c49a6, type: 3}
+      propertyPath: collectiblePositionX
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195019602572722286, guid: dbe6d38ecaf5c5545a0decc5988c49a6, type: 3}
+      propertyPath: collectiblePositionY
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbe6d38ecaf5c5545a0decc5988c49a6, type: 3}

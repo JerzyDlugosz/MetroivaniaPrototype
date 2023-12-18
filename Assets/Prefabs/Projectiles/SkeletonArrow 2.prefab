@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6902544445906791401}
   - component: {fileID: 6902544445906791402}
-  - component: {fileID: 545359663798057961}
+  - component: {fileID: -4285659936359050570}
   - component: {fileID: 6902544445906791380}
   - component: {fileID: 3137825298789390885}
   - component: {fileID: 6902544445906791400}
@@ -89,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &545359663798057961
+--- !u!114 &-4285659936359050570
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6902544445906791381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdefeff3f0a54f944b475b8a0a3ae23b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bee263fe8b0d74438d44e5d6f079a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEvent:
@@ -127,14 +127,14 @@ MonoBehaviour:
   projectileVelocity: {x: 0, y: 0}
   projectileForce: {x: 100, y: 0}
   projectilePushBack: 0
-  projectileName: WaterProjectile
+  projectileName: DefaultProjectile
   projectileLifetime: 2
   bounceAngle: 360
   projectileDamage: 2
   inWaterDrag: 0
   baseGravity: 0
-  projectileStrenght: 0
-  projectileStickiness: 0
+  projectileStrenght: -1
+  projectileStickiness: 9
   projectileParticleController: {fileID: 3137825298789390885}
   projectileAttackSpeed: 0
   rb: {fileID: 6902544445906791380}

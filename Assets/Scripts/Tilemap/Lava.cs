@@ -8,17 +8,18 @@ public class Lava : MonoBehaviour
     {
         if (collision.TryGetComponent(out BaseEntity comp))
         {
-            if(comp.onFire)
+            comp.inLava = true;
+            if (comp.onFire)
             {
                 return;
             }
-            comp.inLava = true;
             comp.Burning(0.5f, 3);
             return;
         }
         else if(collision.transform.parent.TryGetComponent(out BaseEntity parentComp))
         {
-            if(parentComp.TryGetComponent(out Player playerComp))
+            parentComp.inLava = true;
+            if (parentComp.TryGetComponent(out Player playerComp))
             {
                 if(playerComp.playerData.FireSpirit)
                 {
@@ -29,7 +30,6 @@ public class Lava : MonoBehaviour
             {
                 return;
             }
-            parentComp.inLava = true;
             parentComp.Burning(0.5f, 3);
             return;
         }

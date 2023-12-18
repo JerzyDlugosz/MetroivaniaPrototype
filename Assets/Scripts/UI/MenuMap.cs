@@ -11,6 +11,7 @@ public class MenuMap : CustomUIMenu
     private Image[,] backgroundSpritesArray;
     private Image[,] wallSpritesminimapArray;
     private Image[,] doorSpritesminimapArray;
+    private Image[,] specialSpritesminimapArray;
 
     [SerializeField]
     private Sprite emptyMinimapTile;
@@ -51,6 +52,7 @@ public class MenuMap : CustomUIMenu
         backgroundSpritesArray = new Image[minimapXSize, minimapYSize];
         wallSpritesminimapArray = new Image[minimapXSize, minimapYSize];
         doorSpritesminimapArray = new Image[minimapXSize, minimapYSize];
+        specialSpritesminimapArray = new Image[minimapXSize, minimapYSize];
 
         for (int i = 0; i < minimapXSize; i++)
         {
@@ -59,10 +61,12 @@ public class MenuMap : CustomUIMenu
                 backgroundSpritesArray[i, j] = minimapTiles[i + j * minimapYSize].background;
                 wallSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].walls;
                 doorSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].doors;
+                specialSpritesminimapArray[i, j] = minimapTiles[i + j * minimapYSize].special;
 
                 backgroundSpritesArray[i, j].enabled = true;
                 wallSpritesminimapArray[i, j].enabled = false;
                 doorSpritesminimapArray[i, j].enabled = false;
+                specialSpritesminimapArray[i, j].enabled = false;
             }
         }
     }
@@ -74,6 +78,7 @@ public class MenuMap : CustomUIMenu
             minimapSprite.background.sprite = emptyMinimapTile;
             minimapSprite.walls.enabled = false;
             minimapSprite.doors.enabled = false;
+            minimapSprite.special.enabled = false;
         }
     }
 
@@ -95,10 +100,12 @@ public class MenuMap : CustomUIMenu
                 {
                     wallSpritesminimapArray[i, j].enabled = true;
                     doorSpritesminimapArray[i, j].enabled = true;
+                    specialSpritesminimapArray[i, j].enabled = true;
 
                     backgroundSpritesArray[i, j].sprite = mapIcons[i, j].background;
                     wallSpritesminimapArray[i, j].sprite = mapIcons[i, j].walls;
                     doorSpritesminimapArray[i, j].sprite = mapIcons[i, j].doors;
+                    specialSpritesminimapArray[i, j].sprite = mapIcons[i, j].specials;
                 }
             }
         }
@@ -110,6 +117,21 @@ public class MenuMap : CustomUIMenu
 
         float temp1 = -((currentPos.x - 32) * mapTileSize);
         float temp2 = -((currentPos.y - 32) * mapTileSize);
+
+        mapHolder.transform.localPosition = new Vector3(temp1, temp2, 0f);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="xDirection">1 - left, -1 - right</param>
+    /// <param name="yDirection">-1 - down, 1 - up</param>
+    public void MoveMap(int xDirection, int yDirection)
+    {
+        float mapTileSize = 16;
+        Vector2 currentPos = mapHolder.transform.localPosition;
+        float temp1 = currentPos.x + xDirection * mapTileSize;
+        float temp2 = currentPos.y + yDirection * mapTileSize;
 
         mapHolder.transform.localPosition = new Vector3(temp1, temp2, 0f);
     }

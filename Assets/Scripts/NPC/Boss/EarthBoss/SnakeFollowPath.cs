@@ -117,6 +117,10 @@ public class SnakeFollowPath : MonoBehaviour
 
     public void StartNextMovement()
     {
+        if (compositeEnemy == null)
+        {
+            return;
+        }
         TweenMovementLeader();
     }
 

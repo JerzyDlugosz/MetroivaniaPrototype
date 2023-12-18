@@ -53,7 +53,8 @@ public class LaserTrap : MonoBehaviour
 
     public void StopLaserCoroutine()
     {
-        StopCoroutine(laserCoroutine);
+        if(laserCoroutine != null)
+            StopCoroutine(laserCoroutine);
         laserCoroutine = null;
         SetLaser(0f, 0);
     }

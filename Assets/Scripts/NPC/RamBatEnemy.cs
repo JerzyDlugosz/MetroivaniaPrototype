@@ -35,7 +35,7 @@ public class RamBatEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(isUsingRigidbody);
+        UpdateSpriteDirection(isUsingRigidbody);
         if (!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();
@@ -50,6 +50,11 @@ public class RamBatEnemy : BaseNPC
             spriteAnimation.UpdateAnimationFrame(path.velocity.x);
         }
 
+
+        if(!canAttack)
+        {
+            return;
+        }
         if (path.reachedEndOfPath)
         {
             if (chargeCooldown <= 0)
@@ -75,7 +80,7 @@ public class RamBatEnemy : BaseNPC
     {
         health -= damage;
 
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }

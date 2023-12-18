@@ -3,6 +3,8 @@ using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -72,12 +74,19 @@ public class Player : BaseEntity
 
     public SpriteRenderer playerSpriteRenderer;
 
+    public GameObject HiddenWallMask;
+
     [SerializeField]
     private GameObject bow;
+    [SerializeField]
+    private List<GameObject> reticleAndDirectionIndicators;
+    [SerializeField]
+    private List<GameObject> reticleAndDirectionIndicatorsChildren;
 
     private bool damageable = true;
     private bool healable = true;
     private bool isInvincible = false;
+    private bool mapMovementAvailable = false;
     public float additionalDamageTakenDelay;
 
     #region AudioClips
@@ -87,6 +96,8 @@ public class Player : BaseEntity
     public AudioClip onLoopReloadAudio;
     public AudioClip onEndReloadAudio;
     #endregion
+
+    public bool reachedSecret = false;
 
     [HideInInspector]
     public OnArrowDamageIncreaseEvent arrowDamageIncreaseEvent;
@@ -127,6 +138,8 @@ public class Player : BaseEntity
     /// </summary>
     public RemainingArrowScript remainingArrowScript;
 
+    public DashController dashController;
+
     public GameObject deathScreen;
 
     private Vector2 previousAimPosition = Vector2.zero;
@@ -139,12 +152,10 @@ public class Player : BaseEntity
         }
     }
 
-    public override void Start()
+    private void OnEnable()
     {
-        base.Start();
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
-        playerInputActions.PauseMenu.Disable();
+        ChangeInput(InputMode.Game);
         playerInputActions.Player.Sprint.performed += Sprint_performed;
         playerInputActions.Player.Sprint.canceled += Sprint_canceled;
 
@@ -171,6 +182,23 @@ public class Player : BaseEntity
 
         playerInputActions.PauseMenu.ChangeMenuLeft.performed += ChangeMenuLeft_performed;
         playerInputActions.PauseMenu.ChangeMenuRight.performed += ChangeMenuRight_performed;
+
+
+        //MapControls
+        playerInputActions.PauseMenu.MoveMapUp.performed += MoveMapDown;
+
+        playerInputActions.PauseMenu.MoveMapDown.performed += MoveMapUp;
+
+        playerInputActions.PauseMenu.MoveMapLeft.performed += MoveMapLeft;
+
+        playerInputActions.PauseMenu.MoveMapRight.performed += MoveMapRight;
+
+        playerInputActions.PauseMenu.EnableMapMovement.performed += EnableMapMovement;
+        playerInputActions.PauseMenu.EnableMapMovement.canceled += DisableMapMovement;
+        //End
+
+
+
 
         playerInputActions.Player.Sprint.performed += OnAnyAction;
         playerInputActions.Player.Sprint.canceled += OnAnyAction;
@@ -199,9 +227,112 @@ public class Player : BaseEntity
         playerInputActions.PauseMenu.ChangeMenuLeft.performed += OnAnyAction;
         playerInputActions.PauseMenu.ChangeMenuRight.performed += OnAnyAction;
 
+        playerInputActions.PauseMenu.MoveMapUp.performed += OnAnyAction;
+        playerInputActions.PauseMenu.MoveMapUp.performed += OnAnyAction;
+
         playerInputActions.Player.Movement.performed += OnAnyAction;
         playerInputActions.Player.AimPosition.performed += OnAnyAction;
 
+        playerInput.onControlsChanged += OnControlSchemeChange;
+
+        if(GameManagerScript.instance.isMainMenu)
+        {
+            return;
+        }
+
+        //playerInputActions.Player.RightMotion.performed += RightMotion_performed;
+        //playerInputActions.Player.RightMotion.canceled += RightMotion_canceled;
+
+        //playerInputActions.Player.LeftMotion.performed += LeftMotion_performed;
+        //playerInputActions.Player.LeftMotion.canceled += LeftMotion_canceled;
+
+        playerInputActions.Player.Dash.performed += Dash_performed;
+        playerInputActions.Player.Dash.canceled += Dash_canceled;
+    }
+
+    public void ChangeInput(InputMode inputMode)
+    {
+        if(inputMode == InputMode.Game)
+        {
+            playerInputActions.Player.Enable();
+            playerInputActions.PauseMenu.Disable();
+            playerInputActions.NoInput.Disable();
+        }
+
+        if (inputMode == InputMode.Menu)
+        {
+            playerInputActions.Player.Disable();
+            playerInputActions.PauseMenu.Enable();
+            playerInputActions.NoInput.Disable();
+        }
+
+        if (inputMode == InputMode.None)
+        {
+            playerInputActions.Player.Disable();
+            playerInputActions.PauseMenu.Disable();
+            playerInputActions.NoInput.Enable();
+        }
+
+    }
+
+    private void MoveMapUp(InputAction.CallbackContext obj)
+    {
+        if(mapMovementAvailable)
+            GameManagerScript.instance.menuMap.MoveMap(0, 1);
+    }
+
+    private void MoveMapDown(InputAction.CallbackContext obj)
+    {
+        if (mapMovementAvailable)
+            GameManagerScript.instance.menuMap.MoveMap(0, -1);
+    }
+
+    private void MoveMapLeft(InputAction.CallbackContext obj)
+    {
+        if (mapMovementAvailable)
+            GameManagerScript.instance.menuMap.MoveMap(1, 0);
+    }
+
+    private void MoveMapRight(InputAction.CallbackContext obj)
+    {
+        if (mapMovementAvailable)
+            GameManagerScript.instance.menuMap.MoveMap(-1, 0);
+    }
+
+    private void EnableMapMovement(InputAction.CallbackContext obj)
+    {
+        mapMovementAvailable = true;
+    }
+
+    private void DisableMapMovement(InputAction.CallbackContext obj)
+    {
+        mapMovementAvailable = false;
+    }
+
+    private void Dash_canceled(InputAction.CallbackContext obj)
+    {
+
+    }
+
+    private void Dash_performed(InputAction.CallbackContext obj)
+    {
+        if(movementInput.x > 0)
+        {
+            characterController.RightDash();
+        }
+        if(movementInput.x < 0)
+        {
+            characterController.LeftDash();
+        }
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        stoppedEvent.AddListener(OnStop);
+
+        if (GameManagerScript.instance.isMainMenu)
+            return;
 
         arrowCapacityIncreaseEvent.AddListener(OnArrowCapacityIncrease);
         arrowDamageIncreaseEvent.AddListener(OnArrowDamageIncrease);
@@ -218,8 +349,6 @@ public class Player : BaseEntity
         maxHealthUpdateEvent.AddListener(MaxHealthPickup);
         healthPickupEvent.AddListener(HealthPickup);
         arrowtipPickupEvent.AddListener(OnArrowtipPickup);
-
-        stoppedEvent.AddListener(OnStop);
     }
 
     private void Update()
@@ -246,12 +375,39 @@ public class Player : BaseEntity
     public void OnBowUnlocked(bool value)
     {
         bow.SetActive(value);
+
+        foreach (var item in reticleAndDirectionIndicators)
+        {
+            item.SetActive(value);
+        }
+
+
         playerData.unlockedBow = value;
     }
 
     private void OnAnyAction(InputAction.CallbackContext obj)
     {
         //currentControlScheme = obj.control.path;
+    }
+
+    private void LeftMotion_canceled(InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void LeftMotion_performed(InputAction.CallbackContext obj)
+    {
+        characterController.LeftDash();        
+    }
+
+    private void RightMotion_canceled(InputAction.CallbackContext obj)
+    {
+
+    }
+
+    private void RightMotion_performed(InputAction.CallbackContext obj)
+    {
+        characterController.RightDash();
     }
 
     private void Sprint_canceled(InputAction.CallbackContext obj)
@@ -286,6 +442,7 @@ public class Player : BaseEntity
 
     private void Jump_performed(InputAction.CallbackContext obj)
     {
+        characterController.Jump();
         playerData.isJumping = true;
     }
 
@@ -372,6 +529,22 @@ public class Player : BaseEntity
         GameManagerScript.instance.pauseMenu.SwitchMenu(1);
     }
 
+    private void OnControlSchemeChange(PlayerInput input)
+    {
+        if (GameManagerScript.instance.isMainMenu)
+            return;
+        if (input.currentControlScheme == "Gamepad")
+        {
+            reticleAndDirectionIndicatorsChildren[0].SetActive(false);
+            reticleAndDirectionIndicatorsChildren[1].SetActive(true); 
+        }
+        else if (input.currentControlScheme == "Keyboard")
+        {
+            reticleAndDirectionIndicatorsChildren[0].SetActive(true);
+            reticleAndDirectionIndicatorsChildren[1].SetActive(false);
+        }
+    }
+
     void ReadInput()
     {
         movementInput = playerInputActions.Player.Movement.ReadValue<Vector2>();
@@ -380,11 +553,12 @@ public class Player : BaseEntity
         {
             aimInput = playerInputActions.Player.AimPositionGamepad.ReadValue<Vector2>();
             if (Mathf.Abs(aimInput.x) < 0.05f)
-                aimInput.x = previousAimPosition.x;
+                aimInput.x = 0.05f * previousAimPosition.x;
             if (Mathf.Abs(aimInput.y) < 0.05f)
-                aimInput.y = previousAimPosition.y;
+                aimInput.y = 0.05f * previousAimPosition.y;
 
             aimInputScreenPosition = new Vector3(transform.position.x + aimInput.x, transform.position.y + aimInput.y, 0f);
+
         }
         else if(playerInput.currentControlScheme == "Keyboard")
         {
@@ -394,6 +568,21 @@ public class Player : BaseEntity
 
         aimInputScreenPosition.z = Camera.main.nearClipPlane;
         previousAimPosition = aimInput;
+    }
+
+    public void OnSecretMapCollect()
+    {
+        CollectibleList collectibleList = GameManagerScript.instance.collectibleList;
+
+        for (int i = 0; i < collectibleList.collectibles.Count; i++)
+        {
+            if (!progressTracker.collectibles.Exists(x => x.collectibleId == collectibleList.collectibles[i].collectibleId))
+            {
+                Debug.LogWarning($"Manual MapPos X & Y: {collectibleList.collectibles[i].collectiblePosX + 25}, {collectibleList.collectibles[i].collectiblePosY + 25}");
+                GameManagerScript.instance.minimap.ManuallySetMinimapTile(collectibleList.collectibles[i].collectiblePosX + 25, collectibleList.collectibles[i].collectiblePosY + 25, GameManagerScript.instance.mapArray[collectibleList.collectibles[i].collectiblePosX + 25, collectibleList.collectibles[i].collectiblePosY + 25], 3);
+            }
+        }
+        GameManagerScript.instance.ManualMapRefresh();
     }
 
     void OnArrowUsed()
@@ -462,12 +651,13 @@ public class Player : BaseEntity
         }
         else
         {
-            Debug.LogWarning("Player has collected more arrow type upgrades than the ammount of avaiable types");
+            Debug.LogWarning("Player has collected more arrow type upgrades than the ammount of available types");
         }
     }
 
     public void RefreshUI()
     {
+        remainingHearthsScript.SetHearthImages(playerData.maxHealth);
         remainingArrowScript.OnGameLoad(playerData.maxArrowCount, playerWeaponSwap.unlockedWeapons);
         remainingHearthsScript.UpdateCurrentHealthOnImages((int)playerData.health);
     }
@@ -530,12 +720,12 @@ public class Player : BaseEntity
         for (int i = 0; i < 100; i++)
         {
             playerSpriteRenderer.material.SetFloat(deathID, i / 100f);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(0.02f);
         }
-        GameManagerScript.instance.cameraMovement.blackout.DOFade(1, 1f).OnComplete(() =>
+        GameManagerScript.instance.cameraMovement.blackout.DOFade(1, 1f).SetUpdate(true).OnComplete(() =>
         {
             deathScreen.SetActive(true);
-            GameManagerScript.instance.cameraMovement.blackout.DOFade(0, 1f);
+            GameManagerScript.instance.cameraMovement.blackout.DOFade(0, 1f).SetUpdate(true);
         });
     }
 
@@ -585,10 +775,10 @@ public class Player : BaseEntity
     IEnumerator DamageTimer()
     {
         damageable = false;
-        playerAnimation.playerSpriteRenderer.material.SetFloat(flashID, 1);
+        playerSpriteRenderer.material.SetFloat(flashID, 1);
         remainingHearthsScript.FlashHearths(0, true);
         yield return new WaitForSeconds(0.1f);
-        playerAnimation.playerSpriteRenderer.material.SetFloat(flashID, 0);
+        playerSpriteRenderer.material.SetFloat(flashID, 0);
         remainingHearthsScript.FlashHearths(0, false);
         yield return new WaitForSeconds(additionalDamageTakenDelay);
         damageable = true;
@@ -597,10 +787,10 @@ public class Player : BaseEntity
     IEnumerator HealingTimer()
     {
         healable = false;
-        playerAnimation.playerSpriteRenderer.material.SetFloat(flashHealingID, 1);
+        playerSpriteRenderer.material.SetFloat(flashHealingID, 1);
         remainingHearthsScript.FlashHearths(1, true);
         yield return new WaitForSeconds(0.1f);
-        playerAnimation.playerSpriteRenderer.material.SetFloat(flashHealingID, 0);
+        playerSpriteRenderer.material.SetFloat(flashHealingID, 0);
         remainingHearthsScript.FlashHearths(1, false);
         yield return new WaitForSeconds(additionalDamageTakenDelay);
         healable = true;

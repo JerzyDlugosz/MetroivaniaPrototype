@@ -6,6 +6,8 @@ public class PBombArrow : PlayerProjectile
 {
     [SerializeField]
     private GameObject explosionField;
+    [SerializeField]
+    private float explosionDamage;
     public override void Start()
     {
         base.Start();
@@ -18,6 +20,9 @@ public class PBombArrow : PlayerProjectile
         wallBounceEvent.AddListener(OnWallCollision);
 
         endOfLifetimeEvent.AddListener(OnWallCollision);
+
+        entityCollisionEvent.AddListener(OnNPCCollision);
+
     }
     private void Update()
     {
@@ -28,9 +33,16 @@ public class PBombArrow : PlayerProjectile
     }
     public void OnWallCollision()
     {
-        //fancy explosion thing
         GameObject eplosion = Instantiate(explosionField, transform.position, Quaternion.identity);
-        eplosion.GetComponent<ExplosionField>().OnInstantiate();
+        eplosion.GetComponent<ExplosionField>().OnInstantiate(explosionDamage);
+        GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
+        destroyEvent.Invoke();
+    }
+
+    public void OnNPCCollision(BaseNPC baseNPC)
+    {
+        GameObject eplosion = Instantiate(explosionField, transform.position, Quaternion.identity);
+        eplosion.GetComponent<ExplosionField>().OnInstantiate(explosionDamage);
         GameStateManager.instance.audioManager.effectsAudioSoruce.PlayOneShot(OnWallCollisionAudio);
         destroyEvent.Invoke();
     }

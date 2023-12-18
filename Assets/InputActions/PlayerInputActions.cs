@@ -118,6 +118,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RightMotion"",
+                    ""type"": ""Button"",
+                    ""id"": ""6dc9204f-0f90-4eb2-b564-33a3f1c1dd99"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap(pressPoint=1.401298E-45)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftMotion"",
+                    ""type"": ""Button"",
+                    ""id"": ""d93727c0-bba5-484e-9585-0b84ce80d976"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Recall"",
                     ""type"": ""Button"",
                     ""id"": ""cf037e2a-938f-4290-88e1-983faa509c28"",
@@ -143,6 +161,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""333d6e17-0ef8-4531-a116-a0cbcd0a51ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -519,6 +546,72 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""AimPositionGamepad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9c59282-7bb9-4e0c-966f-0154e28c4152"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RightMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbf05b55-843f-4d8c-b89d-19a5302c4691"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RightMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""217f87e5-f020-4a5f-affa-4ac1621cb795"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""LeftMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca80137e-5a16-4498-b5a5-994fdb57dab8"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LeftMotion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a32c5624-3466-4f48-8abc-92ce39c9521d"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76d44cd9-88a8-4f3b-a2d5-a3235249c633"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -548,6 +641,51 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""name"": ""ChangeMenuRight"",
                     ""type"": ""Button"",
                     ""id"": ""50165b3f-5c17-4059-88a3-bd955f5ced3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveMapRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""578361d5-a1fe-4aaf-a349-cc2852c5736c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveMapLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""03456a85-8daf-4a00-b675-2244f3067bbb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveMapUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""68d961d0-bc34-411f-bd85-ec811409c399"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveMapDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""6965e0e2-92f7-44cc-aa36-abfe1d84099d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableMapMovement"",
+                    ""type"": ""Button"",
+                    ""id"": ""4858c830-cb7d-4c48-95f4-cc922dfb2520"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -620,6 +758,144 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""ChangeMenuRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca45f38d-8a73-46bf-ba8c-56f83bff7d8a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveMapRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f16f7eb-185a-4bfc-a412-214db7ba4ff5"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveMapLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""efced304-1451-414a-9211-cbc8d536ac44"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveMapUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4817149c-b1f3-4628-9007-6ad05ba38123"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveMapDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27f95722-e2cb-4efe-b968-6b55c5d8d10b"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveMapLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1757849-9085-4fa8-93e0-1e563f31abb9"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveMapRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e5595a3b-ed0e-485f-8101-bfac0cada733"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveMapUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72c27107-040e-4b96-b245-3dace613024a"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveMapDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92a1113d-d2c4-4d01-a8c1-382de5f1460d"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""EnableMapMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c99888d-814a-46b5-aa6a-8ff2e351a518"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""EnableMapMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""NoInput"",
+            ""id"": ""3d137776-f2f6-4960-b903-4773d46ff092"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f369a87-d5e3-4fe4-b5c8-690390327c33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""27885723-0863-45b8-a51f-a401048a818c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -661,14 +937,25 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_AimPosition = m_Player.FindAction("AimPosition", throwIfNotFound: true);
         m_Player_DownMotion = m_Player.FindAction("DownMotion", throwIfNotFound: true);
         m_Player_UpMotion = m_Player.FindAction("UpMotion", throwIfNotFound: true);
+        m_Player_RightMotion = m_Player.FindAction("RightMotion", throwIfNotFound: true);
+        m_Player_LeftMotion = m_Player.FindAction("LeftMotion", throwIfNotFound: true);
         m_Player_Recall = m_Player.FindAction("Recall", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_AimPositionGamepad = m_Player.FindAction("AimPositionGamepad", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
         m_PauseMenu_UnPause = m_PauseMenu.FindAction("UnPause", throwIfNotFound: true);
         m_PauseMenu_ChangeMenuLeft = m_PauseMenu.FindAction("ChangeMenuLeft", throwIfNotFound: true);
         m_PauseMenu_ChangeMenuRight = m_PauseMenu.FindAction("ChangeMenuRight", throwIfNotFound: true);
+        m_PauseMenu_MoveMapRight = m_PauseMenu.FindAction("MoveMapRight", throwIfNotFound: true);
+        m_PauseMenu_MoveMapLeft = m_PauseMenu.FindAction("MoveMapLeft", throwIfNotFound: true);
+        m_PauseMenu_MoveMapUp = m_PauseMenu.FindAction("MoveMapUp", throwIfNotFound: true);
+        m_PauseMenu_MoveMapDown = m_PauseMenu.FindAction("MoveMapDown", throwIfNotFound: true);
+        m_PauseMenu_EnableMapMovement = m_PauseMenu.FindAction("EnableMapMovement", throwIfNotFound: true);
+        // NoInput
+        m_NoInput = asset.FindActionMap("NoInput", throwIfNotFound: true);
+        m_NoInput_Newaction = m_NoInput.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -738,9 +1025,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_AimPosition;
     private readonly InputAction m_Player_DownMotion;
     private readonly InputAction m_Player_UpMotion;
+    private readonly InputAction m_Player_RightMotion;
+    private readonly InputAction m_Player_LeftMotion;
     private readonly InputAction m_Player_Recall;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_AimPositionGamepad;
+    private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -755,9 +1045,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @AimPosition => m_Wrapper.m_Player_AimPosition;
         public InputAction @DownMotion => m_Wrapper.m_Player_DownMotion;
         public InputAction @UpMotion => m_Wrapper.m_Player_UpMotion;
+        public InputAction @RightMotion => m_Wrapper.m_Player_RightMotion;
+        public InputAction @LeftMotion => m_Wrapper.m_Player_LeftMotion;
         public InputAction @Recall => m_Wrapper.m_Player_Recall;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @AimPositionGamepad => m_Wrapper.m_Player_AimPositionGamepad;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -797,6 +1090,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @UpMotion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
                 @UpMotion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
                 @UpMotion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUpMotion;
+                @RightMotion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMotion;
+                @RightMotion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMotion;
+                @RightMotion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMotion;
+                @LeftMotion.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMotion;
+                @LeftMotion.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMotion;
+                @LeftMotion.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMotion;
                 @Recall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
                 @Recall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
                 @Recall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecall;
@@ -806,6 +1105,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @AimPositionGamepad.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
                 @AimPositionGamepad.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
                 @AimPositionGamepad.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPositionGamepad;
+                @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -840,6 +1142,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @UpMotion.started += instance.OnUpMotion;
                 @UpMotion.performed += instance.OnUpMotion;
                 @UpMotion.canceled += instance.OnUpMotion;
+                @RightMotion.started += instance.OnRightMotion;
+                @RightMotion.performed += instance.OnRightMotion;
+                @RightMotion.canceled += instance.OnRightMotion;
+                @LeftMotion.started += instance.OnLeftMotion;
+                @LeftMotion.performed += instance.OnLeftMotion;
+                @LeftMotion.canceled += instance.OnLeftMotion;
                 @Recall.started += instance.OnRecall;
                 @Recall.performed += instance.OnRecall;
                 @Recall.canceled += instance.OnRecall;
@@ -849,6 +1157,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @AimPositionGamepad.started += instance.OnAimPositionGamepad;
                 @AimPositionGamepad.performed += instance.OnAimPositionGamepad;
                 @AimPositionGamepad.canceled += instance.OnAimPositionGamepad;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -860,6 +1171,11 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PauseMenu_UnPause;
     private readonly InputAction m_PauseMenu_ChangeMenuLeft;
     private readonly InputAction m_PauseMenu_ChangeMenuRight;
+    private readonly InputAction m_PauseMenu_MoveMapRight;
+    private readonly InputAction m_PauseMenu_MoveMapLeft;
+    private readonly InputAction m_PauseMenu_MoveMapUp;
+    private readonly InputAction m_PauseMenu_MoveMapDown;
+    private readonly InputAction m_PauseMenu_EnableMapMovement;
     public struct PauseMenuActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -867,6 +1183,11 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @UnPause => m_Wrapper.m_PauseMenu_UnPause;
         public InputAction @ChangeMenuLeft => m_Wrapper.m_PauseMenu_ChangeMenuLeft;
         public InputAction @ChangeMenuRight => m_Wrapper.m_PauseMenu_ChangeMenuRight;
+        public InputAction @MoveMapRight => m_Wrapper.m_PauseMenu_MoveMapRight;
+        public InputAction @MoveMapLeft => m_Wrapper.m_PauseMenu_MoveMapLeft;
+        public InputAction @MoveMapUp => m_Wrapper.m_PauseMenu_MoveMapUp;
+        public InputAction @MoveMapDown => m_Wrapper.m_PauseMenu_MoveMapDown;
+        public InputAction @EnableMapMovement => m_Wrapper.m_PauseMenu_EnableMapMovement;
         public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -885,6 +1206,21 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ChangeMenuRight.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnChangeMenuRight;
                 @ChangeMenuRight.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnChangeMenuRight;
                 @ChangeMenuRight.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnChangeMenuRight;
+                @MoveMapRight.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapRight;
+                @MoveMapRight.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapRight;
+                @MoveMapRight.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapRight;
+                @MoveMapLeft.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapLeft;
+                @MoveMapLeft.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapLeft;
+                @MoveMapLeft.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapLeft;
+                @MoveMapUp.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapUp;
+                @MoveMapUp.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapUp;
+                @MoveMapUp.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapUp;
+                @MoveMapDown.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapDown;
+                @MoveMapDown.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapDown;
+                @MoveMapDown.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnMoveMapDown;
+                @EnableMapMovement.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnEnableMapMovement;
+                @EnableMapMovement.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnEnableMapMovement;
+                @EnableMapMovement.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnEnableMapMovement;
             }
             m_Wrapper.m_PauseMenuActionsCallbackInterface = instance;
             if (instance != null)
@@ -898,10 +1234,58 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ChangeMenuRight.started += instance.OnChangeMenuRight;
                 @ChangeMenuRight.performed += instance.OnChangeMenuRight;
                 @ChangeMenuRight.canceled += instance.OnChangeMenuRight;
+                @MoveMapRight.started += instance.OnMoveMapRight;
+                @MoveMapRight.performed += instance.OnMoveMapRight;
+                @MoveMapRight.canceled += instance.OnMoveMapRight;
+                @MoveMapLeft.started += instance.OnMoveMapLeft;
+                @MoveMapLeft.performed += instance.OnMoveMapLeft;
+                @MoveMapLeft.canceled += instance.OnMoveMapLeft;
+                @MoveMapUp.started += instance.OnMoveMapUp;
+                @MoveMapUp.performed += instance.OnMoveMapUp;
+                @MoveMapUp.canceled += instance.OnMoveMapUp;
+                @MoveMapDown.started += instance.OnMoveMapDown;
+                @MoveMapDown.performed += instance.OnMoveMapDown;
+                @MoveMapDown.canceled += instance.OnMoveMapDown;
+                @EnableMapMovement.started += instance.OnEnableMapMovement;
+                @EnableMapMovement.performed += instance.OnEnableMapMovement;
+                @EnableMapMovement.canceled += instance.OnEnableMapMovement;
             }
         }
     }
     public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+
+    // NoInput
+    private readonly InputActionMap m_NoInput;
+    private INoInputActions m_NoInputActionsCallbackInterface;
+    private readonly InputAction m_NoInput_Newaction;
+    public struct NoInputActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public NoInputActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_NoInput_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_NoInput; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NoInputActions set) { return set.Get(); }
+        public void SetCallbacks(INoInputActions instance)
+        {
+            if (m_Wrapper.m_NoInputActionsCallbackInterface != null)
+            {
+                @Newaction.started -= m_Wrapper.m_NoInputActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_NoInputActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_NoInputActionsCallbackInterface.OnNewaction;
+            }
+            m_Wrapper.m_NoInputActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public NoInputActions @NoInput => new NoInputActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -932,14 +1316,26 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnAimPosition(InputAction.CallbackContext context);
         void OnDownMotion(InputAction.CallbackContext context);
         void OnUpMotion(InputAction.CallbackContext context);
+        void OnRightMotion(InputAction.CallbackContext context);
+        void OnLeftMotion(InputAction.CallbackContext context);
         void OnRecall(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnAimPositionGamepad(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IPauseMenuActions
     {
         void OnUnPause(InputAction.CallbackContext context);
         void OnChangeMenuLeft(InputAction.CallbackContext context);
         void OnChangeMenuRight(InputAction.CallbackContext context);
+        void OnMoveMapRight(InputAction.CallbackContext context);
+        void OnMoveMapLeft(InputAction.CallbackContext context);
+        void OnMoveMapUp(InputAction.CallbackContext context);
+        void OnMoveMapDown(InputAction.CallbackContext context);
+        void OnEnableMapMovement(InputAction.CallbackContext context);
+    }
+    public interface INoInputActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

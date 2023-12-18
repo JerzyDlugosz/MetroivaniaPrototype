@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f750616be4a14646ae5cc720bdb7733, type: 3}
+  m_Name: CollectibleList
+  m_EditorClassIdentifier: 
+  collectibles:
+  - collectibleId: 50
+    collectiblePosX: 18
+    collectiblePosY: 6
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 51
+    collectiblePosX: 8
+    collectiblePosY: 5
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 52
+    collectiblePosX: 3
+    collectiblePosY: 1
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 53
+    collectiblePosX: 4
+    collectiblePosY: 3
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 54
+    collectiblePosX: 7
+    collectiblePosY: 2
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 55
+    collectiblePosX: 7
+    collectiblePosY: 3
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 56
+    collectiblePosX: 2
+    collectiblePosY: 11
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 57
+    collectiblePosX: 8
+    collectiblePosY: 8
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 58
+    collectiblePosX: 4
+    collectiblePosY: 3
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 59
+    collectiblePosX: 5
+    collectiblePosY: 7
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 60
+    collectiblePosX: 10
+    collectiblePosY: 7
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 61
+    collectiblePosX: 14
+    collectiblePosY: 9
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 62
+    collectiblePosX: 16
+    collectiblePosY: 10
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 63
+    collectiblePosX: 17
+    collectiblePosY: 8
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 64
+    collectiblePosX: 16
+    collectiblePosY: 9
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 65
+    collectiblePosX: 8
+    collectiblePosY: 5
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 66
+    collectiblePosX: 5
+    collectiblePosY: 7
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 67
+    collectiblePosX: 4
+    collectiblePosY: 5
+    spriteId: 0
+    collectibleType: 0
+  - collectibleId: 68
+    collectiblePosX: 11
+    collectiblePosY: 5
+    spriteId: 0
+    collectibleType: 0

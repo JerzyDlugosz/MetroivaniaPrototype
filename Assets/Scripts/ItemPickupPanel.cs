@@ -53,6 +53,7 @@ public class ItemPickupPanel : MonoBehaviour
 
     public void ShowPanel(string itemName, string itemDescription, Sprite itemSprite)
     {
+        GameManagerScript.instance.player.ChangeInput(InputMode.Menu);
         GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
         FindObjectOfType<Player>().stoppedEvent.Invoke(true);
 
@@ -60,14 +61,15 @@ public class ItemPickupPanel : MonoBehaviour
         itemNameText.text = itemName;
         itemDescriptionText.text = itemDescription;
         itemImage.sprite = itemSprite;
-        transform.GetChild(0).DOScaleY(1, 1f).OnComplete(() => 
+        transform.GetChild(0).DOScaleY(1, 1f).SetUpdate(true).OnComplete(() => 
         {
-            Invoke("DelayedAction", 0.5f);
+            StartCoroutine(DelayedAction());
         });
     }
 
-    private void DelayedAction()
+    IEnumerator DelayedAction()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
         continueImage.SetActive(true);
         continueImage.GetComponent<MinimapAnimation>().RestartCoroutine();
         canClickOff = true;
@@ -79,12 +81,13 @@ public class ItemPickupPanel : MonoBehaviour
         isPressed = false;
         continueImage.SetActive(false);
 
-        transform.GetChild(0).DOScaleY(0, 1f).OnComplete(() => 
+        transform.GetChild(0).DOScaleY(0, 1f).SetUpdate(true).OnComplete(() => 
         {
             transform.GetChild(0).gameObject.SetActive(false);
 
             GameManagerScript.instance.entitiesManager.EntitiesPauseState(false);
             FindObjectOfType<Player>().stoppedEvent.Invoke(false);
+            GameManagerScript.instance.player.ChangeInput(InputMode.Game);
         });
     }
 }

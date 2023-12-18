@@ -82,10 +82,6 @@ public class MovingWalls : BaseEntity
                 additionalEvents.Invoke();
             }
         }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
         if (parentPlayer)
         {
             if (collision.CompareTag("Player"))
@@ -93,6 +89,7 @@ public class MovingWalls : BaseEntity
                 collision.transform.parent.SetParent(movingWall);
             }
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)

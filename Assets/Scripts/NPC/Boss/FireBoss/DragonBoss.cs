@@ -19,7 +19,7 @@ public class DragonBoss : BaseNPC
 
 
     [SerializeField]
-    private float attackSpeed = 4f;
+    private float attackSpeed = 1f;
     private float attackCooldown;
 
     [SerializeField]
@@ -34,6 +34,10 @@ public class DragonBoss : BaseNPC
     private bool stopCoroutines = false;
     [SerializeField]
     private bool isPartOfBoss = false;
+
+    private int previousAttack = -1;
+
+    private int fallingRockAttackCooldown = 2;
 
 
     private List<SpriteRenderer> handSprites = new List<SpriteRenderer>();
@@ -78,7 +82,7 @@ public class DragonBoss : BaseNPC
         onNPCHit.AddListener(OnHit);
         onNPCDeath.AddListener(OnDeath);
 
-        attackCooldown = attackSpeed;
+        attackCooldown = 2f;
         stoppedEvent.AddListener(OnStop);
 
         handSprites.Add(dragonComposite.dragonParts[1].spriteRenderer);
@@ -119,15 +123,14 @@ public class DragonBoss : BaseNPC
 
         if (attackCooldown <= 0)
         {
-            attackCooldown = attackSpeed;
             AttackLogic();
         }
 
     }
     private void OnHit(float damage)
     {
-        dragonComposite.TakeDamage(damage);
-
+        float scale = dragonComposite.TakeDamage(damage);
+        attackSpeed = 1 + scale / 2;
         StartCoroutine(DamageTimer());
     }
 
@@ -157,24 +160,49 @@ public class DragonBoss : BaseNPC
         int rand = Random.Range(0, 3);
         float timeBetweenMove;
 
+        if (previousAttack == rand)
+        {
+            rand -= 1;
+            if (rand < 0)
+                rand = 2;
+        }
+        previousAttack = rand;
+
+        if(rand == 1)
+        {
+            if(fallingRockAttackCooldown > 0)
+            {
+                rand = Random.Range(0, 2);
+                if (rand == 1)
+                    rand = 2;
+            }
+
+        }
+        if(fallingRockAttackCooldown > 0)
+            fallingRockAttackCooldown--;
+
         switch (rand)
         {
+            //Flame attack
             case 0:
                 timeBetweenMove = 1f;
-                attackCooldown += 6f;
+                attackCooldown += 8f / attackSpeed;
                 AttackPattern1(timeBetweenMove);
                 StartCoroutine(AttackPattern1BreathAttack(timeBetweenMove));
                 break;
 
+            //Falling Rocks attack    
             case 1:
+                fallingRockAttackCooldown = 2;
                 timeBetweenMove = 2f;
-                attackCooldown += 8f;
+                attackCooldown += 9f;
                 StartCoroutine(AttackPattern2(timeBetweenMove));
                 break;
 
+            //Shockwave attack
             case 2:
                 timeBetweenMove = 0.05f;
-                attackCooldown += 4f;
+                attackCooldown += 5f / attackSpeed;
                 StartCoroutine(AttackPattern3(timeBetweenMove));
                 break;
 
@@ -194,36 +222,48 @@ public class DragonBoss : BaseNPC
     private void AttackPattern1(float timeBetweenMove)
     {
 
-        Hide(handSprites, 0.3f, 0.8f);
-
-        attackPattern1Button.transform.DOLocalMoveX(0, 0.5f).SetEase(Ease.Linear);
+        Hide(handSprites, 0.6f, 1f);
         spriteAnimation.stopAnimation = true;
-        transform.DOLocalMove(attackPattern1Waypoints[0].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOLocalRotate(new Vector3(0,0,-40f), 0.75f / attackSpeed).SetEase(Ease.Linear).OnComplete(() =>
         {
-            spriteRenderer.sprite = attackPattern1Sprites[0];
-            transform.DOLocalMove(attackPattern1Waypoints[1].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+            transform.DOLocalRotate(new Vector3(0, 0, 40f), 4.5f / attackSpeed).SetEase(Ease.Linear).OnComplete(() =>
             {
-                spriteRenderer.sprite = attackPattern1Sprites[1];
-                transform.DOLocalMove(attackPattern1Waypoints[2].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+                transform.DOLocalRotate(new Vector3(0, 0, 0), 0.75f / attackSpeed).SetEase(Ease.Linear).OnComplete(() =>
                 {
-                    spriteRenderer.sprite = attackPattern1Sprites[1];
-                    transform.DOLocalMove(attackPattern1Waypoints[3].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
-                    {
-                        spriteRenderer.sprite = attackPattern1Sprites[2];
-                        transform.DOLocalMove(attackPattern1Waypoints[4].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
-                        {
-                            spriteRenderer.sprite = attackPattern1Sprites[1];
-                            transform.DOLocalMove(baseWaypoint.localPosition, timeBetweenMove).SetEase(Ease.Linear);
-                            spriteAnimation.stopAnimation = false;
-                            attackPattern1Button.transform.DOLocalMoveX(1, 0.5f).SetEase(Ease.Linear);
-
-                            Hide(handSprites, 1f, 1f);
-
-                        });
-                    });
+                    spriteAnimation.stopAnimation = false;
+                    Hide(handSprites, 1f, 1f);
                 });
             });
         });
+
+
+        //attackPattern1Button.transform.DOLocalMoveX(0, 0.5f).SetEase(Ease.Linear);
+        //transform.DOLocalMove(attackPattern1Waypoints[0].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        //{
+        //    spriteRenderer.sprite = attackPattern1Sprites[0];
+        //    transform.DOLocalMove(attackPattern1Waypoints[1].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        //    {
+        //        spriteRenderer.sprite = attackPattern1Sprites[1];
+        //        transform.DOLocalMove(attackPattern1Waypoints[2].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        //        {
+        //            spriteRenderer.sprite = attackPattern1Sprites[1];
+        //            transform.DOLocalMove(attackPattern1Waypoints[3].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        //            {
+        //                spriteRenderer.sprite = attackPattern1Sprites[2];
+        //                transform.DOLocalMove(attackPattern1Waypoints[4].localPosition, timeBetweenMove).SetEase(Ease.Linear).OnComplete(() =>
+        //                {
+        //                    spriteRenderer.sprite = attackPattern1Sprites[1];
+        //                    transform.DOLocalMove(baseWaypoint.localPosition, timeBetweenMove).SetEase(Ease.Linear);
+        //                    spriteAnimation.stopAnimation = false;
+        //                    //attackPattern1Button.transform.DOLocalMoveX(1, 0.5f).SetEase(Ease.Linear);
+
+        //                    Hide(handSprites, 1f, 1f);
+
+        //                });
+        //            });
+        //        });
+        //    });
+        //});
     }
 
     #region AttackPattern1
@@ -276,7 +316,7 @@ public class DragonBoss : BaseNPC
             if (j == rand)
             {
                 projectilePos.Set(projectilePos.x + 6, projectilePos.y, projectilePos.z);
-                yield return new WaitForSeconds(timeBetweenMove / 2);
+                yield return new WaitForSeconds(timeBetweenMove / 2 / attackSpeed);
                 continue;
             }
 
@@ -285,8 +325,8 @@ public class DragonBoss : BaseNPC
                 projectilePos.Set(projectilePos.x + 1, projectilePos.y, projectilePos.z);
                 yield return new WaitUntil(() => !stopCoroutines);
                 GameObject projectile = Instantiate(attackPattern1Projectile, projectilePos, Quaternion.identity);
-                projectile.GetComponent<Projectile>().OnInstantiate();
-                yield return new WaitForSeconds(timeBetweenMove / 12);
+                projectile.GetComponent<Projectile>().OnInstantiate(1 * attackSpeed);
+                yield return new WaitForSeconds(timeBetweenMove / 12 / attackSpeed);
             }
         }
     }
@@ -298,24 +338,37 @@ public class DragonBoss : BaseNPC
     {
         Invincibility(true);
 
+        GetComponent<Collider2D>().enabled = false;
+
+        //dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[1];
+        //dragonComposite.dragonParts[1].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
+        //{
+        //    dragonComposite.dragonParts[1].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
+        //    dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
+        //});
+
+        //dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[3];
+        //dragonComposite.dragonParts[2].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
+        //{
+        //    dragonComposite.dragonParts[2].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
+        //    dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[2];
+        //    GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1f, 1f);
+        //});
+
+
         dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[1];
-        dragonComposite.dragonParts[1].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
-        {
-            dragonComposite.dragonParts[1].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
-            dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
-        });
+        dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[4];
+        yield return new WaitForSeconds(0.2f);
 
+        dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[2];
+        dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[5];
+        yield return new WaitForSeconds(0.2f);
+
+        dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
         dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[3];
-        dragonComposite.dragonParts[2].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
-        {
-            dragonComposite.dragonParts[2].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
-            dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[2];
-            GameManagerScript.instance.cameraMovement.ShakeCamera(1f, 1f);
-        });
-
-        yield return new WaitForSeconds(1f);
-
-        Hide(AllSprites, 0.3f, 0.8f);
+        yield return new WaitForSeconds(0.1f);
+        GameManagerScript.instance.cameraHolder.DOShakePosition(1f, 1f);
+        Hide(AllSprites, 0.6f, 1f);
 
         Vector2Int PlayerToCenterPos = new Vector2Int((int)(GameManagerScript.instance.player.transform.position.x - groundPosition.position.x), (int)(GameManagerScript.instance.player.transform.position.y - groundPosition.position.y));
 
@@ -382,7 +435,7 @@ public class DragonBoss : BaseNPC
         Hide(AllSprites, 1f, 1f);
 
         Invincibility(false);
-
+        GetComponent<Collider2D>().enabled = true;
     }
     //private void AttackPattern2()
     //{
@@ -406,28 +459,49 @@ public class DragonBoss : BaseNPC
         GameObject projectile;
 
 
-        if(shockwaveDirection == 1)
+        if (shockwaveDirection == 1)
         {
             dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[1];
-            dragonComposite.dragonParts[1].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
-            {
-                dragonComposite.dragonParts[1].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
-                dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
-                GameManagerScript.instance.cameraMovement.ShakeCamera(1f, 1f);
-            });
+            yield return new WaitForSeconds(0.2f);
+
+            dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[2];
+            yield return new WaitForSeconds(0.2f);
+
+            dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
         }
         else
         {
+            dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[4];
+            yield return new WaitForSeconds(0.2f);
+
+            dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[5];
+            yield return new WaitForSeconds(0.2f);
+
             dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[3];
-            dragonComposite.dragonParts[2].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
-            {
-                dragonComposite.dragonParts[2].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
-                dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[2];
-                GameManagerScript.instance.cameraMovement.ShakeCamera(1f, 1f);
-            });
         }
 
-        yield return new WaitForSeconds(1f);
+        GameManagerScript.instance.cameraHolder.DOShakePosition(1f, 1f);
+
+        //if (shockwaveDirection == 1)
+        //{
+        //    dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[1];
+        //    dragonComposite.dragonParts[1].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
+        //    {
+        //        dragonComposite.dragonParts[1].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
+        //        dragonComposite.dragonParts[1].spriteRenderer.sprite = dragonComposite.handSprites[0];
+        //        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1f, 1f);
+        //    });
+        //}
+        //else
+        //{
+        //    dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[3];
+        //    dragonComposite.dragonParts[2].transform.DOLocalMoveY(handSlamPosition.localPosition.y, 1f).SetEase(Ease.InSine).OnComplete(() =>
+        //    {
+        //        dragonComposite.dragonParts[2].transform.DOLocalMoveY(20, 1f).SetEase(Ease.InSine);
+        //        dragonComposite.dragonParts[2].spriteRenderer.sprite = dragonComposite.handSprites[2];
+        //        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1f, 1f);
+        //    });
+        //}
 
         for (int i = 0; i < 24; i++)
         {

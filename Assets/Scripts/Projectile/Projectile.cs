@@ -82,6 +82,11 @@ public class Projectile : BaseEntity
     {
 
     }
+    public virtual void OnInstantiate(float gravity)
+    {
+        rb.gravityScale = gravity;
+    }
+
     protected void WaterCheck()
     {
         if (inWater)

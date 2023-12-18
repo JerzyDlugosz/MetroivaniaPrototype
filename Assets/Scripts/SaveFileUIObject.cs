@@ -11,8 +11,11 @@ public class SaveFileUIObject : MonoBehaviour, ISelectHandler, IDeselectHandler
     public TextMeshProUGUI itemsCollectedNumber;
     public TextMeshProUGUI bossesKilledNumber;
 
+    public TextMeshProUGUI trueEndPlayTime;
+
     public GameObject savePanel;
     public GameObject noSavePanel;
+    public GameObject trueEndPanel;
     public Image background;
 
     public GameObject fileHighlight;

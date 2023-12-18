@@ -18,26 +18,34 @@ public class Thorns : MonoBehaviour
     private Transform onDamageTeleport;
     public bool teleportOnTriggerEnter = false;
 
+    public bool isEnabled = true;
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(!teleportOnTriggerEnter)
+        if(isEnabled)
         {
-            if (collision.CompareTag("Player"))
+            if (!teleportOnTriggerEnter)
             {
-                collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(damage);
+                if (collision.CompareTag("Player"))
+                {
+                    collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(damage);
+                }
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(teleportOnTriggerEnter)
+        if(isEnabled)
         {
-            if (collision.CompareTag("Player"))
+            if (teleportOnTriggerEnter)
             {
-                Player player = collision.GetComponentInParent<Player>();
-                player.damageTakenEvent.Invoke(damage);
-                OnTeleport(player);
+                if (collision.CompareTag("Player"))
+                {
+                    Player player = collision.GetComponentInParent<Player>();
+                    player.damageTakenEvent.Invoke(damage);
+                    OnTeleport(player);
+                }
             }
         }
     }

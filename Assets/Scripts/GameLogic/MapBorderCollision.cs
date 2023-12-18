@@ -14,7 +14,10 @@ public class MapBorderCollision : MonoBehaviour
 
     public OnTriggerEnterEvent onTriggerEnterEvent;
 
+    [HideInInspector]
     public bool isDisabled;
+
+    public bool isManuallyDisabled = false;
 
     public bool isADoor;
 
@@ -32,7 +35,7 @@ public class MapBorderCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(isDisabled)
+        if(isDisabled || isManuallyDisabled)
         {
             return;
         }

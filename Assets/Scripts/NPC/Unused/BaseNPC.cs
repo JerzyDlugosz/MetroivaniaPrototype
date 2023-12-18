@@ -68,7 +68,7 @@ public class BaseNPC : BaseEntity
         onNPCDeath.AddListener(() => GameStateManager.instance.audioManager.PlaySoundEffect(onDeathAudioClip));
     }
 
-    public void Invincibility(bool state)
+    public virtual void Invincibility(bool state)
     {
         if (state)
         {
@@ -88,7 +88,7 @@ public class BaseNPC : BaseEntity
             NPCRigidbody.AddRelativeForce(force);
     }
 
-    protected void UpdateSpriteRotation(bool useRigidbody)
+    protected void UpdateSpriteDirection(bool useRigidbody)
     {
         if (useRigidbody)
         {

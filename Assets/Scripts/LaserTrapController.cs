@@ -11,7 +11,7 @@ public class LaserTrapController : MonoBehaviour
     [SerializeField]
     private float laserAttackDelay;
 
-    private void Start()
+    private void Awake()
     {
         for (int i = 0; i < laserTraps.Count; i++)
         {

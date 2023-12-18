@@ -14,7 +14,7 @@ public class DragonBossRoom : BossRoom
         base.OnBossRoomEnter();
 
         GameManagerScript.instance.player.playerShooting.forceMultiplier = 2f;
-        if (GameManagerScript.instance.player.progressTracker.CheckBossID(dragonComposite.dragonParts[0].bossData))
+        if (GameManagerScript.instance.player.progressTracker.CheckBossID(dragonComposite.bossData))
         {
             Destroy(dragonComposite.gameObject);
             Destroy(bossEnterTrigger.gameObject);
@@ -26,10 +26,12 @@ public class DragonBossRoom : BossRoom
 
     public void OnBossFightStart()
     {
+        dragonComposite.SetAlpha(0f);
         door.transform.DOLocalMoveY(0, 1f);
         dragonComposite.gameObject.SetActive(true);
         dragonComposite.dragonParts[0].onNPCDeath.AddListener(OnBossFightEnd);
         GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
+        dragonComposite.FadeIn();
     }
 
     private void OnBossFightEnd()

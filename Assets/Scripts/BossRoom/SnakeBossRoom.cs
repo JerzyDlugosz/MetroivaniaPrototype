@@ -10,11 +10,12 @@ public class SnakeBossRoom : BossRoom
     public override void OnBossRoomEnter()
     {
         base.OnBossRoomEnter();
-
+        GameManagerScript.instance.player.playerShooting.forceMultiplier = 1.3f;
         if (GameManagerScript.instance.player.progressTracker.CheckBossID(bossEnemyParts.bossData))
         {
             Destroy(bossEnemyParts.gameObject);
             Destroy(bossEnterTrigger.gameObject);
+            GameManagerScript.instance.player.playerShooting.forceMultiplier = 1f;
             return;
         }
     }
@@ -39,6 +40,7 @@ public class SnakeBossRoom : BossRoom
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
         GameStateManager.instance.audioManager.RemoveAudio();
         GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
+        GameManagerScript.instance.entitiesManager.RemoveAllEntities();
     }
 
 }

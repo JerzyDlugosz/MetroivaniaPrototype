@@ -15,7 +15,8 @@ public class CustomButton : MonoBehaviour, ISelectHandler
     /// audio clip to play when user clicks the button
     /// </summary>
     [SerializeField]
-    private AudioClip onClickAudioClip; 
+    private AudioClip onClickAudioClip;
+
     public void OnClick(Button target)
     {
         //GetComponent<Button>().Select();
@@ -35,6 +36,7 @@ public class CustomButton : MonoBehaviour, ISelectHandler
 
     public void ChangeScene(int sceneNumber)
     {
+        Time.timeScale = 1f;
         GameStateManager.instance.LoadScene(sceneNumber);
     }
 

@@ -35,7 +35,7 @@ public class AEyeBoss : EyeBoss
         if (stopMovement)
             return;
 
-        MovementLogic();
+        MovementAndRotationLogic();
 
         if (attackCooldown > 0)
             attackCooldown -= Time.deltaTime;
@@ -57,7 +57,9 @@ public class AEyeBoss : EyeBoss
     private void AttackPattern1()
     {
         stopMovement = true;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
         Vector3 movePosition = GetRandomYMoveLocation();
+        stopLookingAtPlayer = true;
         transform.DOLocalMove(movePosition, MathF.Min(Vector3.Distance(movePosition, transform.localPosition) / maxSpeed , 4f)).OnComplete(() =>
         {
             SetLaser(0f, 2);
@@ -73,6 +75,7 @@ public class AEyeBoss : EyeBoss
                         {
                             stopMovement = false;
                             SetLaser(0, 0);
+                            stopLookingAtPlayer = false;
                         });
                         break;
                     case 1:
@@ -81,6 +84,7 @@ public class AEyeBoss : EyeBoss
                         {
                             stopMovement = false;
                             SetLaser(0, 0);
+                            stopLookingAtPlayer = false;
                         });
                         break;
                 }

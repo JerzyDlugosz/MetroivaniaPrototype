@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a600bc7b2b6f09445b7f2a6fd4c24fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSaveFile: 8
+  currentSaveFile: 9
 --- !u!1 &1408855547
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,14 +486,19 @@ MonoBehaviour:
   musicAudioSource: {fileID: 1086356103}
   effectsAudioSoruce: {fileID: 605408715}
   Zone1Music:
-  - {fileID: 8300000, guid: d1a905dcce2ff8249a289f9db52372f7, type: 3}
-  - {fileID: 8300000, guid: dcf43fbd70887064dbb893f47305b6c6, type: 3}
+  - {fileID: 8300000, guid: 01a69dc104de8ad4d91d902790f41a78, type: 3}
+  - {fileID: 8300000, guid: eb145358891cc9e46a11bbfaeae2b33a, type: 3}
   Zone2Music:
   - {fileID: 8300000, guid: 34fc35f4bdd72904ea182b30dc00b91f, type: 3}
   Zone3Music:
   - {fileID: 8300000, guid: 4dcd27f6079ab85459f809124d5f2650, type: 3}
   MenuMusic:
   - {fileID: 8300000, guid: f7c6d2db93738c24a99cc12cd3f926ae, type: 3}
+  SecretZoneMusic:
+  - {fileID: 0}
+  SecretBossMusic: []
+  TrueEndMusic:
+  - {fileID: 8300000, guid: 698bcc01e3cdf844f82c57db1f47f7fe, type: 3}
   musicVolume: 0.02
   effectsVolume: 0.4
 --- !u!4 &1408855549

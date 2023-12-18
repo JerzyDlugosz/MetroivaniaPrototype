@@ -33,7 +33,7 @@ public class WEyeBoss : EyeBoss
         if (isStopped)
             return;
 
-        MovementLogic();
+        MovementAndRotationLogic();
 
         if (attackCooldown > 0)
             attackCooldown -= Time.deltaTime;

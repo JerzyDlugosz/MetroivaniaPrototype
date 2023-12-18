@@ -31,7 +31,7 @@ public class AirEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(isUsingRigidbody);
+        UpdateSpriteDirection(isUsingRigidbody);
         if (!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();
@@ -46,6 +46,11 @@ public class AirEnemy : BaseNPC
             spriteAnimation.UpdateAnimationFrame(path.velocity.x);
         }
 
+
+        if(!canAttack)
+        {
+            return;
+        }
         if(isRanged)
         {
             if(path.reachedEndOfPath)
@@ -88,7 +93,7 @@ public class AirEnemy : BaseNPC
     {
         health -= damage;
 
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }

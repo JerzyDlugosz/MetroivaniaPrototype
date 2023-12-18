@@ -22,6 +22,7 @@ public class CArrowReloadSpeed : CollectibleGameObject
         GameManagerScript.instance.player.arrowReloadSpeedIncreaseEvent.Invoke();
 
         GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleType);
+        GameManagerScript.instance.player.progressTracker.OnArrowReloadSpeedAdd();
 
         ItemPickupPanel.instance.ShowPanel(collectibleName, collectibleDescription, collectibleSprite);
 

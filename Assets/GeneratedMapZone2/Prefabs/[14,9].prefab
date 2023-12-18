@@ -969,11 +969,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 8.62524e+25
+      e03: 1.24399775e-33
       e10: 0
       e11: 0
       e12: 0
-      e13: 3.14e-43
+      e13: 1.65e-43
       e20: 0
       e21: 0
       e22: 0
@@ -1693,7 +1693,7 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
 --- !u!114 &944297467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,6 +1706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8caf1c298dcd34d9aab65462ff7674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Maskable: 1
 --- !u!61 &944297466
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1808,6 +1809,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1146269541
@@ -1887,6 +1889,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!114 &1146269545
@@ -1980,6 +1983,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1197530025
@@ -15527,6 +15531,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 618956539}
   zone: 2
+  specialRoom: 0
 --- !u!114 &1755906000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15542,7 +15547,7 @@ MonoBehaviour:
   BackgroundTilemap: {fileID: 1514129988}
   WallsTilemap: {fileID: 1502042623}
   ForegroundTilemap: {fileID: 195738494}
-  wasEdited: 0
+  wasEdited: 1
   isPlayable: 1
   xPos: 14
   yPos: 9
@@ -15917,6 +15922,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1001 &686564842
@@ -15926,6 +15932,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 217919791}
     m_Modifications:
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectibleId
+      value: 61
+      objectReference: {fileID: 0}
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectiblePositionX
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectiblePositionY
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3261704601232519276, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -13932,6 +13932,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1284176486
@@ -14722,7 +14723,7 @@ Tilemap:
       - {fileID: 1403899665, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
       - {fileID: -879838082, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
       - {fileID: -1392981027, guid: fafdb1204ac6f4f4cb1032c0e1060f01, type: 3}
-      m_AnimationSpeed: 3.0000002
+      m_AnimationSpeed: 3
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -5, y: 0, z: 0}
@@ -15070,6 +15071,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1777144487
@@ -15148,6 +15150,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 644978643}
   zone: 0
+  specialRoom: 0
 --- !u!114 &1777144490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15185,9 +15188,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   compMapXSize: 2
-  compMapYSize: 3
+  compMapYSize: 2
   compMapXPos: {x: 2, y: 3}
-  compMapYPos: {x: 11, y: 13}
+  compMapYPos: {x: 11, y: 12}
   maplist: {fileID: 0}
 --- !u!1 &1821921164
 GameObject:
@@ -15265,6 +15268,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1930337541
@@ -15343,6 +15347,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &2092667806

@@ -1,9 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[Serializable]
+public class OnTextAccept : UnityEvent { }
 
 public class TextInGame : MonoBehaviour
 {
+    public OnTextAccept onTextAcceptEvent;
+
     [SerializeField]
     private GameObject inGameTextPrefab;
 
@@ -51,6 +58,8 @@ public class TextInGame : MonoBehaviour
                     inGameText.SetText(onUseText);
                     inGameText.transform.position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
                     inGameText.StartAnimation();
+
+                    onTextAcceptEvent.Invoke();
                 }
             }
         }

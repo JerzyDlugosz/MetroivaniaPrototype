@@ -29,12 +29,17 @@ public class EyeBoss : BaseNPC
     private float reachedPointDistance = 2;
     #endregion
 
+    [SerializeField]
+    protected bool stopLookingAtPlayer = false;
+    [SerializeField]
+    protected float rotationalMoveSpeed = 0.8f;
+
     protected void OnHit(float damage)
     {
         health -= damage;
         float scale = (maxHealth - health) / (maxHealth / 4);
         spriteRenderer.material.SetFloat(DamageScaleID, 1 + scale);
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }
@@ -61,7 +66,7 @@ public class EyeBoss : BaseNPC
         Destroy(gameObject);
     }
 
-    protected void MovementLogic()
+    protected void MovementAndRotationLogic()
     {
         force = (new Vector3(nextMovementPoint.x, nextMovementPoint.y, transform.localPosition.z) - transform.localPosition).normalized * speed;
         NPCRigidbody.AddForce(force);
@@ -77,6 +82,16 @@ public class EyeBoss : BaseNPC
         if(Vector2.Distance(transform.localPosition, nextMovementPoint) < reachedPointDistance)
         {
              ChooseNextMovementPoint();
+        }
+
+        if(!stopLookingAtPlayer)
+        {
+            var angle = MathExtensions.GetAngle(transform.position, GameManagerScript.instance.player.transform.position);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle(transform.eulerAngles.z, angle, rotationalMoveSpeed));
+        }
+        else
+        {
+
         }
     }
 
@@ -103,5 +118,10 @@ public class EyeBoss : BaseNPC
         return new Vector3(movementZone.localPosition.x + xBoundary,
                   Random.Range(movementZone.localPosition.y - yBoundary, movementZone.localPosition.y + yBoundary), transform.localPosition.z);
 
+    }
+
+    private void OnDestroy()
+    {
+        transform.DOKill();
     }
 }

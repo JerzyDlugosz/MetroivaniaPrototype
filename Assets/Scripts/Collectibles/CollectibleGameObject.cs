@@ -13,8 +13,7 @@ public class CollectibleGameObject : MonoBehaviour
     private Collider2D CCollider;
     public OnCollect collectEvent;
 
-    [SerializeField]
-    protected int collectibleId;
+    public int collectibleId;
     [SerializeField]
     protected int collectiblePositionX;
     [SerializeField]
@@ -40,6 +39,23 @@ public class CollectibleGameObject : MonoBehaviour
             collectEvent.Invoke();
             CCollider.enabled = false;
         }
+    }
+
+    public CollectibleType GetCollectibleType()
+    {
+        return collectibleType;
+    }
+
+    public void SetPosition(int xPos, int yPos)
+    {
+        collectiblePositionX = xPos;
+        collectiblePositionY = yPos;
+    }
+
+    public void GetPosition(out int _xPos, out int _yPos)
+    {
+        _xPos = collectiblePositionX;
+        _yPos = collectiblePositionY;
     }
 }
 

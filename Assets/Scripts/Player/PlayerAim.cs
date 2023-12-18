@@ -13,12 +13,24 @@ public class PlayerAim : MonoBehaviour
     private Transform reticle;
     [SerializeField]
     private Transform weapon;
+    [SerializeField]
+    private Transform directionIndicator;
+    private SpriteRenderer directionIndicatorSpriteRenderer;
+    [SerializeField]
+    private List<Sprite> directionIndicatorSprites = new List<Sprite>();
 
     public float distance;
     Vector2 direction;
     Quaternion rotation;
     [HideInInspector]
     public float angle;
+
+
+    private void Awake()
+    {
+        if(directionIndicator != null)
+            directionIndicatorSpriteRenderer = directionIndicator.GetChild(0).GetComponent<SpriteRenderer>();
+    }
 
     private void Update()
     {
@@ -29,8 +41,21 @@ public class PlayerAim : MonoBehaviour
 
         rotation = Quaternion.LookRotation(player.aimInputScreenPosition - player.transform.position, transform.TransformDirection(Vector3.up));
 
+        if(GameManagerScript.instance.isMainMenu)
+        {
+            return;
+        }
+        if(!player.playerData.unlockedBow)
+        {
+            return;
+        }
+
         UpdateReticlePosition();
         UpdateBowRotation();
+        if (directionIndicator != null)
+        {
+            UpdateDirectionIndicator();
+        }
     }
 
     void UpdateReticlePosition()
@@ -41,13 +66,13 @@ public class PlayerAim : MonoBehaviour
 
         if (hit.collider != null)
         {
-            reticle.position = hit.point;
+            reticle.position = new Vector3(hit.point.x, hit.point.y, reticle.position.z);
 
             //Debug.DrawRay(player.transform.position, direction, Color.red, 5f);
         }
         else
         {
-            reticle.position = player.aimInputScreenPosition;
+            reticle.position = new Vector3(player.aimInputScreenPosition.x, player.aimInputScreenPosition.y, reticle.position.z);
 
             //Debug.DrawRay(player.transform.position, direction, Color.white, 5f);
         }
@@ -75,8 +100,32 @@ public class PlayerAim : MonoBehaviour
         }
     }
 
-    public float getAngle(Vector2 me, Vector2 target)
+    void UpdateDirectionIndicator()
     {
-        return Mathf.Atan2(target.y - me.y, target.x - me.x) * (180 / Mathf.PI);
+        if(distance > 3)
+        {
+            directionIndicatorSpriteRenderer.sprite = directionIndicatorSprites[2];
+        }
+        else if (distance > 2f)
+        {
+            directionIndicatorSpriteRenderer.sprite = directionIndicatorSprites[1];
+        }
+        else if (distance > 1f)
+        {
+            directionIndicatorSpriteRenderer.sprite = directionIndicatorSprites[0];
+        }
+
+        if (distance > 1)
+        {
+            directionIndicatorSpriteRenderer.color = new Color(directionIndicatorSpriteRenderer.color.r, directionIndicatorSpriteRenderer.color.g, directionIndicatorSpriteRenderer.color.b, 1f);
+        }
+        else if (distance > 0)
+        {
+            directionIndicatorSpriteRenderer.color = new Color(directionIndicatorSpriteRenderer.color.r, directionIndicatorSpriteRenderer.color.g, directionIndicatorSpriteRenderer.color.b, 0f);
+        }
+
+
+        directionIndicator.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, directionIndicator.transform.position.z);
+        directionIndicator.eulerAngles = new Vector3(0,0,angle);
     }
 }

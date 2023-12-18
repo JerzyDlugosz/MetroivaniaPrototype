@@ -23,29 +23,30 @@ public class ChaseBossRoom : BossRoom
     {
 
         base.OnBossRoomEnter();
-        GameManagerScript.instance.player.playerShooting.forceMultiplier = 2f;
         if (GameManagerScript.instance.player.progressTracker.CheckBossID(eyeBossComposite.bossData))
         {
             Destroy(eyeBossComposite.gameObject);
             Destroy(bossEnterTrigger.gameObject);
             return;
         }
+        GameManagerScript.instance.player.playerShooting.forceMultiplier = 2f;
     }
 
     public void OnBossFightStart()
     {
+        eyeBossComposite.SetAlpha(0);
         door.transform.DOLocalMoveY(0, 1f);
         movingBackground.MovementState(true);
         playerPush = true;
         eyeBossComposite.gameObject.SetActive(true);
         eyeBossComposite.compositeEyeBossDeathEvent.AddListener(OnBossFightEnd);
         GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
+        eyeBossComposite.FadeIn();
     }
 
     private void OnBossFightEnd()
     {
         StopAllCoroutines();
-        DOTween.KillAll(false);
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
         playerPush = false;
         GameManagerScript.instance.player.playerShooting.forceMultiplier = 1f;
@@ -58,24 +59,23 @@ public class ChaseBossRoom : BossRoom
         playerPush = false;
         GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
         playerController.StopMovement(true);
-
+        GameManagerScript.instance.player.ChangeInput(InputMode.Menu);
         //Disable inputs here...
 
-        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(2f, 1f).OnComplete(() => 
+        GameManagerScript.instance.cameraHolder.DOShakePosition(2f, 1f).SetUpdate(true).OnComplete(() => 
         {
-            GameManagerScript.instance.cameraMovement.transform.DOShakePosition(2f, 1f).SetLoops(-1);
+            GameManagerScript.instance.cameraHolder.DOShakePosition(4f, 1f).SetUpdate(true);
             float moveAmmount = playerController.transform.position.x + 10;
             float moveAmmount2 = playerController.transform.position.x + 20;
             float animSpeed = 0.01f;
-            playerController.transform.DOMoveX(moveAmmount, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).SetEase(Ease.InSine).OnComplete(() =>
+            playerController.transform.DOMoveX(moveAmmount, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).SetUpdate(true).SetEase(Ease.InSine).OnComplete(() =>
             {
-                playerController.transform.DOMoveX(moveAmmount2, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).SetEase(Ease.Linear);
-                GameManagerScript.instance.cameraMovement.blackout.DOFade(1, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).OnComplete(() => 
+                playerController.transform.DOMoveX(moveAmmount2, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).SetUpdate(true).SetEase(Ease.Linear);
+                GameManagerScript.instance.cameraMovement.blackout.DOFade(1, Vector2.Distance(playerController.transform.position, playerController.transform.position + new Vector3(125, 0, 0)) * animSpeed).SetUpdate(true).OnComplete(() => 
                 {
 
                     //... and enable them here maybe
                     GameStateManager.instance.audioManager.RemoveAudio();
-                    GameStateManager.instance.audioManager.ChangeAudio(VictoryMusic);
                     GameManagerScript.instance.endScreen.StartAnim();
                 });
             });

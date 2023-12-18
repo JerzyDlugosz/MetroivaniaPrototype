@@ -11,4 +11,12 @@ public class ParticleController : MonoBehaviour
             Instantiate(particle, transform.position, Quaternion.identity);
         }
     }
+
+    protected void StartParticle(GameObject particle, Vector3 position)
+    {
+        if (particle != null)
+        {
+            Instantiate(particle, position, Quaternion.identity);
+        }
+    }
 }

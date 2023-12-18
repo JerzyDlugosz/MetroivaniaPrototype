@@ -22,6 +22,7 @@ public class CArrow : CollectibleGameObject
         GameManagerScript.instance.player.arrowCapacityIncreaseEvent.Invoke();
 
         GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleSpriteID, collectibleType);
+        GameManagerScript.instance.player.progressTracker.OnArrowCapacityAdd();
 
         ItemPickupPanel.instance.ShowPanel(collectibleName, collectibleDescription, collectibleSprite);
 

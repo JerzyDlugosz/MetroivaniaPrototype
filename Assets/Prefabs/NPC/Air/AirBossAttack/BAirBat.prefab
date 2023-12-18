@@ -239,12 +239,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isInvincible: 0
-  maxHealth: 10
-  health: 10
+  maxHealth: 6
+  health: 6
   speed: 2
   baseSpeed: 2
   damage: 1
-  canAttack: 0
+  canAttack: 1
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
   isRanged: 1
@@ -318,6 +318,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathParticle: {fileID: 217049895306480580, guid: cae12caa1e8321b4cb034567d90209d9, type: 3}
+  particleAmmount: 1
+  particleSpread: 0
+  isUsingCustomZPosition: 0
+  customZPosition: 0
 --- !u!1 &2963576506179934900
 GameObject:
   m_ObjectHideFlags: 0

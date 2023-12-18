@@ -136,5 +136,5 @@ MonoBehaviour:
   collectibleSpriteID: 8
   PickupAudioClip: {fileID: 8300000, guid: 0a8559e29873e944e98a3354bb0eb74d, type: 3}
   collectibleName: Air Stone
-  collectibleDescription: Stone that contains the power of a Slyph. Makes the holder
-    lightweight
+  collectibleDescription: Stone that contains the power of a Slyph. Allows the holder
+    to jump in air

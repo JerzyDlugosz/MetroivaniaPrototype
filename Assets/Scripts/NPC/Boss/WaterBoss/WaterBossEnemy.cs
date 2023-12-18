@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class WaterBossEnemy : BaseNPC
     [SerializeField]
     private GameObject projectilePrefab;
     [SerializeField]
-    private float attackSpeed = 3f;
+    private float attackSpeed = 1f;
 
     private float attackCooldown;
     [SerializeField]
@@ -26,6 +27,21 @@ public class WaterBossEnemy : BaseNPC
 
     [SerializeField]
     private GameObject stunIcon;
+    [SerializeField]
+    private Transform centerOfRoom;
+    public SpriteRenderer neckSpriteRenderer;
+    public List<Sprite> neckSprites;
+    public List<Transform> headPositions = new List<Transform>();
+    public List<Sprite> onStunSprites;
+    private int previousHeadIndex = -1;
+
+    Transform playerTransform;
+
+    [SerializeField]
+    private List<SpriteRenderer> bossSpriteRenderers;
+
+    [SerializeField]
+    public List<GameObject> projectiles;
 
     public override void Start()
     {
@@ -33,8 +49,10 @@ public class WaterBossEnemy : BaseNPC
         onNPCHit.AddListener(OnHit);
         onNPCDeath.AddListener(OnDeath);
 
-        attackCooldown = attackSpeed;
+        attackCooldown = 3f;
         stoppedEvent.AddListener(OnStop);
+
+        playerTransform = GameManagerScript.instance.player.transform;
     }
 
     private void Update()
@@ -43,38 +61,21 @@ public class WaterBossEnemy : BaseNPC
         {
             return;
         }
-        if (attackCooldown > 0)
-            attackCooldown -= Time.deltaTime;
 
         if (isStunned)
         {
             return;
         }
 
+        if (attackCooldown > 0)
+            attackCooldown -= Time.deltaTime;
+
 
         if (basicSpriteRotation)
-            UpdateSpriteRotation(isUsingRigidbody);
+            UpdateSpriteDirection(isUsingRigidbody);
 
-        if (!isUsingVelocityForAnimation)
-        {
-            spriteAnimation.UpdateAnimationFrame();
-        }
-        else
-        {
-            if (NPCRigidbody != null)
-            {
-                spriteAnimation.UpdateAnimationFrame(NPCRigidbody.velocity.x);
-                return;
-            }
-            spriteAnimation.UpdateAnimationFrame(path.velocity.x);
-        }
+        UpdateBossLocationAndRotation();
 
-
-        //if (attackCooldown <= 0)
-        //{
-        //    attackCooldown = attackSpeed;
-        //    AttackLogic();
-        //}
 
         if (attackCooldown <= 0)
         {
@@ -85,9 +86,13 @@ public class WaterBossEnemy : BaseNPC
     private void OnHit(float damage)
     {
         health -= damage;
-        float scale = (maxHealth - health) / (maxHealth / 4);
-        spriteRenderer.material.SetFloat(DamageScaleID, 1 + scale);
-        if (health < 0f)
+        float scale = (maxHealth - health) / maxHealth;
+        attackSpeed =  1 + scale / 2;
+        for (int i = 0; i < bossSpriteRenderers.Count - 1; i++)
+        {
+            bossSpriteRenderers[i].material.SetFloat(DamageScaleID, 1 + scale);
+        }
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }
@@ -100,21 +105,78 @@ public class WaterBossEnemy : BaseNPC
        
     }
 
+    public override void Invincibility(bool state)
+    {
+        for (int i = 0; i < bossSpriteRenderers.Count - 1; i++)
+        {
+            if (state)
+            {
+                bossSpriteRenderers[i].material.SetFloat(InvincibilityID, 1);
+            }
+            else
+            {
+                bossSpriteRenderers[i].material.SetFloat(InvincibilityID, 0);
+            }
+        }
+        isInvincible = state;
+    }
+
+    private void UpdateBossLocationAndRotation()
+    {
+        float bossToPlayerDistance = GameManagerScript.instance.player.transform.position.x - centerOfRoom.position.x;
+
+        int index = (int)((Mathf.Max(-10, Mathf.Min(9, bossToPlayerDistance)) / 5) + 2);
+
+        if(previousHeadIndex != index)
+        {
+            transform.position = headPositions[index].position;
+            neckSpriteRenderer.sprite = neckSprites[index];
+        }
+
+        float angle = Mathf.Atan2(playerTransform.position.y - transform.position.y, playerTransform.position.x - transform.position.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
     public void OnDeath()
     {
         GameManagerScript.instance.player.progressTracker.AddBoss(bossData);
         GameManagerScript.instance.player.characterController.StopMovement(false);
         enemyParticleController.OnDeath();
-        Destroy(stunIcon.gameObject);
+        Destroy(stunIcon);
+        foreach (var item in bossSpriteRenderers)
+        {
+            Destroy(item);
+        }
         Destroy(gameObject);
     }
 
     public void OnStun(bool state)
     {
         StopAllCoroutines();
+        RemoveProjectiles();
         stunIcon.SetActive(state);
         isStunned = state;
+        if (state)
+            attackCooldown = 2f;
     }
+
+    public void FadeIn()
+    {
+        foreach (var item in bossSpriteRenderers)
+        {
+            item.DOFade(1, 2f);
+        }
+        GameManagerScript.instance.cameraHolder.DOShakePosition(2f, 1.5f);
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        foreach (var item in bossSpriteRenderers)
+        {
+            item.color = new Color(item.color.r, item.color.g, item.color.b, alpha);
+        }
+    }
+
 
     private void GetRandomAttackPattern()
     {
@@ -122,10 +184,10 @@ public class WaterBossEnemy : BaseNPC
         switch(rand)
         {
             case 0: AttackPattern1(false, 0);
-                attackCooldown = 2f;
+                attackCooldown = 2f / attackSpeed;
                 break;
             case 1: AttackPattern2(true, 0.5f);
-                attackCooldown = 5f;
+                attackCooldown = 4f / attackSpeed;
                 break;
             default:
                 break;
@@ -150,14 +212,15 @@ public class WaterBossEnemy : BaseNPC
 
             Vector3 position = new Vector3(transform.position.x, transform.position.y, -4f);
 
-            Transform playerTransform = GameManagerScript.instance.player.transform;
-
             float angle = Mathf.Atan2(playerTransform.position.y - transform.position.y, playerTransform.position.x - transform.position.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle + (projectileRotation + (projectileSpread * i))));
-            transform.rotation = targetRotation;
 
             GameObject projectile = Instantiate(projectilePrefab, position, targetRotation);
-
+            projectiles.Add(projectile);
+            projectile.GetComponent<Projectile>().destroyEvent.AddListener(() =>
+            {
+                RemoveProjectileFromProjectiles(projectile);
+            });
             projectile.GetComponent<Projectile>().OnInstantiate();
         }
     }
@@ -185,18 +248,34 @@ public class WaterBossEnemy : BaseNPC
 
             Vector3 position = new Vector3(transform.position.x, transform.position.y, -4f);
 
-            Transform playerTransform = GameManagerScript.instance.player.transform;
-
             float angle = Mathf.Atan2(playerTransform.position.y - transform.position.y, playerTransform.position.x - transform.position.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle + (projectileRotation + (projectileSpread * i))));
-            transform.rotation = targetRotation;
 
             GameObject projectile = Instantiate(projectilePrefab, position, targetRotation);
-
+            projectiles.Add(projectile);
             projectile.GetComponent<Projectile>().OnInstantiate();
-
+            projectile.GetComponent<Projectile>().destroyEvent.AddListener(() => 
+            { 
+                RemoveProjectileFromProjectiles(projectile);
+            });
             yield return new WaitForSeconds(projectileDelay);
         }
+    }
+
+    private void RemoveProjectileFromProjectiles(GameObject item)
+    {
+        projectiles.Remove(item);
+
+    }
+
+    private void RemoveProjectiles()
+    {
+        for (int i = 0; i < projectiles.Count; i++)
+        {
+            Destroy(projectiles[i]);
+        }
+
+        projectiles.Clear();
     }
 
 

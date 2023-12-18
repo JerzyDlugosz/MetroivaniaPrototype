@@ -32,7 +32,6 @@ public class ItemMenu : CustomUIMenu
 
         ClearMenu();
 
-        PlayerData playerData = GameManagerScript.instance.player.playerData;
         ProgressTracker progressTracker = GameManagerScript.instance.player.progressTracker;
 
 
@@ -51,10 +50,10 @@ public class ItemMenu : CustomUIMenu
         }
 
 
-        hpCount.text = (playerData.maxHealth / 4).ToString();
-        arrowCount.text = playerData.maxArrowCount.ToString();
-        arrowDamageCount.text = ((playerData.damageModifier - 1) * 20).ToString();
-        ReloadSpeedCount.text = Mathf.Abs((playerData.reloadSpeedModifier - 1) * 20).ToString();
+        hpCount.text = progressTracker.cHealthUpCount.ToString();
+        arrowCount.text = progressTracker.cArrowCapacityCount.ToString();
+        arrowDamageCount.text = progressTracker.cArrowDamageCount.ToString();
+        ReloadSpeedCount.text = progressTracker.cArrowReloadSpeedCount.ToString();
     }
 
     private void ClearMenu()

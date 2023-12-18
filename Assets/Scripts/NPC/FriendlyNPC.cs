@@ -20,7 +20,7 @@ public class FriendlyNPC : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(false);
+        UpdateSpriteDirection(false);
         if (!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();

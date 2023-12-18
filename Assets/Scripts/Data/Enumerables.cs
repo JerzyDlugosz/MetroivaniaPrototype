@@ -23,7 +23,10 @@ public enum Zone
     Zone1,
     Zone2,
     Zone3,
-    Menu
+    Menu,
+    SpecialZone,
+    SpecialBoss,
+    TrueEnd
 }
 
 public enum CollectibleSpriteIDs
@@ -38,4 +41,19 @@ public enum CollectibleSpriteIDs
     FireSpirit = 7,
     AirSpirit = 8,
     NoSprite = -1,
+    BasicArrow = 9,
+}
+
+public enum SpecialRoom
+{
+    NormalRoom = 0,
+    SavePoint = 1,
+    BoosRoom = 2,
+}
+
+public enum InputMode
+{
+    Game = 0,
+    Menu = 1,
+    None = 2,
 }

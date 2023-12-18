@@ -22,6 +22,7 @@ public class CArrowDamage : CollectibleGameObject
         GameManagerScript.instance.player.arrowDamageIncreaseEvent.Invoke();
 
         GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleType);
+        GameManagerScript.instance.player.progressTracker.OnArrowDamageAdd();
 
         ItemPickupPanel.instance.ShowPanel(collectibleName, collectibleDescription, collectibleSprite);
 

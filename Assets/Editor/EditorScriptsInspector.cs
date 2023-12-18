@@ -26,5 +26,30 @@ public class EditorScriptsInspector : Editor
         {
             EditorScriptsScript.SetCompositeTilemaps();
         }
+
+        //if (GUILayout.Button("Set all collectible data in game"))
+        //{
+        //    EditorScriptsScript.SetStatCollectibleDataInGame();
+        //}
+
+        if (GUILayout.Button("Disable unplayable maps"))
+        {
+            EditorScriptsScript.SetUnplayableMapVisibility(false);
+        }
+
+        if (GUILayout.Button("Enable unplayable maps"))
+        {
+            EditorScriptsScript.SetUnplayableMapVisibility(true);
+        }
+
+        if (GUILayout.Button("Get collectibles positions"))
+        {
+            EditorScriptsScript.GetAllCollectiblesPositions();
+        }
+
+        if (GUILayout.Button("Set stat collectibles data to CollectibleList"))
+        {
+            EditorScriptsScript.SetStatCollectibleDatanCollectibleList();
+        }
     }
 }

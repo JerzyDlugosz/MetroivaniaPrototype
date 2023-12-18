@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
     private int xSizeMul;
     private int ySizeMul;
     public MinimapController minimap;
+    public MenuMap menuMap;
 
     public int centerMapOffset = 100;
 
@@ -45,11 +46,12 @@ public class GameManagerScript : MonoBehaviour
     //private bool preloadMaps;
     [SerializeField]
     private bool areMapsPreloaded;
-    [SerializeField]
-    private bool isMinimapAvailable = true;
+    public bool isMinimapAvailable = true;
     [SerializeField]
     private bool willLoadSaveFile = true;
+    public bool isMainMenu = false;
     public CameraMovement cameraMovement;
+    public Transform cameraHolder;
 
     private GameObject[,] preloadedMaps;
 
@@ -64,11 +66,14 @@ public class GameManagerScript : MonoBehaviour
     public PauseMenu pauseMenu;
 
     public EndScreen endScreen;
+    public TrueEnd trueEndScreen;
 
     public Vector2Int mapPrefabsSize = new Vector2Int(20, 20);
 
     private float timePlayed;
     public bool countTimePlayed = true;
+
+    public CollectibleList collectibleList;
     private void Awake()
     {
         if (instance == null)
@@ -121,6 +126,9 @@ public class GameManagerScript : MonoBehaviour
 
         spawnMapNumber = _spawnMapNumber;
 
+
+        //This is just a temporary solution
+
 #if (UNITY_EDITOR)
 
         if (GameObject.Find("MapGenerator") != null)
@@ -142,6 +150,8 @@ public class GameManagerScript : MonoBehaviour
 
         Map currentMap = null;
         currentMap = LoadGame();
+        if(isMinimapAvailable)
+            player.RefreshUI();
         CreateMap(currentMap, true);
         //if (!preloadMaps)
         //{
@@ -161,11 +171,15 @@ public class GameManagerScript : MonoBehaviour
         if (countTimePlayed)
             timePlayed += Time.deltaTime;
 
+        //I dont know what i did here, but it works.
+
         float x = player.transform.position.x + centerMapOffset * GlobalData.maxTimemaps;
         float y = player.transform.position.y + centerMapOffset * GlobalData.maxTimemaps;
 
         int mapXPos = (int)((x + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
         int mapYPos = (int)((y + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
+
+        //Debug.Log($"MapPos X & Y: {mapXPos}, {mapYPos}");
 
         if (!isMinimapAvailable)
             return;
@@ -189,9 +203,36 @@ public class GameManagerScript : MonoBehaviour
             }
             currentPos.x = mapXPos;
             currentPos.y = mapYPos;
+
+
+            //minimap.ManuallySetMinimapTile(14 + 25, 11 + 25, mapArray[14 + 25, 11 + 25], 3);
+
         }
 
     }
+
+    public void ManualMapRefresh()
+    {
+        float x = player.transform.position.x + centerMapOffset * GlobalData.maxTimemaps;
+        float y = player.transform.position.y + centerMapOffset * GlobalData.maxTimemaps;
+
+        int mapXPos = (int)((x + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
+        int mapYPos = (int)((y + GlobalData.maxTimemaps / 2) / GlobalData.maxTimemaps);
+
+        if (currentMaps.Count > 1)
+        {
+            if (currentMaps[0].TryGetComponent(out CompositeTilemap component))
+            {
+                minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos], currentMaps);
+            }
+        }
+        else
+        {
+            minimap.UpdateUnlockedMinimap(mapXPos, mapYPos, mapArray[mapXPos, mapYPos]);
+        }
+    }
+
+
 
     private void LoadMapsToArray()
     {
@@ -237,7 +278,7 @@ public class GameManagerScript : MonoBehaviour
 
         player.customCollider.enabled = false;
 
-        MT221();
+        //MT221();
 
         if (!savingAndLoading.CheckIfSaveFileExists(save))
         {
@@ -276,14 +317,21 @@ public class GameManagerScript : MonoBehaviour
         player.playerData.WaterSpirit = save.waterSpirit;
         player.playerData.EarthSpirit = save.earthSpirit;
         player.playerData.FireSpirit = save.fireSpirit;
+        player.playerData.AirSpirit = save.airSpirit;
+
         player.playerWeaponSwap.unlockedWeapons = save.unlockedWeapons;
 
         player.playerData.damageModifier = save.damageModifier;
         player.playerData.reloadSpeedModifier = save.reloadSpeedModifier;
 
+        player.progressTracker.cArrowCapacityCount = save.cArrowCapacityCount;
+        player.progressTracker.cArrowReloadSpeedCount = save.cArrowReloadSpeedCount;
+        player.progressTracker.cArrowDamageCount = save.cArrowDamageCount;
+        player.progressTracker.cHealthUpCount = save.cHealthUpCount;
+
         player.OnBowUnlocked(save.unlockedBow);
 
-        player.RefreshUI();
+        //player.RefreshUI();
 
         minimap.LoadMinimap(save);
         minimap.UpdateMinimap(save.mapXOffset + centerMapOffset, save.mapYOffset + centerMapOffset);
@@ -328,12 +376,75 @@ public class GameManagerScript : MonoBehaviour
         save.waterSpirit = player.playerData.WaterSpirit;
         save.earthSpirit = player.playerData.EarthSpirit;
         save.fireSpirit = player.playerData.FireSpirit;
+        save.airSpirit = player.playerData.AirSpirit;
 
         save.damageModifier = player.playerData.damageModifier;
         save.reloadSpeedModifier = player.playerData.reloadSpeedModifier;
 
+        save.cArrowCapacityCount = player.progressTracker.cArrowCapacityCount;
+        save.cArrowReloadSpeedCount = player.progressTracker.cArrowReloadSpeedCount;
+        save.cArrowDamageCount = player.progressTracker.cArrowDamageCount;
+        save.cHealthUpCount = player.progressTracker.cHealthUpCount;
+
         savingAndLoading.SaveGameFile(save);
     }
+
+    public void OnTrueEndingReached()
+    {
+        Save save = savingAndLoading.GetSaveFile(savingAndLoading.currentSaveFile);
+        savingAndLoading.LoadGameFile(save);
+        //minimap.SaveMinimap(save);
+        save.trueEndingReached = true;
+
+
+
+        savingAndLoading.SaveGameFile(save);
+    }
+
+    //public void SaveGame(Vector2 manualSavePos)
+    //{
+    //    Save save = savingAndLoading.GetSaveFile(savingAndLoading.currentSaveFile);
+
+    //    if (savingAndLoading.CheckIfSaveFileExists(save))
+    //    {
+
+    //    }
+
+    //    minimap.SaveMinimap(save);
+
+    //    Vector2 correctManualSavePos = new Vector2(manualSavePos.x + 24, manualSavePos.y + 24);
+
+    //    save.mapXOffset = mapArray[(int)correctManualSavePos.x, (int)correctManualSavePos.y].mapXOffset;
+    //    save.mapYOffset = mapArray[(int)correctManualSavePos.x, (int)correctManualSavePos.y].mapYOffset;
+    //    save.mapID = mapArray[(int)correctManualSavePos.x, (int)correctManualSavePos.y].mapID;
+
+    //    save.zone = mapArray[(int)correctManualSavePos.x, (int)correctManualSavePos.y].mapPrefab.GetComponent<CustomTilemap>().zone;
+    //    save.timePlayed = timePlayed;
+
+    //    save.bossesSlayed = player.progressTracker.bossesSlayed;
+    //    save.collectibles = player.progressTracker.collectibles;
+
+    //    save.maxHealth = player.playerData.maxHealth;
+    //    save.currentHealth = player.playerData.health;
+    //    save.maxArrowCount = player.playerData.maxArrowCount;
+    //    save.currentArrowCount = player.playerData.currentArrowCount;
+    //    save.unlockedWeapons = player.playerWeaponSwap.unlockedWeapons;
+
+    //    save.unlockedBow = player.playerData.unlockedBow;
+    //    save.waterSpirit = player.playerData.WaterSpirit;
+    //    save.earthSpirit = player.playerData.EarthSpirit;
+    //    save.fireSpirit = player.playerData.FireSpirit;
+
+    //    save.damageModifier = player.playerData.damageModifier;
+    //    save.reloadSpeedModifier = player.playerData.reloadSpeedModifier;
+
+    //    save.cArrowCapacityCount = player.progressTracker.cArrowCapacityCount;
+    //    save.cArrowReloadSpeedCount = player.progressTracker.cArrowReloadSpeedCount;
+    //    save.cArrowDamageCount = player.progressTracker.cArrowDamageCount;
+    //    save.cHealthUpCount = player.progressTracker.cHealthUpCount;
+
+    //    savingAndLoading.SaveGameFile(save);
+    //}
 
     #endregion
 
@@ -442,14 +553,23 @@ public class GameManagerScript : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Unloads the current tilemap and loads next tilemap from current tilemap door direction and connecter mapX and mapY offset.
+    /// </summary>
+    /// <param name="mapBorderCollision"></param>
+    /// <param name="connectedMapXOffset"></param>
+    /// <param name="connectedMapYOffset"></param>
+    /// <param name="tilemap"></param>
     private void ChangeTilemapOnBorderEntry(MapBorderCollision mapBorderCollision, int connectedMapXOffset, int connectedMapYOffset, CustomTilemap tilemap)
     {
         CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
 
-        //Debug.Log(connectedMapXOffset + " " + connectedMapYOffset);
-        //Debug.Log(tilemap.map.mapXOffset + " " + tilemap.map.mapYOffset);
+        //for loading maps from prefabs on runtime
+
         mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
         {
+            entitiesManager.RemoveAllEntities();
+
             player.characterController.StopMovement(true);
             camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
             {
@@ -465,10 +585,19 @@ public class GameManagerScript : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Loads next tilemap from changeZoneScript.
+    /// </summary>
+    /// <param name="changeZoneScript"> Script added to mapBorder gameobject. Has a toggle for removing previous maps or keeping them preloaded</param>
+    /// <param name="mapBorderCollision"></param>
+    /// <param name="connectedMapXOffset"></param>
+    /// <param name="connectedMapYOffset"></param>
+    /// <param name="tilemap"></param>
     private void ChangeTilemapOnBorderWithZoneScriptEntry(ChangeZoneScript changeZoneScript, MapBorderCollision mapBorderCollision, int connectedMapXOffset, int connectedMapYOffset, CustomTilemap tilemap)
     {
         CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
 
+        //If we want the tilemap(s) to not load again but keep it/them preloaded
         if (changeZoneScript.IsMapPreloaded)
         {
             mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
@@ -499,10 +628,12 @@ public class GameManagerScript : MonoBehaviour
                 });
             });
         }
-        else
+        else         //If we want to unload current tilemap(s) and load new ones
         {
             mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
             {
+                entitiesManager.RemoveAllEntities();
+
                 connectedMapXOffset = centerMapOffset + changeZoneScript.nextZonePos.x;
                 connectedMapYOffset = centerMapOffset + changeZoneScript.nextZonePos.y;
 
@@ -536,6 +667,37 @@ public class GameManagerScript : MonoBehaviour
             });
         }
     }
+
+
+    /// <summary>
+    /// Unloads the current tilemap and loads next tilemap from specified map positions.
+    /// </summary>
+    /// <param name="connectedMapXOffset"></param>
+    /// <param name="connectedMapYOffset"></param>
+    public void ManualChangeTilemap(int connectedMapXOffset, int connectedMapYOffset)
+    {
+        CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+
+        entitiesManager.RemoveAllEntities();
+
+        var mapConnectedMapXOffset = centerMapOffset + connectedMapXOffset;
+        var mapConnectedMapYOffset = centerMapOffset + connectedMapYOffset;
+
+        player.characterController.StopMovement(true);
+        camera.blackout.DOFade(1, fadeTime).OnComplete(() =>
+        {
+            if (!camera.stopCamera)
+                camera.SnapCameraPosition();
+            ChangeCurrentMap(mapArray[mapConnectedMapXOffset, mapConnectedMapYOffset]);
+            Vector2 transportPos = new Vector2(GlobalData.maxTimemaps * connectedMapXOffset, GlobalData.maxTimemaps * connectedMapYOffset);
+            ChangeAudioOnMapChange(mapArray[mapConnectedMapXOffset, mapConnectedMapYOffset].mapPrefab.GetComponent<CustomTilemap>().zone);
+            camera.blackout.DOFade(0, fadeTime);
+            player.characterController.ForceTransportPlayerToPosition(transportPos);
+            player.characterController.StopMovement(false);
+            mapArray[mapConnectedMapXOffset, mapConnectedMapYOffset].mapPrefab.GetComponent<CustomTilemap>().EnableAllTriggers();
+        });
+    }
+
 
     private void PreloadAllMaps()
     {
@@ -667,8 +829,8 @@ public class GameManagerScript : MonoBehaviour
     public void LoadGameButton()
     {
         //Load Game by reloading the scene
+        entitiesManager.EntitiesPauseState(false);
         GameStateManager.instance.LoadGameSceneWithLoadingScreen();
-
         //Load Game in the same scene;
         //Map map = LoadGame();
         //ChangeCurrentMap(map);

@@ -11,7 +11,8 @@ public class Save
     public bool[] unlockedMap = new bool[100*100];
     public int[] unlockedMinimapBackgrounds = new int[100*100];
     public int[] unlockedMinimapWalls = new int[100 * 100];
-    public int[] unlockedMinimaDoors = new int[100 * 100];
+    public int[] unlockedMinimapDoors = new int[100 * 100];
+    public int[] unlockedSpecialRooms = new int[100 * 100];
     #endregion
 
     #region SaveLocation
@@ -40,6 +41,13 @@ public class Save
     public bool earthSpirit;
     public bool fireSpirit;
     public bool airSpirit;
+
+    public int cArrowDamageCount;
+    public int cArrowReloadSpeedCount;
+    public int cArrowCapacityCount;
+    public int cHealthUpCount;
+
+    public bool trueEndingReached;
     #endregion
 
     #region Leaderboard

@@ -7467,6 +7467,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &199369375
@@ -10573,6 +10574,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &406218584
@@ -11711,7 +11713,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 2, y: 1, z: 0}
@@ -11828,7 +11830,7 @@ Tilemap:
       - {fileID: 939737424, guid: bb15e12101a6dd24da355a490dc11a29, type: 3}
       - {fileID: 139530686, guid: bb15e12101a6dd24da355a490dc11a29, type: 3}
       - {fileID: 2062747668, guid: bb15e12101a6dd24da355a490dc11a29, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -5, y: 5, z: 0}
@@ -11990,7 +11992,7 @@ Tilemap:
       - {fileID: -872628796, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1895693418, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
       - {fileID: 1852163751, guid: a9caba79e85873e488c782e18fd1eae3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -5, y: 11, z: 0}
@@ -12368,6 +12370,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &530426079
@@ -13434,6 +13437,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &897864899
@@ -17494,6 +17498,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 1910712762}
   zone: 0
+  specialRoom: 0
 --- !u!114 &1671994580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17509,7 +17514,7 @@ MonoBehaviour:
   BackgroundTilemap: {fileID: 156616675}
   WallsTilemap: {fileID: 963110367}
   ForegroundTilemap: {fileID: 1751876833}
-  wasEdited: 0
+  wasEdited: 1
   isPlayable: 1
   xPos: 8
   yPos: 8
@@ -18499,6 +18504,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8539965}
     m_Modifications:
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectibleId
+      value: 57
+      objectReference: {fileID: 0}
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectiblePositionX
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3982057372310954750, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
+      propertyPath: collectiblePositionY
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3261704601232519276, guid: 8f52ca2d9c7b30045986208d8f97a3a8, type: 3}
       propertyPath: m_RootOrder
       value: 0

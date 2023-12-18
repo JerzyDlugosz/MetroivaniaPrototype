@@ -171,15 +171,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isInvincible: 0
-  maxHealth: 5
-  health: 5
+  maxHealth: 9
+  health: 9
   speed: 0.5
   baseSpeed: 0.5
   damage: 0
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
-  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: 3e79cf813eac891419632ed559a565d0, type: 3}
+  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: e06e44be291e4724aaa838842319b54b, type: 3}
   attackAngle: 90
 --- !u!114 &7214374350800053058
 MonoBehaviour:

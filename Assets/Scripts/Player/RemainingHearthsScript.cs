@@ -8,17 +8,12 @@ public class RemainingHearthsScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject hearthImagePrefab;
-
+    [SerializeField]
     private List<GameObject> hearthImages = new List<GameObject>();
 
-    private void Start()
+    public void SetHearthImages(int _maxHealth)
     {
-        SetHearthImages();
-    }
-
-    private void SetHearthImages()
-    {
-        int maxHealth = GameManagerScript.instance.player.playerData.maxHealth;
+        int maxHealth = _maxHealth;
         int ammount = maxHealth / 4;
         for (int i = 0; i < ammount; i++)
         {
@@ -42,14 +37,12 @@ public class RemainingHearthsScript : MonoBehaviour
 
         int healthFillAmmount = currentHealth - (targetedHearth * 4);
 
-
         for (int i = 0; i < targetedHearth; i++)
         {
             hearthImages[i].GetComponent<HearthIcon>().hearth.fillAmount = 1f;
             hearthImages[i].GetComponent<HearthIcon>().damageFlash.fillAmount = 1f;
             hearthImages[i].GetComponent<HearthIcon>().healingFlash.fillAmount = 1f;
         }
-
         hearthImages[targetedHearth].GetComponent<HearthIcon>().hearth.fillAmount = healthFillAmmount / 4f;
         hearthImages[targetedHearth].GetComponent<HearthIcon>().damageFlash.fillAmount = healthFillAmmount / 4f;
         hearthImages[targetedHearth].GetComponent<HearthIcon>().healingFlash.fillAmount = healthFillAmmount / 4f;

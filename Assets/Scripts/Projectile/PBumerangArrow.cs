@@ -23,11 +23,18 @@ public class PBumerangArrow : PlayerProjectile
         beforeEndOfLifetimeEvent.AddListener(() => ShakeArrow());
     }
 
+    private void FixedUpdate()
+    {
+        if(MainUpdate())
+        {
+            rb.AddForce(new Vector2(-opposingForceMagnitude.x, 0f) * bumerangForce);
+        }
+    }
+
     private void Update()
     {
         if (MainUpdate())
         {
-            rb.AddForce(new Vector2(-opposingForceMagnitude.x, 0f) * bumerangForce);
             if (isStuckInWall)
             {
                 if (projectileLifetime < 1 && !isShaking)

@@ -14,7 +14,7 @@ public class TitleScreen : MonoBehaviour
     public void SmoothCameraMoveToTarget(Transform target)
     {
         //Temp Fix
-        Vector2 vec = new Vector2(24, 24);
+        Vector2 vec = new Vector2(24, 25);
 
         cameraMovement.transform.DOMoveY(vec.y, 1f);
         cameraMovement.transform.DOMoveX(vec.x, 1f).OnComplete(() =>

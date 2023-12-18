@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class ExplosionField : MonoBehaviour
 {
 
     private List<BaseEntity> entintiesInExplosion = new List<BaseEntity>();
+    private float explosionDamage;
+
 
     [SerializeField]
     private float explosionFieldStrength;
 
-    public void OnInstantiate()
+    public void OnInstantiate(float _explosionDamage)
     {
         StartCoroutine(explosionTimer());
+        explosionDamage = _explosionDamage;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -66,7 +67,7 @@ public class ExplosionField : MonoBehaviour
                 float distance = Vector2.Distance(entity.transform.position, transform.position);
                 if (distance < 3f)
                 {
-                    baseNPC.TakeDamage(3f);
+                    baseNPC.TakeDamage(explosionDamage);
                 }
 
                 float angle = MathExtensions.GetAngle(transform.position, entity.transform.position);

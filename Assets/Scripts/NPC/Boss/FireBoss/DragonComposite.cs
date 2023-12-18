@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,16 +17,18 @@ public class DragonComposite : MonoBehaviour
 
     public List<Sprite> handSprites;
 
+    public List<SpriteRenderer> bossSpriteRenderers;
+
     public void OnCompositeEnemyDeath()
     {
         GameManagerScript.instance.player.progressTracker.AddBoss(bossData);
     }
 
-    public void TakeDamage(float damage)
+    public float TakeDamage(float damage)
     {
         compositeEnemyHealth -= damage;
 
-        float scale = (compositeEnemyMaxHealth - compositeEnemyHealth) / (compositeEnemyMaxHealth / 4);
+        float scale = (compositeEnemyMaxHealth - compositeEnemyHealth) / compositeEnemyMaxHealth;
 
         for (int i = 0; i < dragonParts.Count; i++)
         {
@@ -35,12 +38,34 @@ public class DragonComposite : MonoBehaviour
         if (compositeEnemyHealth <= 0) 
         {
             OnCompositeEnemyDeath();
-            Debug.Log("Count: " + dragonParts.Count);
             for (int i = 0; i < dragonParts.Count; i++)
             {
-                Debug.Log("Part: " + dragonParts[i].name);
                 dragonParts[i].onNPCDeath.Invoke();
             }
+            for (int i = 0; i < bossSpriteRenderers.Capacity; i++)
+            {
+                if (bossSpriteRenderers[i] != null)
+                    Destroy(bossSpriteRenderers[i].gameObject);
+            }
+        }
+
+        return scale;
+    }
+
+    public void FadeIn()
+    {
+        foreach (var item in bossSpriteRenderers)
+        {
+            item.DOFade(1, 2f);
+        }
+        GameManagerScript.instance.cameraHolder.DOShakePosition(2f, 1.5f);
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        foreach (var item in bossSpriteRenderers)
+        {
+            item.color = new Color(item.color.r, item.color.g, item.color.b, alpha);
         }
     }
 }

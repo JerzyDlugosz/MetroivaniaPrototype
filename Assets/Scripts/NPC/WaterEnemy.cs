@@ -34,7 +34,7 @@ public class WaterEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(false);
+        UpdateSpriteDirection(false);
 
         if (!inWater)
         {
@@ -66,7 +66,7 @@ public class WaterEnemy : BaseNPC
     {
         health -= damage;
 
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }

@@ -24,8 +24,6 @@ public class WaterBossRoom : BossRoom
     private Transform playerPushbackPosition;
     [SerializeField]
     private Transform bossStunPosition;
-    [SerializeField]
-    private Transform bossAttackPosition;
 
     [SerializeField]
     private Transform waterGameobject;
@@ -40,7 +38,7 @@ public class WaterBossRoom : BossRoom
         if (GameManagerScript.instance.player.progressTracker.CheckBossID(bossEnemy.bossData))
         {
             Destroy(bossEnemy.gameObject);
-            Destroy(bossEnterTrigger.gameObject);
+            Destroy(bossEnterTrigger);
             //Destroy(waterGameobject.gameObject);
             return;
         }
@@ -50,7 +48,7 @@ public class WaterBossRoom : BossRoom
     private void HideObstacle()
     {
         currentObstacle.GetComponent<Collider2D>().enabled = false;
-        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1.5f, 1);
+        GameManagerScript.instance.cameraHolder.DOShakePosition(1.5f, 1);
         shootableButton.gameObject.SetActive(false);
         obstaclesHolder.transform.DOLocalMoveY(-7, 2).OnComplete(() => 
         {
@@ -64,7 +62,7 @@ public class WaterBossRoom : BossRoom
     public void ShowObstacle()
     {
         GetRandomObstacle();
-        GameManagerScript.instance.cameraMovement.transform.DOShakePosition(1.5f, 1);
+        GameManagerScript.instance.cameraHolder.DOShakePosition(1.5f, 1);
         shootableButton.gameObject.SetActive(true);
 
         currentObstacle.GetComponent<Collider2D>().enabled = true;
@@ -89,18 +87,37 @@ public class WaterBossRoom : BossRoom
         bossEnemy.transform.DOLocalRotate(new Vector3(0, 0, 0), 1.5f);
         bossEnemy.transform.DOMove(bossStunPosition.position, 2f);
 
-        yield return new WaitForSeconds(time);
+        bossEnemy.neckSpriteRenderer.sprite = bossEnemy.onStunSprites[0];
+
+        yield return new WaitForSeconds(1);
+
+        bossEnemy.neckSpriteRenderer.sprite = bossEnemy.onStunSprites[1];
+
+
+        yield return new WaitForSeconds(time - 2);
+
 
         bossEnemy.RemoveAllDebuffs();
 
         //Show water and hide platforms
         bossEnemy.transform.DOLocalRotate(new Vector3(0, 0, -90), 1.5f);
-        bossEnemy.transform.DOMove(bossAttackPosition.position, 2f);
+        bossEnemy.transform.DOMove(bossEnemy.headPositions[0].position, 2f);
 
         GameManagerScript.instance.player.characterController.StopMovement(true);
 
         waterGameobject.transform.localPosition = new Vector3(84, 12, -0.5f);
         waterGameobject.transform.DOLocalMoveX(24, 4);
+
+        bossEnemy.neckSpriteRenderer.sprite = bossEnemy.onStunSprites[2];
+
+        yield return new WaitForSeconds(1);
+
+        bossEnemy.neckSpriteRenderer.sprite = bossEnemy.onStunSprites[3];
+
+        yield return new WaitForSeconds(1);
+
+        bossEnemy.neckSpriteRenderer.sprite = bossEnemy.neckSprites[0];
+
     }
 
     private void GetRandomObstacle()
@@ -140,12 +157,15 @@ public class WaterBossRoom : BossRoom
 
     public void OnBossFightStart()
     {
+        bossEnemy.SetAlpha(0f);
         ShowObstacle();
         door.transform.DOLocalMoveY(0, 1f);
         bossEnemy.gameObject.SetActive(true);
         bossEnemy.Invincibility(true);
         bossEnemy.onNPCDeath.AddListener(OnBossFightEnd);
         GameStateManager.instance.audioManager.ChangeAudio(bossMusic);
+
+        bossEnemy.FadeIn();
     }
 
     private void OnBossFightEnd()

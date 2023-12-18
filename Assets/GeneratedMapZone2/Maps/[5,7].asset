@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1d73ee9a5265c48af086d5a7c9191d, type: 3}
   m_Name: '[5,7]'
   m_EditorClassIdentifier: 
-  mapID: 32
+  mapID: 30
   mapName: 
   xSize: 0
   ySize: 0

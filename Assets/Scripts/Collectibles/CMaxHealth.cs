@@ -22,6 +22,7 @@ public class CMaxHealth : CollectibleGameObject
         GameManagerScript.instance.player.maxHealthUpdateEvent.Invoke();
 
         GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleType);
+        GameManagerScript.instance.player.progressTracker.OnHealthUpAdd();
 
         ItemPickupPanel.instance.ShowPanel(collectibleName, collectibleDescription, collectibleSprite);
 

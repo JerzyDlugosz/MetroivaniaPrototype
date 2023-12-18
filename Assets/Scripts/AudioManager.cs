@@ -20,6 +20,13 @@ public class AudioManager : MonoBehaviour
     private List<AudioClip> Zone3Music;
     [SerializeField]
     private List<AudioClip> MenuMusic;
+    [SerializeField]
+    private List<AudioClip> SecretZoneMusic;
+    [SerializeField]
+    private List<AudioClip> SecretBossMusic;
+    [SerializeField]
+    private List<AudioClip> TrueEndMusic;
+    
 
     [Range(0, 1)]
     public float musicVolume;
@@ -35,7 +42,7 @@ public class AudioManager : MonoBehaviour
 
     public void OnMapChange(Zone zone)
     {
-        Debug.LogWarning("zone: " + zone);
+        Debug.LogWarning($"Playing {zone} music");
         switch (zone)
         {
             case Zone.Zone1:
@@ -54,6 +61,21 @@ public class AudioManager : MonoBehaviour
                 break;
             case Zone.Menu:
                 PlayAudioFromList(MenuMusic);
+
+                break;
+            case Zone.SpecialZone:
+                RemoveAudio();
+                //PlayAudioFromList(SecretZoneMusic);
+
+                break;
+            case Zone.SpecialBoss:
+
+                //PlayAudioFromList(SecretBossMusic);
+
+                break;
+            case Zone.TrueEnd:
+
+                PlayAudioFromList(TrueEndMusic);
 
                 break;
         }

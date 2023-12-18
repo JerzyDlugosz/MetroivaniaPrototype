@@ -26,20 +26,42 @@ public class EntitiesManager : MonoBehaviour
     public void EntitiesPauseState(bool state)
     {
         RefreshEntities();
+        //foreach (var item in entities)
+        //{
+        //    item.isStopped = state;
+        //    item.stoppedEvent.Invoke(state);
+        //}
+
         foreach (var item in entities)
         {
             item.isStopped = state;
-            item.stoppedEvent.Invoke(state);
         }
+
+        if (state)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
     }
 
     private void RefreshEntities()
     {
-        for(int i = 0; i < entities.Count; i++)
+        for(int i = entities.Count - 1; i > -1; i--)
         {
             if (entities[i] == null)
             {
                 entities.RemoveAt(i);
+            }
+        }
+    }
+
+    public void RemoveAllEntities()
+    {
+        RefreshEntities();
+        for (int i = entities.Count - 1; i > -1; i--)
+        {
+            if (!entities[i].CompareTag("Player"))
+            {
+                entities[i].destroyEvent.Invoke();
             }
         }
     }

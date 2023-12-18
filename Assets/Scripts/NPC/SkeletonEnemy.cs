@@ -12,7 +12,7 @@ public class SkeletonEnemy : BaseNPC
     [SerializeField]
     private GameObject rangedProjectilePrefab;
 
-    private float rangedAttackCooldown = 2f;
+    private float rangedAttackCooldown = 1f;
 
     [SerializeField]
     private GameObject bowSprite;
@@ -32,7 +32,7 @@ public class SkeletonEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(isUsingRigidbody);
+        UpdateSpriteDirection(isUsingRigidbody);
         if (!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();
@@ -49,12 +49,20 @@ public class SkeletonEnemy : BaseNPC
 
         if(canAttack)
         {
+            if (rangedAttackCooldown < 1)
+            {
+                AimAtPlayer();
+            }
             if (rangedAttackCooldown < 0)
             {
                 AttackPattern1();
                 GameStateManager.instance.audioManager.PlaySoundEffect(onAttackAudioClip);
                 rangedAttackCooldown = 2f;
             }
+        }
+        else
+        {
+            rangedAttackCooldown = 1f;
         }
 
         if (rangedAttackCooldown > 0)
@@ -67,6 +75,14 @@ public class SkeletonEnemy : BaseNPC
     {
        
     }
+
+    private void AimAtPlayer()
+    {
+        Transform playerTransform = GameManagerScript.instance.player.transform;
+        float angle = MathExtensions.GetAngle(transform.position, playerTransform.position);
+        bowSprite.transform.eulerAngles = new Vector3(0, 0, angle);
+    }
+
     private void AttackPattern1()
     {
         int projectileAmmount = 1;
@@ -96,7 +112,7 @@ public class SkeletonEnemy : BaseNPC
     {
         health -= damage;
 
-        if (health < 0f)
+        if (health <= 0f)
         {
             onNPCDeath.Invoke();
         }

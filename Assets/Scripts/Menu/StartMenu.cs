@@ -39,28 +39,40 @@ public class StartMenu : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-
-            int unlockedMapCount = 0;
             Save save = savingAndLoading.GetSaveFile(i + 1);
             if (savingAndLoading.CheckIfSaveFileExists(save))
             {
                 savingAndLoading.LoadGameFile(save);
                 float[] totals = savingAndLoading.LoadSaveFileProgress(save);
-                saveFiles[i].savePanel.SetActive(true);
-                saveFiles[i].noSavePanel.SetActive(false);
 
-                foreach (var item in save.unlockedMap)
+                if (savingAndLoading.loadTrueEndingState(save))
                 {
-                    if (item)
-                        unlockedMapCount++;
-                }
-                saveFiles[i].zoneName.text = zoneNames[(int)save.zone];
+                    saveFiles[i].trueEndPanel.SetActive(true);
 
-                var ts = TimeSpan.FromSeconds(save.timePlayed);
-                saveFiles[i].playTime.text = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}";
-                saveFiles[i].mapCompletedNumber.text = $"{totals[0]}%";
-                saveFiles[i].itemsCollectedNumber.text = $"{totals[1]}%";
-                saveFiles[i].bossesKilledNumber.text = $"{totals[2]}%";
+                    saveFiles[i].savePanel.SetActive(false);
+                    saveFiles[i].noSavePanel.SetActive(false);
+
+                    var ts = TimeSpan.FromSeconds(save.timePlayed);
+
+                    saveFiles[i].trueEndPlayTime.text = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}";
+                }
+                else
+                {
+                    saveFiles[i].trueEndPanel.SetActive(false);
+
+                    saveFiles[i].savePanel.SetActive(true);
+                    saveFiles[i].noSavePanel.SetActive(false);
+
+                    saveFiles[i].zoneName.text = zoneNames[(int)save.zone];
+
+                    var ts = TimeSpan.FromSeconds(save.timePlayed);
+
+                    saveFiles[i].playTime.text = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}";
+                    saveFiles[i].mapCompletedNumber.text = $"{totals[0]:0}%";
+                    saveFiles[i].itemsCollectedNumber.text = $"{totals[1]:0}%";
+                    saveFiles[i].bossesKilledNumber.text = $"{totals[2]:0}%";
+
+                }
 
                 usedSaveFiles[i] = true;
             }

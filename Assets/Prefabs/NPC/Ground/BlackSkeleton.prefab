@@ -144,8 +144,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1373195777, guid: 490638cf3d0c3ea4fbf5909221089885, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -1183152495, guid: 490638cf3d0c3ea4fbf5909221089885, type: 3}
+  m_Color: {r: 1, g: 0.44716978, b: 0.44716978, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -201,15 +201,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isInvincible: 0
-  maxHealth: 5
-  health: 5
+  maxHealth: 7
+  health: 7
   speed: 0
   baseSpeed: 0
   damage: 1
   canAttack: 0
   isUsingVelocityForAnimation: 0
   isUsingRigidbody: 0
-  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: 7f0b886a9630b954cbf3a64d0071def6, type: 3}
+  rangedProjectilePrefab: {fileID: 6902544445906791381, guid: a8b3b91fff0a7624ca511f8456e3ed22, type: 3}
   bowSprite: {fileID: 8643102447527908414}
 --- !u!114 &4675125136327379779
 MonoBehaviour:
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -1373195777, guid: 490638cf3d0c3ea4fbf5909221089885, type: 3}
+  - {fileID: -1183152495, guid: 490638cf3d0c3ea4fbf5909221089885, type: 3}
   animationSpeed: 2
   stopAnimation: 0
   automaticAnimationLoop: 0
@@ -279,6 +279,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathParticle: {fileID: 217049895306480580, guid: cae12caa1e8321b4cb034567d90209d9, type: 3}
+  particleAmmount: 1
+  particleSpread: 0
+  isUsingCustomZPosition: 0
+  customZPosition: 0
 --- !u!114 &9060337988591019394
 MonoBehaviour:
   m_ObjectHideFlags: 0

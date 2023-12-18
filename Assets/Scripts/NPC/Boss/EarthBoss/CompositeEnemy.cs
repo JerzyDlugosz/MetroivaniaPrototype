@@ -60,6 +60,9 @@ public class CompositeEnemy : MonoBehaviour
         }
         yield return new WaitForSeconds(time);
 
+        if (enemyParts[0] == null)
+            yield break;
+
         enemyParts[0].StartNextMovement();
 
         foreach (var part in enemyParts)

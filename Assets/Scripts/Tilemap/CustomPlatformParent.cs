@@ -49,6 +49,11 @@ public class CustomPlatformParent : MonoBehaviour
         }
     }
 
+    public void SetColliderState(bool state)
+    {
+        colliders.gameObject.SetActive(state);
+    }
+
     private void OnDestroy()
     {
         GameManagerScript.instance.player.playerInputActions.Player.DownMotion.performed -= DisablePlatformEffector;

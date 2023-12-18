@@ -23,6 +23,9 @@ public class CFireSpirit : CollectibleGameObject
 
         GameManagerScript.instance.player.progressTracker.AddCollectilbe(collectibleId, collectiblePositionX, collectiblePositionY, collectibleSpriteID, collectibleType);
 
+        GameManagerScript.instance.player.maxHealthUpdateEvent.Invoke();
+        GameManagerScript.instance.player.progressTracker.OnHealthUpAdd();
+
         ItemPickupPanel.instance.ShowPanel(collectibleName, collectibleDescription, collectibleSprite);
 
         Destroy(gameObject);

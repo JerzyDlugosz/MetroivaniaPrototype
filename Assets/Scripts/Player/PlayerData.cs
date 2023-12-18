@@ -19,6 +19,8 @@ public class PlayerData : MonoBehaviour
     public float baseGravityScale = 6f;
     public float baseJumpSpeed = 1400f;
     public float baseMovementSpeed = 3000f;
+    public float baseOnGroundDrag = 6f;
+    public float baseInAirDrag = 3f;
 
     public PlayerStates playerState;
 

@@ -11,6 +11,8 @@ public class TilemapGenerator : MonoBehaviour
     [SerializeField]
     private GameManagerScript gameManagerScript;
     [SerializeField]
+    private EditorScripts editorScripts;
+    [SerializeField]
     private MapList tilemapGenMapList;
     [SerializeField]
     private GameObject tilemapTemplatePrefab;
@@ -563,6 +565,17 @@ public class TilemapGenerator : MonoBehaviour
                         {
                             foregroundTilemap.SetTile(pos, zone1WallHelperTile);
                         }
+
+                        if (item.GetComponent<CustomTilemap>().zone == Zone.SpecialZone)
+                        {
+                            foregroundTilemap.SetTile(pos, zone1WallHelperTile);
+                        }
+
+                        if (item.GetComponent<CustomTilemap>().zone == Zone.SpecialBoss)
+                        {
+                            foregroundTilemap.SetTile(pos, zone1WallHelperTile);
+                        }
+
                     }
                 }
                 catch (Exception exc)
@@ -579,6 +592,8 @@ public class TilemapGenerator : MonoBehaviour
         }
 
         Debug.Log($"edited {numberOfEditedTilemaps} Tilemaps");
+
+        editorScripts.SetStatCollectibleDatanCollectibleList();
 
         ClearPrefabs();
 
@@ -603,6 +618,11 @@ public class TilemapGenerator : MonoBehaviour
     public void SetupCompositeMaps()
     {
         string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { $"{folderPath}/{prefabFolder}" });
+
+
+        EditorUtility.SetDirty(tilemapGenMapList);
+        EditorUtility.SetDirty(gameManagerScript.currentMapList);
+
 
         foreach (var item in gameManagerScript.currentMapList.maps)
         {

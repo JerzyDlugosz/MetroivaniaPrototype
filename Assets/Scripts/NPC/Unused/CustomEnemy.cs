@@ -25,7 +25,7 @@ public class CustomEnemy : BaseNPC
         {
             return;
         }
-        UpdateSpriteRotation(isUsingRigidbody);
+        UpdateSpriteDirection(isUsingRigidbody);
         if(!isUsingVelocityForAnimation)
         {
             spriteAnimation.UpdateAnimationFrame();

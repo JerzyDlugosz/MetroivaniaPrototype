@@ -125,12 +125,12 @@ MonoBehaviour:
   onDeathAudioClip: {fileID: 0}
   projectileType: 1
   projectileVelocity: {x: 0, y: 0}
-  projectileForce: {x: 50, y: 0}
+  projectileForce: {x: 90, y: 0}
   projectilePushBack: 200
   projectileName: BombArrow
   projectileLifetime: 1
   bounceAngle: 360
-  projectileDamage: 3
+  projectileDamage: 2
   inWaterDrag: 2
   baseGravity: 1
   projectileStrenght: 2
@@ -160,6 +160,7 @@ MonoBehaviour:
   shakeStrenght: 0
   OnWallCollisionAudio: {fileID: 8300000, guid: 5180d921381965a4ab75a2a192c5cf42, type: 3}
   explosionField: {fileID: 8679292657148777025, guid: 08c2749aa634989429ee7345735e64a1, type: 3}
+  explosionDamage: 2
 --- !u!50 &3888843744773897555
 Rigidbody2D:
   serializedVersion: 4

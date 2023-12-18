@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [Serializable]
 public class OnMenuSwap : UnityEvent { }
@@ -22,6 +23,8 @@ public class PauseMenu : MonoBehaviour
 
     private List<GameObject> menus= new List<GameObject>();
     private int currentMenuIndex = 0;
+    [SerializeField]
+    private List<Image> navItems = new List<Image>();
 
     [SerializeField]
     public OnMenuSwap onMenuSwapEvent;
@@ -31,17 +34,39 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private List<TextMeshProUGUI> rightText;
 
+    [SerializeField]
+    private GameObject keyboardMoveText;
+    [SerializeField]
+    private GameObject gamepadMoveText;
+
+    [SerializeField]
+    private AudioClip menuSwapSound;
+
+    [SerializeField]
+    private GameObject secretMapQuestionMark;
+
     private void Awake()
     {
         menus.Add(ItemMenu);
         menus.Add(MapMenu);
         menus.Add(OptionsMenu);
+
+        onMenuSwapEvent.AddListener(() =>
+        {
+            GameStateManager.instance.audioManager.PlaySoundEffect(menuSwapSound);
+        });
     }
 
     private void OnEnable()
     {
         OnControlSchemeChange(GameManagerScript.instance.player.playerInput);
         GameManagerScript.instance.player.playerInput.onControlsChanged += OnControlSchemeChange;
+
+        if (GameManagerScript.instance.player.reachedSecret == true)
+            secretMapQuestionMark.SetActive(true);
+        else
+            secretMapQuestionMark.SetActive(false);
+
     }
 
     private void OnDisable()
@@ -61,6 +86,8 @@ public class PauseMenu : MonoBehaviour
             {
                 item.text = "RB";
             }
+            keyboardMoveText.SetActive(false);
+            gamepadMoveText.SetActive(true);
         }
         else
         {
@@ -72,6 +99,8 @@ public class PauseMenu : MonoBehaviour
             {
                 item.text = "R";
             }
+            keyboardMoveText.SetActive(true);
+            gamepadMoveText.SetActive(false);
         }
     }
 
@@ -88,8 +117,24 @@ public class PauseMenu : MonoBehaviour
         {
             currentMenuIndex = menus.Count - 1;
         }
-
+        NavBarHighlight();
         EnableMenu(menus[currentMenuIndex]);
+    }
+
+    private void NavBarHighlight()
+    {
+        for (int i = 0; i < navItems.Count; i++)
+        {
+            if (i == currentMenuIndex)
+            {
+                navItems[i].color = new Color(0, 1, 1, 1);
+            }
+            else
+            {
+                navItems[i].color = new Color(1, 1, 1, 1);
+            }
+
+        }
     }
 
     public void OnPauseScreenEnable()
