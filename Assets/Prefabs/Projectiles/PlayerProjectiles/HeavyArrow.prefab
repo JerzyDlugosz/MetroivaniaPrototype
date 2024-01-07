@@ -125,7 +125,7 @@ MonoBehaviour:
   onDeathAudioClip: {fileID: 0}
   projectileType: 0
   projectileVelocity: {x: 0, y: 0}
-  projectileForce: {x: 100, y: 0}
+  projectileForce: {x: 70, y: 0}
   projectilePushBack: 500
   projectileName: HeavyArrow
   projectileLifetime: 6
@@ -172,7 +172,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.2
+  m_Mass: 0.13
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1

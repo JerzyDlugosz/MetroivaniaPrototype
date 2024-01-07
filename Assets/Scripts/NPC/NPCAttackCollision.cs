@@ -6,10 +6,10 @@ public class NPCAttackCollision : MonoBehaviour
 {
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("hit: " + collision.name);
+        //Debug.Log("hit: " + collision.name);
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("HIT!");
+            //Debug.Log("HIT!");
             collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(GetComponentInParent<BaseNPC>().damage);
         }
     }

@@ -97,7 +97,7 @@ public class PauseMenu : MonoBehaviour
             }
             foreach (var item in rightText)
             {
-                item.text = "R";
+                item.text = "E";
             }
             keyboardMoveText.SetActive(true);
             gamepadMoveText.SetActive(false);

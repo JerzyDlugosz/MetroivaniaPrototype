@@ -105,7 +105,7 @@ public class PlayerShooting : MonoBehaviour
                     GameStateManager.instance.audioManager.effectsAudioSoruce.clip = player.onLoopReloadAudio;
                     GameStateManager.instance.audioManager.effectsAudioSoruce.loop = true;
                     GameStateManager.instance.audioManager.effectsAudioSoruce.Play();
-                    Debug.Log(GameStateManager.instance.audioManager.effectsAudioSoruce.isPlaying);
+                    //Debug.Log(GameStateManager.instance.audioManager.effectsAudioSoruce.isPlaying);
                 }
 
                 player.remainingArrowScript.ArrowRefreshIcon(1 - recallTimer);
@@ -150,7 +150,7 @@ public class PlayerShooting : MonoBehaviour
 
         if (arrowPrefab.GetComponent<PlayerProjectile>().projectileType != WeaponType.Basic)
         {
-            Debug.Log("SpecialArrowtip");
+            //Debug.Log("SpecialArrowtip");
             //if(player.playerData.currentArrowtipsCount <= 0)
             //{
             //    Debug.LogWarning("No more arrowtips");
@@ -160,7 +160,7 @@ public class PlayerShooting : MonoBehaviour
         }
         else
         {
-            Debug.Log("NormalArrow");
+            //Debug.Log("NormalArrow");
         }
 
         player.arrowUsedEvent.Invoke();

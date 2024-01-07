@@ -130,7 +130,7 @@ MonoBehaviour:
   projectileName: WaveProjectile
   projectileLifetime: 2
   bounceAngle: 360
-  projectileDamage: 2
+  projectileDamage: 1
   inWaterDrag: 2
   baseGravity: 0
   projectileStrenght: -1

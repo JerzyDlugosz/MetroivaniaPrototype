@@ -29,8 +29,14 @@ public class GameStateManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "PersistentScene")
         {
+            OnGameInit();
             SceneManager.LoadScene(1);
         }
+    }
+
+    private void OnGameInit()
+    {
+        Cursor.visible = false;
     }
 
     public void LoadScene(int sceneNumber)
@@ -58,7 +64,7 @@ public class GameStateManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneNumber);
         while (!asyncLoad.isDone)
         {
-            Debug.Log(asyncLoad.progress);
+            //Debug.Log(asyncLoad.progress);
             yield return null;
         }
     }

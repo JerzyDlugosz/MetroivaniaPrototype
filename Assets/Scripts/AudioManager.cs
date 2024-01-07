@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
 
     public void OnMapChange(Zone zone)
     {
-        Debug.LogWarning($"Playing {zone} music");
+        //Debug.LogWarning($"Playing {zone} music");
         switch (zone)
         {
             case Zone.Zone1:

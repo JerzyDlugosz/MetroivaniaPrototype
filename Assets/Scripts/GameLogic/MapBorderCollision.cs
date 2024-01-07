@@ -41,7 +41,7 @@ public class MapBorderCollision : MonoBehaviour
         }
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Player is exiting stage");
+            //Debug.Log("Player is exiting stage");
             onTriggerEnterEvent.Invoke();
         }
     }

@@ -39,8 +39,8 @@ public class FancyAnimatedText : MonoBehaviour
 
 
         TMP_TextInfo textInfo = text.textInfo;
-        Debug.Log(text.text.Length);
-        Debug.Log(textInfo.characterCount);
+        //Debug.Log(text.text.Length);
+        //Debug.Log(textInfo.characterCount);
 
         int timeOffset = 0;
         bool bounce = false;

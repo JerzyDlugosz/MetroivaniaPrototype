@@ -20,4 +20,4 @@ MonoBehaviour:
   mapYOffset: 0
   backgroundMusic: {fileID: 0}
   mapPrefab: {fileID: 950768205, guid: 6481f30741f31e840b032329f36beda4, type: 3}
-  mapDoors: 0000000001000000
+  mapDoors: 020000000000000001000000

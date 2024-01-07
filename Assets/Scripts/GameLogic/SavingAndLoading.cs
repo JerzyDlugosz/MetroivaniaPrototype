@@ -42,7 +42,7 @@ public class SavingAndLoading : MonoBehaviour
             string json = JsonUtility.ToJson(save);
             File.WriteAllText(saveFilePath, json);
 
-            Debug.Log("Save file is arleady in use!");
+            Debug.Log("Saving over previous save");
             return false;
         }
     }

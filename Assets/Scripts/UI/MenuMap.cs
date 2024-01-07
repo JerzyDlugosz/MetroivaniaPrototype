@@ -111,7 +111,7 @@ public class MenuMap : CustomUIMenu
         }
 
         Vector2Int currentPos = GameManagerScript.instance.minimap.GetCurrentLocation();
-        Debug.Log(currentPos.x + " " + currentPos.y);
+        //Debug.Log(currentPos.x + " " + currentPos.y);
 
         float mapTileSize = 16;
 

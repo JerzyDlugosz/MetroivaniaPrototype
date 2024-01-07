@@ -35,14 +35,14 @@ public class CompositeTilemap : MonoBehaviour
             {
                 if (map.mapPrefab.TryGetComponent<CompositeTilemap>(out CompositeTilemap comp))
                 {
-                    Debug.Log($"comp tilemap: {comp.GetComponent<CustomTilemapData>().xPos}, {comp.GetComponent<CustomTilemapData>().yPos}");
+                    //Debug.Log($"comp tilemap: {comp.GetComponent<CustomTilemapData>().xPos}, {comp.GetComponent<CustomTilemapData>().yPos}");
                     if (comp.GetComponent<CustomTilemapData>().xPos >= compMapXPos.x && comp.GetComponent<CustomTilemapData>().xPos <= compMapXPos.y)
                     {
 
-                        Debug.Log($"This for X ->{comp.GetComponent<CustomTilemapData>().xPos}: {compMapXPos.x}, {compMapXPos.y}");
+                        //Debug.Log($"This for X ->{comp.GetComponent<CustomTilemapData>().xPos}: {compMapXPos.x}, {compMapXPos.y}");
                         if (comp.GetComponent<CustomTilemapData>().yPos >= compMapYPos.x && comp.GetComponent<CustomTilemapData>().yPos <= compMapYPos.y)
                         {
-                            Debug.Log($"This for Y -> {comp.GetComponent<CustomTilemapData>().yPos}: {compMapYPos.x}, {compMapYPos.y}");
+                            //Debug.Log($"This for Y -> {comp.GetComponent<CustomTilemapData>().yPos}: {compMapYPos.x}, {compMapYPos.y}");
                             connectedTilemaps.Add(map);
                         }
                     }

@@ -56,7 +56,15 @@ public class MainOptionsMenu : MonoBehaviour
     private void SetUIValues()
     {
         //int fullscreen = PlayerPrefs.GetInt("FullScreen", 0);
-        int res = PlayerPrefs.GetInt("Resolution", 1);
+
+#if UNITY_STANDALONE_WIN
+
+            int res = PlayerPrefs.GetInt("Resolution", 1);
+            ResolutionDropdown.value = res;
+            Screen.SetResolution(resolutions[res].x, resolutions[res].y, Screen.fullScreenMode);
+
+#endif
+
         int fps = PlayerPrefs.GetInt("FrameRate", 1);
         float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         float effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 0.5f);
@@ -71,9 +79,6 @@ public class MainOptionsMenu : MonoBehaviour
         //    FullscreenToggle.isOn = false;
         //    Screen.fullScreenMode = FullScreenMode.Windowed;
         //}
-
-        Screen.SetResolution(resolutions[res].x, resolutions[res].y, Screen.fullScreenMode);
-        ResolutionDropdown.value = res;
 
 
         QualitySettings.vSyncCount = fps;

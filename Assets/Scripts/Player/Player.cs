@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 [Serializable]
 public class OnArrowCapacityIncreaseEvent : UnityEvent { }
@@ -376,14 +377,28 @@ public class Player : BaseEntity
     {
         bow.SetActive(value);
 
-        foreach (var item in reticleAndDirectionIndicators)
-        {
-            item.SetActive(value);
-        }
+        ChangeAimReticle();
 
+        //foreach (var item in reticleAndDirectionIndicators)
+        //{
+        //    item.SetActive(false);
+        //}
+
+        //if (playerInput.currentControlScheme == "Gamepad")
+        //{
+        //    reticleAndDirectionIndicators[0].SetActive(value);
+        //    reticleAndDirectionIndicators[1].SetActive(!value);
+        //}
+        //else if (playerInput.currentControlScheme == "Keyboard")
+        //{
+        //    reticleAndDirectionIndicators[1].SetActive(value);
+        //    reticleAndDirectionIndicators[0].SetActive(!value);
+        //}
 
         playerData.unlockedBow = value;
     }
+
+
 
     private void OnAnyAction(InputAction.CallbackContext obj)
     {
@@ -492,7 +507,7 @@ public class Player : BaseEntity
         {
             return;
         }
-        Debug.Log(playerInput.currentActionMap.name);
+        //Debug.Log(playerInput.currentActionMap.name);
         playerInput.SwitchCurrentActionMap("PauseMenu");
         GameManagerScript.instance.entitiesManager.EntitiesPauseState(true);
         playerInputActions.Player.Disable();
@@ -545,6 +560,20 @@ public class Player : BaseEntity
         }
     }
 
+    private void ChangeAimReticle()
+    {
+        if (playerInput.currentControlScheme == "Gamepad")
+        {
+            reticleAndDirectionIndicatorsChildren[0].SetActive(false);
+            reticleAndDirectionIndicatorsChildren[1].SetActive(true);
+        }
+        else if (playerInput.currentControlScheme == "Keyboard")
+        {
+            reticleAndDirectionIndicatorsChildren[0].SetActive(true);
+            reticleAndDirectionIndicatorsChildren[1].SetActive(false);
+        }
+    }
+
     void ReadInput()
     {
         movementInput = playerInputActions.Player.Movement.ReadValue<Vector2>();
@@ -578,7 +607,7 @@ public class Player : BaseEntity
         {
             if (!progressTracker.collectibles.Exists(x => x.collectibleId == collectibleList.collectibles[i].collectibleId))
             {
-                Debug.LogWarning($"Manual MapPos X & Y: {collectibleList.collectibles[i].collectiblePosX + 25}, {collectibleList.collectibles[i].collectiblePosY + 25}");
+                //Debug.LogWarning($"Manual MapPos X & Y: {collectibleList.collectibles[i].collectiblePosX + 25}, {collectibleList.collectibles[i].collectiblePosY + 25}");
                 GameManagerScript.instance.minimap.ManuallySetMinimapTile(collectibleList.collectibles[i].collectiblePosX + 25, collectibleList.collectibles[i].collectiblePosY + 25, GameManagerScript.instance.mapArray[collectibleList.collectibles[i].collectiblePosX + 25, collectibleList.collectibles[i].collectiblePosY + 25], 3);
             }
         }
@@ -672,8 +701,7 @@ public class Player : BaseEntity
     {
         if(healable)
         {
-            float tempHealth = playerData.health + healthRestored;
-            if (tempHealth > playerData.maxHealth)
+            if (playerData.health >= playerData.maxHealth)
             {
                 return;
             }

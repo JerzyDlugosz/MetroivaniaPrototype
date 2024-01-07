@@ -303,7 +303,7 @@ public class TilemapGenerator : MonoBehaviour
             temp += item.ToString() + " ";
         }
 
-        Debug.Log(temp);
+        //Debug.Log(temp);
     }
 
 
@@ -425,7 +425,7 @@ public class TilemapGenerator : MonoBehaviour
             {
                 CustomTilemapData tilemapData = item.GetComponent<CustomTilemapData>();
 
-                Debug.Log(i);
+                //Debug.Log(i);
                 if (!tilemapData.isPlayable)
                 {
                     mapList.maps.Add(null);
@@ -593,7 +593,10 @@ public class TilemapGenerator : MonoBehaviour
 
         Debug.Log($"edited {numberOfEditedTilemaps} Tilemaps");
 
-        editorScripts.SetStatCollectibleDatanCollectibleList();
+        if(!gameManagerScript.isMainMenu)
+        {
+            editorScripts.SetStatCollectibleDatanCollectibleList();
+        }
 
         ClearPrefabs();
 
@@ -908,7 +911,7 @@ public class TilemapGenerator : MonoBehaviour
         string GameobjectName = groupAnimationGameObjectName;
         List<TileBase> tileBases = groupAnimationTiles;
 
-        Debug.Log(tileBases.Count);
+        //Debug.Log(tileBases.Count);
 
         for (int k = 0; k < currentTilemaps.Count; k++)
         {

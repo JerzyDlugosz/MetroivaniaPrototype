@@ -66,6 +66,11 @@ public class BirdBoss : BaseNPC
         //attackPattern2Laser.transform.DOLocalRotate(new Vector3(0, 0, -360f), 10f, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear).SetLoops(-1);
     }
 
+    private void FixedUpdate()
+    {
+        attackPattern2Laser.transform.Rotate(0, 0, -0.4f * attackSpeed);
+    }
+
     private void Update()
     {
         if (isStopped)
@@ -96,9 +101,6 @@ public class BirdBoss : BaseNPC
         {
             AttackLogic();
         }
-
-        attackPattern2Laser.transform.Rotate(0, 0, -0.4f * attackSpeed);
-
     }
     private void OnHit(float damage)
     {
@@ -261,7 +263,7 @@ public class BirdBoss : BaseNPC
     private void OnEnemyDeath()
     {
         attackPattern3EnemiesCount--;
-        Debug.Log("KilledEnemy, enemies remaining: " + attackPattern3EnemiesCount);
+        //Debug.Log("KilledEnemy, enemies remaining: " + attackPattern3EnemiesCount);
         if(attackPattern3EnemiesCount <= 0)
         {
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);

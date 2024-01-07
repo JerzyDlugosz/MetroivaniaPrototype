@@ -328,9 +328,9 @@ public class MinimapController : MonoBehaviour
                 unlockedSpecialRooms[i, j] = save.unlockedSpecialRooms[i * maxTilesInMap + j];
 
 
-                Debug.Log($"L1. {save.unlockedMap[i * maxTilesInMap + j]}, {save.unlockedMinimapBackgrounds[i * maxTilesInMap + j]}, {save.unlockedMinimapDoors[i * maxTilesInMap + j]}, {save.unlockedMinimapWalls[i * maxTilesInMap + j]} ");
+                //Debug.Log($"L1. {save.unlockedMap[i * maxTilesInMap + j]}, {save.unlockedMinimapBackgrounds[i * maxTilesInMap + j]}, {save.unlockedMinimapDoors[i * maxTilesInMap + j]}, {save.unlockedMinimapWalls[i * maxTilesInMap + j]} ");
 
-                Debug.Log($"L2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimapDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
+                //Debug.Log($"L2. {unlockedMap[i, j]}, {unlockedMinimapBackgrounds[i, j]}, {unlockedMinimapDoors[i, j]}, {unlockedMinimapWalls[i, j]} ");
             }
         }
 

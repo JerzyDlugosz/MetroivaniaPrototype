@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour
 
     public void MoveMenuPosition(Transform targetPosition)
     {
-        Debug.Log($"ThisPos {menu.localPosition}, targetPos {targetPosition.localPosition}");
+        //Debug.Log($"ThisPos {menu.localPosition}, targetPos {targetPosition.localPosition}");
         menu.DOLocalMove(-targetPosition.localPosition, 1f);
     }
 }

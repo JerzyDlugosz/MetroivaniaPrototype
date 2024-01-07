@@ -249,6 +249,7 @@ MonoBehaviour:
   onButtonHit:
     m_PersistentCalls:
       m_Calls: []
+  onHitAudioClip: {fileID: 8300000, guid: 3245778ab0701f640a055ed449e181ed, type: 3}
 --- !u!61 &4439321315004733097
 BoxCollider2D:
   m_ObjectHideFlags: 0

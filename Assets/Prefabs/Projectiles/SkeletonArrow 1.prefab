@@ -130,7 +130,7 @@ MonoBehaviour:
   projectileName: DefaultProjectile
   projectileLifetime: 2
   bounceAngle: 360
-  projectileDamage: 3
+  projectileDamage: 2
   inWaterDrag: 0
   baseGravity: 0
   projectileStrenght: -1

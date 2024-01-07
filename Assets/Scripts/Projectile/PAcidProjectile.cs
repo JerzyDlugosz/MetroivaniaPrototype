@@ -22,7 +22,7 @@ public class PAcidProjectile : HostileProjectile
 
     public void OnWallBounce()
     {
-        Debug.Log(rb.velocity);
+        //Debug.Log(rb.velocity);
         rb.AddForce(new Vector2(0, 10 * bounceForceModifier)); 
     }
 }

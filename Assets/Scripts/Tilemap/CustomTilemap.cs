@@ -70,6 +70,7 @@ public class CustomTilemap : MonoBehaviour
             cameraData.CameraXBoundaryAdditionalOffset = cameraData.baseCameraXBoundaryAdditionalOffset;
             cameraData.CameraYBoundaryAdditionalOffset = cameraData.baseCameraYBoundaryAdditionalOffset;
 
+            GameManagerScript.instance.player.playerAim.reticle.localScale = new Vector3(1f, 1f, 1f);
             GameManagerScript.instance.player.mainCamera.GetComponent<UnityEngine.Experimental.Rendering.Universal.PixelPerfectCamera>().assetsPPU = cameraData.baseAssetsPPU;
             return false;
         }
@@ -112,9 +113,9 @@ public class CustomTilemap : MonoBehaviour
 
 
         string xPos = name.Substring(ix + 1, ix2 - 1);
-        Debug.Log(xPos);
+        //Debug.Log(xPos);
         string yPos = name.Substring(ix2 + 1, ix3 - (ix2 + 1));
-        Debug.Log(yPos);
+        //Debug.Log(yPos);
 
         
         GetComponent<CustomTilemapData>().xPos = int.Parse(xPos);

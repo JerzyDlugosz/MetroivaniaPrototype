@@ -39,6 +39,7 @@ public class WaterBossRoom : BossRoom
         {
             Destroy(bossEnemy.gameObject);
             Destroy(bossEnterTrigger);
+            Destroy(shootableButton.gameObject);
             //Destroy(waterGameobject.gameObject);
             return;
         }
@@ -173,6 +174,7 @@ public class WaterBossRoom : BossRoom
         StopAllCoroutines();
         DOTween.KillAll(false);
         door.transform.DOLocalMoveY(doorHideMoveAmmount, 1f);
+        shootableButton.gameObject.SetActive(false);
         GameStateManager.instance.audioManager.RemoveAudio();
         GameStateManager.instance.audioManager.musicAudioSource.PlayOneShot(VictoryMusic);
     }

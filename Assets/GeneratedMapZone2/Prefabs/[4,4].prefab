@@ -458,6 +458,7 @@ MonoBehaviour:
   doorHideMoveAmmount: -3
   bossMusic: {fileID: 8300000, guid: 5fad58e1b871b29438c4bf7c235924ec, type: 3}
   VictoryMusic: {fileID: 8300000, guid: 0d2dfbb251019a7438c66f7abf7a658f, type: 3}
+  playerMouseCursorScale: 2
   dragonComposite: {fileID: 1959946426}
   Ladder: {fileID: 443281558}
 --- !u!1 &128436372
@@ -1017,11 +1018,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.24399775e-33
+      e03: -8.261223e-36
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.65e-43
+      e13: 1.19e-43
       e20: 0
       e21: 0
       e22: 0
@@ -21548,8 +21549,8 @@ MonoBehaviour:
     bossName: Dragon
     bossXPos: 0
     bossYPos: 0
-  compositeEnemyHealth: 50
-  compositeEnemyMaxHealth: 50
+  compositeEnemyHealth: 40
+  compositeEnemyMaxHealth: 40
   handSprites:
   - {fileID: 21300000, guid: 423d0c0f05db04340b22bffaf90a3485, type: 3}
   - {fileID: 21300000, guid: 9272d6185be72694ba67a6b2d92d8273, type: 3}
@@ -22429,6 +22430,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onHitAudioClip: {fileID: 0}
 --- !u!61 &7762721638088965667
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -113,7 +113,7 @@ public class AnimatedTilesController : MonoBehaviour
             }
 
             float timeToWait = Random.Range(randomMinTime, randomMaxTime);
-            Debug.Log(timeToWait);
+            //Debug.Log(timeToWait);
             yield return new WaitForSeconds(timeToWait);
         } while (true);
     }

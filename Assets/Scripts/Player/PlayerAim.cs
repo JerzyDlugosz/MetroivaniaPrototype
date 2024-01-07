@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,7 +11,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField]
     private Player player;
     [SerializeField]
-    private Transform reticle;
+    public Transform reticle;
     [SerializeField]
     private Transform weapon;
     [SerializeField]
@@ -25,6 +26,8 @@ public class PlayerAim : MonoBehaviour
     [HideInInspector]
     public float angle;
 
+    public LineRenderer lr;
+    public float temp = 10f;
 
     private void Awake()
     {
@@ -52,6 +55,7 @@ public class PlayerAim : MonoBehaviour
 
         UpdateReticlePosition();
         UpdateBowRotation();
+       // UpdateProjectileLine();
         if (directionIndicator != null)
         {
             UpdateDirectionIndicator();
@@ -127,5 +131,42 @@ public class PlayerAim : MonoBehaviour
 
         directionIndicator.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, directionIndicator.transform.position.z);
         directionIndicator.eulerAngles = new Vector3(0,0,angle);
+    }
+
+    void UpdateProjectileLine()
+    {
+        GameObject arrowPrefab = player.playerWeaponSwap.currentWeapon;
+
+        Projectile CurrentProjectile = arrowPrefab.GetComponent<Projectile>();
+
+        Vector2 force = CurrentProjectile.projectileForce;
+
+        float distanceMagnitude = MathF.Abs(distance);
+
+        if (distanceMagnitude > 5f)
+        {
+            distanceMagnitude = 5f;
+        }
+
+        distanceMagnitude /= 5f;
+
+        float power = (force.x * distanceMagnitude) / temp;
+
+        //rb.AddRelativeForce((projectileForce * distanceMagnitude) * multiplier);
+
+        Vector2 _velocity = ((player.transform.position - player.aimInputScreenPosition) * power * -1f);
+
+        Vector2[] trajectory = TrajectoryLine.DrawLine(CurrentProjectile.GetComponent<Rigidbody2D>(), (Vector2)transform.position, _velocity, 500);
+
+        lr.positionCount = trajectory.Length;
+
+        Vector3[] positions = new Vector3[trajectory.Length];
+
+        for (int i = 0; i < trajectory.Length; i++)
+        {
+            positions[i] = trajectory[i];
+        }
+
+        lr.SetPositions(positions);
     }
 }

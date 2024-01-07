@@ -14,7 +14,7 @@ public class ResolutionOption : MonoBehaviour
     private void Start()
     {
         Vector2Int currentResolution = new Vector2Int(Screen.width, Screen.height);
-        Debug.Log($"resolution: {currentResolution}/ indexOf: {resolutions.IndexOf(currentResolution)}");
+        //Debug.Log($"resolution: {currentResolution}/ indexOf: {resolutions.IndexOf(currentResolution)}");
         Dropdown.value = resolutions.IndexOf(currentResolution);
         Dropdown.onValueChanged.AddListener(delegate {
             OnResolutionChange(Dropdown);

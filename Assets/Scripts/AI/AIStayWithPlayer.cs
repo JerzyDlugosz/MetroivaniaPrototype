@@ -71,7 +71,7 @@ public class AIStayWithPlayer : MonoBehaviour
 
         if (!isTalking)
         {
-            Debug.Log($"Player entered {transform.parent.name}");
+            //Debug.Log($"Player entered {transform.parent.name}");
 
             if (collision.CompareTag("Player"))
                 AiPath.canMove = true;
@@ -87,7 +87,7 @@ public class AIStayWithPlayer : MonoBehaviour
                 if (collision.CompareTag("Player"))
                     AiPath.canMove = true;
             }
-            Debug.Log($"Player near {transform.parent.name}");
+            //Debug.Log($"Player near {transform.parent.name}");
         }
     }
 
@@ -95,7 +95,7 @@ public class AIStayWithPlayer : MonoBehaviour
     {
         if (!isTalking)
         {
-            Debug.Log($"Player escaped {transform.parent.name}");
+            //Debug.Log($"Player escaped {transform.parent.name}");
 
             if (collision.CompareTag("Player"))
                 AiPath.canMove = false;

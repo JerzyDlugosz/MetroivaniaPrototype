@@ -576,6 +576,7 @@ MonoBehaviour:
   doorHideMoveAmmount: -4
   bossMusic: {fileID: 8300000, guid: 5fad58e1b871b29438c4bf7c235924ec, type: 3}
   VictoryMusic: {fileID: 8300000, guid: 0d2dfbb251019a7438c66f7abf7a658f, type: 3}
+  playerMouseCursorScale: 1
   bossEnemyParts: {fileID: 1071616896}
 --- !u!1 &106549289
 GameObject:
@@ -1759,11 +1760,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.24399775e-33
+      e03: -8.261223e-36
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.65e-43
+      e13: 1.19e-43
       e20: 0
       e21: 0
       e22: 0
@@ -1795,11 +1796,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.24399775e-33
+      e03: -8.261223e-36
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.65e-43
+      e13: 1.19e-43
       e20: 0
       e21: 0
       e22: 0

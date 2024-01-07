@@ -6510,7 +6510,7 @@ Tilemap:
       - {fileID: -1261888848, guid: 49a1239bd60d3e7459ca29a8dec4e1bf, type: 3}
       - {fileID: -501438257, guid: 49a1239bd60d3e7459ca29a8dec4e1bf, type: 3}
       - {fileID: -817222456, guid: 49a1239bd60d3e7459ca29a8dec4e1bf, type: 3}
-      m_AnimationSpeed: 3
+      m_AnimationSpeed: 3.0000002
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   m_TileAssetArray:

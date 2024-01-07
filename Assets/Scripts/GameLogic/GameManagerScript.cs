@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class GameManagerScript : MonoBehaviour
@@ -86,6 +87,20 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     private void Start()
     {
         GlobalData.maxTimemaps = mapSize;
@@ -104,7 +119,7 @@ public class GameManagerScript : MonoBehaviour
         }
         catch (Exception)
         {
-            Debug.LogError("Them generatedMapsFolder is not assigned or smt");
+            Debug.LogError("generatedMapsFolder is not assigned");
         }        
 
         forceMoveArray = new Vector2[]
@@ -257,20 +272,20 @@ public class GameManagerScript : MonoBehaviour
 
     #region SavingAndLoading Methods
 
-    private bool MT221()
-    {
-        string MT221T = Path.Combine(Application.persistentDataPath, $"MT221.txt");
-        if (File.Exists(MT221T))
-        {
-            Debug.Log("Exist");
-            return true;
-        }
-        else
-        {
-            spawnMapNumber = (1 * 20) + (1 + 1);
-            return false;
-        }
-    }
+    //private bool MT221()
+    //{
+    //    string MT221T = Path.Combine(Application.persistentDataPath, $"MT221.txt");
+    //    if (File.Exists(MT221T))
+    //    {
+    //        Debug.Log("Exist");
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        spawnMapNumber = (1 * 20) + (1 + 1);
+    //        return false;
+    //    }
+    //}
 
     private Map LoadGame()
     {
@@ -484,7 +499,7 @@ public class GameManagerScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Same map. Skipping");
+                    //Debug.Log("Same map. Skipping");
                 }
             }
         }
@@ -538,7 +553,7 @@ public class GameManagerScript : MonoBehaviour
                     {
                         mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
                         {
-                            Debug.Log("Not a door");
+                            //Debug.Log("Not a door");
                         });
                     }
 
@@ -761,7 +776,7 @@ public class GameManagerScript : MonoBehaviour
                     {
                         mapBorderCollision.onTriggerEnterEvent.AddListener(delegate
                         {
-                            Debug.Log("Not a door");
+                            //Debug.Log("Not a door");
                         });
                     }
 

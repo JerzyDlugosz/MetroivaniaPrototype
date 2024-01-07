@@ -15647,6 +15647,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  onHitAudioClip: {fileID: 0}
 --- !u!61 &8400346111952584826
 BoxCollider2D:
   m_ObjectHideFlags: 0

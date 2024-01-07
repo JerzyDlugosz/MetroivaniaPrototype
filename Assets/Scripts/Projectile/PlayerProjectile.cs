@@ -48,9 +48,11 @@ public class PlayerProjectile : Projectile
 
         distanceMagnitude /= maxProjectileForceDistance;
 
-        Debug.Log(distanceMagnitude);
+        //Debug.Log(distanceMagnitude);
 
         rb.AddRelativeForce((projectileForce * distanceMagnitude) * multiplier);
+
+        //rb.velocity = projectileForce * distanceMagnitude * multiplier;
 
         Pushback(angle);
 
@@ -84,7 +86,7 @@ public class PlayerProjectile : Projectile
     {
         Vector2 pushbackMagnitude = MathExtensions.GetAngleMagnitude(angle, true);
 
-        Debug.Log($"Pushback {pushbackMagnitude * projectilePushBack}");
+        //Debug.Log($"Pushback {pushbackMagnitude * projectilePushBack}");
         GameManagerScript.instance.player.customRigidbody.AddRelativeForce(pushbackMagnitude * projectilePushBack);
     }
 
@@ -110,7 +112,7 @@ public class PlayerProjectile : Projectile
             endOfLifetimeEvent.Invoke();
         }
 
-        debugRays();
+        //debugRays();
         return true;
     }
 
@@ -138,9 +140,9 @@ public class PlayerProjectile : Projectile
     protected void ShakeArrow()
     {
         float angle = MathExtensions.WrapAngle(transform.eulerAngles.z);
-        Debug.Log($"z angle: {angle}");
+       // Debug.Log($"z angle: {angle}");
         Vector2 vector = MathExtensions.GetAngleMagnitude(angle, false);
-        Debug.Log($"vector: {vector}");
+        //Debug.Log($"vector: {vector}");
         transform.DOShakePosition(1f, new Vector3(shakeStrenght * vector.y, shakeStrenght * vector.x, 0f)).SetEase(Ease.Linear);
     }
 }

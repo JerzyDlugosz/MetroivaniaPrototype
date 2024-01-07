@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a600bc7b2b6f09445b7f2a6fd4c24fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSaveFile: 9
+  currentSaveFile: 3
 --- !u!1 &1408855547
 GameObject:
   m_ObjectHideFlags: 0

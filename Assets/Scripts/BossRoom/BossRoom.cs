@@ -29,11 +29,14 @@ public class BossRoom : MonoBehaviour
     protected AudioClip bossMusic;
     [SerializeField]
     protected AudioClip VictoryMusic;
+    [SerializeField]
+    protected float playerMouseCursorScale = 1f;
     public virtual void OnBossRoomEnter()
     {
         CameraData cameraData = GameManagerScript.instance.player.mainCamera.GetComponent<CameraData>();
         cameraData.CameraXBoundaryAdditionalOffset = CameraXOffset;
         cameraData.CameraYBoundaryAdditionalOffset = CameraYOffset;
+        GameManagerScript.instance.player.playerAim.reticle.localScale = new Vector3(playerMouseCursorScale, playerMouseCursorScale, 1f);
 
         GameManagerScript.instance.player.mainCamera.GetComponent<PixelPerfectCamera>().assetsPPU = assetsPPU;
     }

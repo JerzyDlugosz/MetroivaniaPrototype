@@ -66,6 +66,6 @@ public class PBumerangArrow : PlayerProjectile
         base.OnInstantiate(angle, distance, 1f, _damageModifier);
 
         opposingForceMagnitude = MathExtensions.GetAngleMagnitude(angle, true);
-        Debug.Log($"{opposingForceMagnitude.x},{opposingForceMagnitude.y}");
+        //Debug.Log($"{opposingForceMagnitude.x},{opposingForceMagnitude.y}");
     }
 }

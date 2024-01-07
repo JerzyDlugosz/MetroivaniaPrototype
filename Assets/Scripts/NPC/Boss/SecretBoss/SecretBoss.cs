@@ -40,6 +40,8 @@ public class SecretBoss : BaseNPC
     [SerializeField]
     private List<GameObject> secretBossLaserEyeList;
     [SerializeField]
+    private List<GameObject> projectileList;
+    [SerializeField]
     private List<Transform> eyePositions;
     #endregion
 
@@ -128,6 +130,14 @@ public class SecretBoss : BaseNPC
 
     public void OnDeath()
     {
+        ClearAllAttacks();
+        GameManagerScript.instance.player.progressTracker.AddBoss(bossData);
+        enemyParticleController.OnDeath();
+        Destroy(gameObject);
+    }
+
+    private void ClearAllAttacks()
+    {
         foreach (var item in laserTrapControllers)
         {
             item.LaserState(false);
@@ -137,9 +147,17 @@ public class SecretBoss : BaseNPC
             Destroy(item);
         }
         secretBossLaserEyeList.Clear();
-        GameManagerScript.instance.player.progressTracker.AddBoss(bossData);
-        enemyParticleController.OnDeath();
-        Destroy(gameObject);
+
+        foreach (var item in projectileList)
+        {
+            Destroy(item);
+        }
+        projectileList.Clear();
+        water.GetComponentInChildren<Thorns>().isEnabled = false;
+        SetLaser(0, 0);
+        water.gameObject.SetActive(false);
+
+
     }
 
     private void AttackLogic()
@@ -248,6 +266,7 @@ public class SecretBoss : BaseNPC
 
     IEnumerator AttackPattern3()
     {
+        projectileList.Clear();
         int projectileAmmount = 5;
         float projectileSpread = 15f;
 
@@ -265,6 +284,8 @@ public class SecretBoss : BaseNPC
             GameObject projectile = Instantiate(Attack3Projectile, position, targetRotation);
 
             projectile.GetComponent<Projectile>().OnInstantiate();
+
+            projectileList.Add(projectile.gameObject);
         }
 
         yield return new WaitForSeconds(1f / attackSpeed);
@@ -286,6 +307,7 @@ public class SecretBoss : BaseNPC
             GameObject projectile = Instantiate(Attack3Projectile, position, targetRotation);
 
             projectile.GetComponent<Projectile>().OnInstantiate();
+            projectileList.Add(projectile.gameObject);
         }
 
         yield return new WaitForSeconds(1f / attackSpeed);
@@ -307,6 +329,7 @@ public class SecretBoss : BaseNPC
             GameObject projectile = Instantiate(Attack3Projectile, position, targetRotation);
 
             projectile.GetComponent<Projectile>().OnInstantiate();
+            projectileList.Add(projectile.gameObject);
         }
     }
 

@@ -309,7 +309,7 @@ public class DragonBoss : BaseNPC
 
         Vector3 projectilePos = new Vector3(baseWaypoint.position.x - 22, baseWaypoint.position.y - 6);
 
-        int rand = Random.Range(0, 8);
+        int rand = Random.Range(1, 7);
 
         for (int j = 0; j < 8; j++)
         {
@@ -326,6 +326,7 @@ public class DragonBoss : BaseNPC
                 yield return new WaitUntil(() => !stopCoroutines);
                 GameObject projectile = Instantiate(attackPattern1Projectile, projectilePos, Quaternion.identity);
                 projectile.GetComponent<Projectile>().OnInstantiate(1 * attackSpeed);
+                projectile.transform.position = new Vector3(projectile.transform.position.x, projectile.transform.position.y, -2f);
                 yield return new WaitForSeconds(timeBetweenMove / 12 / attackSpeed);
             }
         }
@@ -375,11 +376,11 @@ public class DragonBoss : BaseNPC
         //int startingCrackedWallPos = Random.Range(-24, 20);
         int startingCrackedWallPos = Random.Range(-PlayerToCenterPos.x, PlayerToCenterPos.x + 4);
 
-        Debug.LogWarning("PlayerPos: " + PlayerToCenterPos);
+        //Debug.LogWarning("PlayerPos: " + PlayerToCenterPos);
 
         for (int j = 0; j < 4; j++)
         {
-            Debug.Log($"rand = {startingCrackedWallPos}");
+           // Debug.Log($"rand = {startingCrackedWallPos}");
             int CrackedWallMoveDirection = Random.Range(-1, 2);
             startingCrackedWallPos += CrackedWallMoveDirection * 6;
 
@@ -405,6 +406,7 @@ public class DragonBoss : BaseNPC
                     projectile.transform.SetParent(rockLine.transform);
                     rockLine.GetComponent<PRockLine>().allRocks.Add(projectile);
                     projectile.GetComponent<Projectile>().destroyEvent.AddListener(() => rockLine.GetComponent<PRockLine>().allRocks.Remove(projectile));
+                    projectile.transform.position = new Vector3(projectile.transform.position.x, projectile.transform.position.y, -2f);
                     continue;
                 }
 
@@ -415,6 +417,7 @@ public class DragonBoss : BaseNPC
                 projectile.transform.SetParent(rockLine.transform);
                 rockLine.GetComponent<PRockLine>().allRocks.Add(projectile);
                 projectile.GetComponent<Projectile>().destroyEvent.AddListener(() => rockLine.GetComponent<PRockLine>().allRocks.Remove(projectile));
+                projectile.transform.position = new Vector3(projectile.transform.position.x, projectile.transform.position.y, -2f);
             }
 
             PRockLine pRockLine = rockLine.GetComponent<PRockLine>();

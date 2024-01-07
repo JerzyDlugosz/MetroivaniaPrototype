@@ -22,12 +22,12 @@ public class ExplosionField : MonoBehaviour
     {
         if(collision.TryGetComponent(out BaseEntity baseEntity))
         {
-            Debug.Log(collision.tag);
+            //Debug.Log(collision.tag);
             entintiesInExplosion.Add(baseEntity);
         }
         else if(collision.transform.parent.TryGetComponent(out BaseEntity parentBaseEntity))
         {
-            Debug.Log(collision.tag);
+            //Debug.Log(collision.tag);
             entintiesInExplosion.Add(parentBaseEntity);
         }
     }
@@ -62,7 +62,7 @@ public class ExplosionField : MonoBehaviour
 
             if(entity.TryGetComponent(out BaseNPC baseNPC))
             {
-                Debug.Log(baseNPC.name);
+                //Debug.Log(baseNPC.name);
                 Vector2 magnitude;
                 float distance = Vector2.Distance(entity.transform.position, transform.position);
                 if (distance < 3f)

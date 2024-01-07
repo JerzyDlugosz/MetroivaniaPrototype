@@ -24,8 +24,8 @@ public class CreditsScreen : MonoBehaviour
         //GameManagerScript.instance.SaveGame(new Vector2(7, 15));
         //savingAndLoading.SaveGameFile(save);
 
-        movingBackground.transform.DOLocalMoveY(48, 30).SetEase(Ease.Linear);
-        CreditsText.transform.DOLocalMoveY(750, 25).SetEase(Ease.Linear).OnComplete(() =>
+        movingBackground.transform.DOLocalMoveY(48, 26).SetEase(Ease.Linear);
+        CreditsText.transform.DOLocalMoveY(750, 24).SetEase(Ease.Linear).OnComplete(() =>
         {
             platform.SetActive(false);
         });

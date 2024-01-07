@@ -8,7 +8,7 @@ public class BreakableProjectile : MonoBehaviour
     {
         if (collision.CompareTag("Projectile"))
         {
-            Debug.Log("Works");
+            //Debug.Log("Works");
             Destroy(gameObject);
         }
     }

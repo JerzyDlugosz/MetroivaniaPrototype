@@ -20,7 +20,7 @@ public class Projectile : BaseEntity
     [SerializeField]
     protected Vector2 projectileVelocity;
     [SerializeField]
-    protected Vector2 projectileForce;
+    public Vector2 projectileForce;
     [SerializeField]
     protected float projectilePushBack;
     [SerializeField]
@@ -68,9 +68,9 @@ public class Projectile : BaseEntity
 
     public void Bounce()
     {
-        Debug.Log("Rb vel: " + rb.velocity);
+        //Debug.Log("Rb vel: " + rb.velocity);
         Vector2 vel2 = Vector2.Reflect(rb.velocity, Vector2.up);
-        Debug.Log("RB vel2: " + vel2);
+        //Debug.Log("RB vel2: " + vel2);
         rb.velocity = vel2;
     }
 

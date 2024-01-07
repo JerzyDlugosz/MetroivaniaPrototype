@@ -10,6 +10,7 @@ public class OnButtonHitEvent : UnityEvent { }
 public class ShootableButton : MonoBehaviour
 {
     public OnButtonHitEvent onButtonHit;
+    public AudioClip onHitAudioClip;
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class ShootableButton : MonoBehaviour
         {
             //projectile.wallCollisionEvent.Invoke();
             projectile.destroyEvent.Invoke();
+            GameStateManager.instance.audioManager.PlaySoundEffect(onHitAudioClip);
             onButtonHit.Invoke();
         }
     }

@@ -24267,6 +24267,7 @@ MonoBehaviour:
   doorHideMoveAmmount: 0
   bossMusic: {fileID: 8300000, guid: 5fad58e1b871b29438c4bf7c235924ec, type: 3}
   VictoryMusic: {fileID: 8300000, guid: 0d2dfbb251019a7438c66f7abf7a658f, type: 3}
+  playerMouseCursorScale: 1
   secretBoss: {fileID: 1527789622}
   wallTilemaps:
   - {fileID: 563757752}
@@ -26047,8 +26048,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isInvincible: 0
-  maxHealth: 100
-  health: 100
+  maxHealth: 150
+  health: 150
   speed: 0
   baseSpeed: 0
   damage: 2
@@ -26071,6 +26072,7 @@ MonoBehaviour:
   - {fileID: 1545632564, guid: f936738175ecca54d8592f0cb01bdc7c, type: 3}
   secretBossLaserEyePrefab: {fileID: 5461240828903618226, guid: c71b7faac2f2eac498360d96223bf0b6, type: 3}
   secretBossLaserEyeList: []
+  projectileList: []
   eyePositions:
   - {fileID: 987009076}
   - {fileID: 1277970570}

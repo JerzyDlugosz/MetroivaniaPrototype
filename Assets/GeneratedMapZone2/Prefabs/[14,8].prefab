@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8caf1c298dcd34d9aab65462ff7674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Maskable: 1
+  Maskable: 0
 --- !u!61 &443935440
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15811,7 +15811,7 @@ Tilemap:
       m_AnimatedSprites:
       - {fileID: 2022038917, guid: de495402c0ab6e944befb687f6820597, type: 3}
       - {fileID: -47094300, guid: de495402c0ab6e944befb687f6820597, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 4, y: -10, z: 0}

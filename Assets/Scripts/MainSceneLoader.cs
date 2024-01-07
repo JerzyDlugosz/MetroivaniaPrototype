@@ -51,7 +51,7 @@ public class MainSceneLoader : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(3);
+        //yield return new WaitForSeconds(3);
     }
 
     private void DoTheDotDotDot()
@@ -64,12 +64,12 @@ public class MainSceneLoader : MonoBehaviour
             currentDots = 0;
             dots = "";
         }
-        Debug.Log("Still invoked");
+        //Debug.Log("Still invoked");
     }
 
     void RemoveDotInvoke()
     {
         //CancelInvoke("DoTheDotDotDot");
-        Debug.Log("Canceled Invoke on DoTheDotDotDot");
+        //Debug.Log("Canceled Invoke on DoTheDotDotDot");
     }
 }

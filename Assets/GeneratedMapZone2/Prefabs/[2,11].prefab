@@ -2527,11 +2527,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.24399775e-33
+      e03: -8.261223e-36
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.65e-43
+      e13: 1.19e-43
       e20: 0
       e21: 0
       e22: 0
@@ -2563,11 +2563,11 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 1.24399775e-33
+      e03: -8.261223e-36
       e10: 0
       e11: 0
       e12: 0
-      e13: 1.65e-43
+      e13: 1.19e-43
       e20: 0
       e21: 0
       e22: 0
@@ -15864,7 +15864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2071867027380317585
 Transform:
   m_ObjectHideFlags: 0

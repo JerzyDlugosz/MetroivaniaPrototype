@@ -29,7 +29,7 @@ public class PCrackedRock : HostileProjectile
         if (collision.collider.CompareTag("Projectile"))
         {
             OnSingleRockHitEvent.Invoke();
-            Debug.Log("Destroyed!");
+            //Debug.Log("Destroyed!");
         }
     }
 }

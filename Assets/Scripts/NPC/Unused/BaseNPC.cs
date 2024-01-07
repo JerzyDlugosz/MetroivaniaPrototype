@@ -165,10 +165,10 @@ public class BaseNPC : BaseEntity
 
         damageable = false;
         spriteRenderer.material.SetFloat(flashID, 1);
-        Debug.Log("SET TO 1");
+        //Debug.Log("SET TO 1");
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.material.SetFloat(flashID, 0);
-        Debug.Log("SET TO 0");
+        //Debug.Log("SET TO 0");
         damageable = true;
 
         spriteAnimation.stopAnimation = false;

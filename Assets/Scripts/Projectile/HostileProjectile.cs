@@ -67,7 +67,7 @@ public class HostileProjectile : Projectile
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("YOU GOT HIT!");
+            //Debug.Log("YOU GOT HIT!");
             collision.GetComponentInParent<Player>().damageTakenEvent.Invoke(projectileDamage);
             entityCollisionEvent.Invoke(collision.GetComponentInParent<BaseNPC>());
         }

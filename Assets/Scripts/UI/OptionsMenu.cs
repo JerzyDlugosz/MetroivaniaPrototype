@@ -52,7 +52,14 @@ public class OptionsMenu : CustomUIMenu
     private void SetUIValues()
     {
         //int fullscreen = PlayerPrefs.GetInt("FullScreen", 0);
-        int res = PlayerPrefs.GetInt("Resolution", 1);
+
+#if UNITY_STANDALONE_WIN
+
+            int res = PlayerPrefs.GetInt("Resolution", 1);
+            ResolutionDropdown.value = res;
+
+#endif
+
         int fps = PlayerPrefs.GetInt("FrameRate", 1);
         float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         float effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 0.5f);
@@ -66,7 +73,6 @@ public class OptionsMenu : CustomUIMenu
         //    FullscreenToggle.isOn = false;
         //}
 
-        ResolutionDropdown.value = res;
         FrameRateDropdown.value = fps;
         musicVolumeSlider.value = musicVolume;
         effectsVolumeSlider.value = effectsVolume;

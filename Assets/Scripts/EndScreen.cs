@@ -59,7 +59,7 @@ public class EndScreen : MonoBehaviour
         if(secretActive)
         {
             secretTimer += Time.unscaledDeltaTime;
-            Debug.Log(secretTimer);
+            //Debug.Log(secretTimer);
             if(secretTimer >= secretTime)
             {
                 EndGame();
@@ -79,10 +79,10 @@ public class EndScreen : MonoBehaviour
         totals = savingAndLoading.LoadSaveFileProgress(save);
         CongratulationText.GetComponent<TextMeshProUGUI>().text = "The End...?";
 
-        Debug.Log($"Loaded stats: explore: {totals[0]}%, Item: {totals[1]}%, total: {totals[2]}%");
+        //Debug.Log($"Loaded stats: explore: {totals[0]}%, Item: {totals[1]}%, total: {totals[2]}%");
 
 
-        if ((totals[0] >= 100 && totals[1] >= 100) && totals[2] >= 100)
+        if (totals[3] >= 99)
         {
             GameManagerScript.instance.player.reachedSecret = true;
             secretActive = true;
@@ -127,7 +127,7 @@ public class EndScreen : MonoBehaviour
             ExploreText.text = $"{Mathf.Lerp(0, totals[0], i / 20f):0}%";
             ItemText.text = $"{Mathf.Lerp(0, totals[1], i / 20f):0}%";
             TotalText.text = $"{Mathf.Lerp(0, totals[3], i / 20f):0}%";
-            Debug.Log($"explore: {Mathf.Lerp(0, totals[0], i / 20f):0}%, Item: {Mathf.Lerp(0, totals[1], i / 20f):0}%, total: {Mathf.Lerp(0, totals[3], i / 20f):0}%");
+            //Debug.Log($"explore: {Mathf.Lerp(0, totals[0], i / 20f):0}%, Item: {Mathf.Lerp(0, totals[1], i / 20f):0}%, total: {Mathf.Lerp(0, totals[3], i / 20f):0}%");
             yield return new WaitForSecondsRealtime(0.1f);
         }
 
@@ -140,6 +140,8 @@ public class EndScreen : MonoBehaviour
             for (int i = 1; i < 1000; i++)
             {
                 waitTime = Mathf.Pow(0.999f, i) - 0.9f;
+                ExploreText.text = $"{100 + i/2}%";
+                ItemText.text = $"{100 + i/2}%";
                 TotalText.text = $"{100 + i}%";
                 tipText.text += ".";
                 yield return new WaitForSecondsRealtime(waitTime);
@@ -147,33 +149,31 @@ public class EndScreen : MonoBehaviour
         }
         else
         {
-            if (totals[0] != 100)
-            {
-                tipText.text = "It's not about the destination, it's about the journey";
-            }
-            else
-            {
-                if (totals[1] != 100)
-                {
-                    tipText.text = "Look after the pennies and the pounds will look after themselves";
-                }
-                else
-                {
-                    if (totals[2] != 80)
-                    {
-                        tipText.text = "Contact the developer FAST!";
-                    }
-                }
-            }
-        }
+            tipText.text = "It's not about the destination, it's about the journey";
 
-        if(!secretActive)
-        {
+            //if (totals[0] != 100)
+            //{
+            //    tipText.text = "It's not about the destination, it's about the journey";
+            //}
+            //else
+            //{
+            //    if (totals[1] != 100)
+            //    {
+            //        tipText.text = "Look after the pennies and the pounds will look after themselves";
+            //    }
+            //    else
+            //    {
+            //        if (totals[2] != 80)
+            //        {
+            //            tipText.text = "Contact the developer FAST!";
+            //        }
+            //    }
+            //}
+
             continueImage.SetActive(true);
             continueImage.GetComponent<MinimapAnimation>().RestartCoroutine();
             canClickOff = true;
         }
-
     }
 
     void EndGame()
@@ -196,7 +196,7 @@ public class EndScreen : MonoBehaviour
     void Secret()
     {
         GameManagerScript.instance.isMinimapAvailable = false;
-        Debug.Log("Secret!");
+        //Debug.Log("Secret!");
         Time.timeScale = 1f;
         GameManagerScript.instance.player.ChangeInput(InputMode.Game);
         GameManagerScript.instance.player.characterController.StopMovement(false);

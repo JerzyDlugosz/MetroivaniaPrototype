@@ -5968,6 +5968,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 4171879504920887041}
   zone: 0
+  specialRoom: 0
 --- !u!114 &7124158890723860250
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -635,6 +635,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &233188435
@@ -7909,6 +7910,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &553605619
@@ -8018,6 +8020,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &640126655
@@ -8810,6 +8813,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDisabled: 0
+  isManuallyDisabled: 0
   isADoor: 0
   additionalPlayerMove: {x: 0, y: 0}
 --- !u!1 &1350719696
@@ -10305,6 +10309,7 @@ MonoBehaviour:
   map: {fileID: 11400000, guid: e6fdd6c8f64f96b4eb19c2855714bff9, type: 2}
   outsideColliders: {fileID: 2064758568}
   zone: 3
+  specialRoom: 0
 --- !u!114 &1648532298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10336,7 +10341,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b49c137aaa181b48bdf6da3b5ad3f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectedTilemaps: []
+  connectedTilemaps:
+  - {fileID: 11400000, guid: 9f0ff65f7ac7c1e4e9c5c174b986484c, type: 2}
+  - {fileID: 11400000, guid: 79cddc64b49f69540be98c094467ebd5, type: 2}
   compMapXSize: 1
   compMapYSize: 2
   compMapXPos: {x: 1, y: 1}
@@ -10476,6 +10483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8caf1c298dcd34d9aab65462ff7674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Maskable: 0
 --- !u!61 &1778722061
 BoxCollider2D:
   m_ObjectHideFlags: 0
